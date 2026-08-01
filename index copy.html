@@ -195,7 +195,6 @@
       linear-gradient(180deg, transparent, var(--bg) 92%);
     overflow:hidden;
   }
-  
   .hero::before{
     content:''; position:absolute; inset:0;
     background-image:
@@ -220,25 +219,14 @@
   }
   .season-tag .dot{width:5px; height:5px; border-radius:50%; background:var(--live); animation:blink 1.3s ease-in-out infinite;}
   @keyframes blink{0%,100%{opacity:1;} 50%{opacity:0.25;}}
-.hero-trophy{
-    position:absolute;
-    top:49px;
-    right:45px;
-    width:90px;
-    filter:drop-shadow(0 0 18px rgba(214,169,60,.6));
-    animation:float 3s ease-in-out infinite;
-}
 
-@keyframes float{
-    50%{transform:translateY(-6px);}
-}
   .hero-title{
-    position:relative; margin-top:16px; font-size:63px; line-height:.97;
+    position:relative; margin-top:16px; font-size:54px; line-height:0.92;
     background:linear-gradient(180deg,var(--gold-pale) 10%,var(--gold) 55%,var(--gold-deep) 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
     filter:drop-shadow(0 6px 26px rgba(240,185,61,0.22));
   }
-  .hero-title span{display:block; font-size:18px; color:var(--ink); -webkit-text-fill-color:var(--ink); letter-spacing:0.32em; margin-top:6px;}
+  .hero-title span{display:block; font-size:20px; color:var(--ink); -webkit-text-fill-color:var(--ink); letter-spacing:0.32575em; margin-top:6px;}
   .hero-pre{display:block; font-size:18px; letter-spacing:0.42em; color:var(--gold-pale); -webkit-text-fill-color:var(--gold-pale); margin-bottom:2px;}
 
   .hero-desc{margin-top:14px; font-size:14.5px; line-height:1.55; color:var(--ink-dim); max-width:340px;}
@@ -756,7 +744,7 @@
     <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · LIVE ARENA</div>
     <h1 class="hero-title display fade-up d2"><span class="hero-pre">FREEFIRE</span>XIPL<span>ALL SQUADS. ONE CROWN.</span></h1>
     <p class="hero-desc fade-up d3">Twelve franchises. One battleground. Follow every drop, every clutch and every crown chase of the season — built for fans who never miss a rotation.</p>
-<img src="trophy.png" class="hero-trophy" alt="Championship Trophy">
+
     <div class="ticker-wrap fade-up d4">
       <div class="ticker-head"><span class="dot"></span> LIVE UPDATE</div>
       <div class="ticker-track">
@@ -1174,7 +1162,7 @@
   });
 
   // Splash removal
- // Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
+// Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
   if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
   window.scrollTo(0, 0);
   window.addEventListener('pageshow', (event) => {
