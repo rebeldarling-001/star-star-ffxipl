@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Hall of Fame — FREEFIREXIPL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080503;
+            --bg-alt: #0f0a05;
+            --surface: #160f08;
+            --surface-2: #1c140a;
+            --gold: #e9b949;
+            --gold-deep: #9c7622;
+            --gold-pale: #f7e2a3;
+            --gold-brass: #c99a3e;
+            --ink: #f1e9d6;
+            --ink-dim: #a89a7d;
+            --ink-faint: #665a45;
+            --line: rgba(233, 185, 73, 0.14);
+            --hair: rgba(233, 185, 73, 0.22);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            background: var(--bg);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Rajdhani', sans-serif;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: #1a1206;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 60% 30% at 15% 8%, rgba(233, 185, 73, 0.05), transparent 60%),
+                radial-gradient(ellipse 50% 25% at 90% 55%, rgba(233, 185, 73, 0.04), transparent 60%),
+                radial-gradient(ellipse 60% 30% at 20% 92%, rgba(233, 185, 73, 0.04), transparent 60%);
+        }
+
+        .display {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .serif {
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+        }
+
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* ============ SPLASH ============ */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: radial-gradient(ellipse at 50% 40%, #1a1206 0%, #080503 72%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 480px;
+            margin: 0 auto;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #splash.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .ignite-wrap {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ignite-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid var(--gold-deep);
+            opacity: 0;
+            animation: ringPulse 2s ease-out infinite;
+        }
+
+        .ignite-ring.r2 {
+            animation-delay: 0.5s;
+        }
+
+        .ignite-ring.r3 {
+            animation-delay: 1s;
+        }
+
+        @keyframes ringPulse {
+            0% {
+                transform: scale(0.55);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .ignite-core {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+            animation: coreSpin 3s ease-in-out infinite, coreGlow 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 16px rgba(233, 185, 73, 0.6));
+        }
+
+        @keyframes coreSpin {
+
+            0%,
+            100% {
+                transform: rotate(-4deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(4deg) scale(1.05);
+            }
+        }
+
+        @keyframes coreGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 12px rgba(233, 185, 73, 0.45));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 24px rgba(233, 185, 73, 0.8));
+            }
+        }
+
+        .splash-word {
+            margin-top: 26px;
+            font-size: 19px;
+            letter-spacing: 0.14em;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            animation: wordIn 0.9s ease forwards 0.5s;
+        }
+
+        .splash-sub {
+            margin-top: 8px;
+            font-size: 9.5px;
+            letter-spacing: 0.5em;
+            color: var(--ink-faint);
+            opacity: 0;
+            animation: wordIn 0.9s ease forwards 1s;
+        }
+
+        @keyframes wordIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .splash-bar {
+            margin-top: 34px;
+            width: 120px;
+            height: 1px;
+            background: rgba(233, 185, 73, 0.15);
+        }
+
+        .splash-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+            animation: fillBar 1.9s ease forwards 0.3s;
+        }
+
+        @keyframes fillBar {
+            to {
+                width: 100%;
+            }
+        }
+
+        /* ============ SCROLL PROGRESS ============ */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 80;
+            width: 100%;
+            max-width: 480px;
+            height: 2px;
+        }
+
+        .scroll-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
+            box-shadow: 0 0 8px rgba(233, 185, 73, 0.5);
+            transition: width 0.05s linear;
+        }
+
+        /* ============ EMBERS ============ */
+        .embers {
+            position: fixed;
+            inset: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ember {
+            position: absolute;
+            bottom: -10px;
+            width: 2.5px;
+            height: 2.5px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0;
+            box-shadow: 0 0 5px 1px rgba(233, 185, 73, 0.7);
+            animation-name: floatUp;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            90% {
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: translateY(-720px) translateX(var(--drift, 20px));
+                opacity: 0;
+            }
+        }
+
+        /* ============ HEADER ============ */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: rgba(8, 5, 3, 0.86);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .back-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .crest {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .brand-text {
+            font-size: 16px;
+            letter-spacing: 0.06em;
+        }
+
+        .brand-text b {
+            color: var(--gold);
+        }
+
+        .menu-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .menu-btn:active {
+            transform: scale(0.92);
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ============ NAV DRAWER ============ */
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(4, 2, 1, 0.65);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.32s ease;
+        }
+
+        .nav-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 95;
+            width: 76%;
+            max-width: 300px;
+            background: linear-gradient(165deg, #130d07, #0a0603 75%);
+            border-left: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            padding: 18px 16px 20px;
+            transform: translateX(100%);
+            transition: transform 0.38s cubic-bezier(.2, .9, .25, 1);
+            box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-drawer.show {
+            transform: translateX(0);
+        }
+
+        .nav-drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 20px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 12px;
+            border-radius: 12px;
+            color: var(--ink);
+            font-size: 14px;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .nav-link:active {
+            background: rgba(233, 185, 73, 0.08);
+            border-color: var(--line);
+        }
+
+        .nav-link-primary {
+            background: rgba(233, 185, 73, 0.1);
+            border-color: var(--gold-deep);
+            color: var(--gold-pale);
+            font-weight: 600;
+        }
+
+        .nav-link-primary .nav-link-icon {
+            background: rgba(233, 185, 73, 0.18);
+            color: var(--gold);
+        }
+
+        .nav-link-current {
+            border-color: var(--line);
+            background: rgba(233, 185, 73, 0.05);
+        }
+
+        .nav-link-current .nav-link-icon {
+            color: var(--gold);
+        }
+
+        .nav-link-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            flex-shrink: 0;
+            background: rgba(233, 185, 73, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .nav-drawer-foot {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+            font-size: 9.5px;
+            letter-spacing: 0.18em;
+            color: var(--ink-faint);
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* ============ INTRO / SEAL ============ */
+        .intro {
+            position: relative;
+            padding: 38px 24px 10px;
+            overflow: hidden;
+            text-align: center;
+            background: radial-gradient(ellipse 120% 60% at 50% 0%, rgba(233, 185, 73, 0.08), transparent 62%);
+        }
+
+        .intro::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(233, 185, 73, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(233, 185, 73, 0.04) 1px, transparent 1px);
+            background-size: 28px 28px;
+            mask-image: radial-gradient(ellipse 90% 55% at 50% 15%, black 15%, transparent 72%);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.9s cubic-bezier(.16, .8, .24, 1), transform 0.9s cubic-bezier(.16, .8, .24, 1);
+        }
+
+        .fade-up.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up.d1 {
+            transition-delay: 0.08s;
+        }
+
+        .fade-up.d2 {
+            transition-delay: 0.18s;
+        }
+
+        .fade-up.d3 {
+            transition-delay: 0.28s;
+        }
+
+        .fade-up.d4 {
+            transition-delay: 0.38s;
+        }
+
+        .seal {
+            position: relative;
+            width: 78px;
+            height: 78px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seal-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid var(--hair);
+        }
+
+        .seal-ring.outer {
+            inset: -8px;
+            border-style: dashed;
+            opacity: 0.55;
+            animation: sealTurn 40s linear infinite;
+        }
+
+        @keyframes sealTurn {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .seal-core {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, var(--gold-pale), var(--gold) 45%, var(--gold-deep) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--hair), 0 6px 18px rgba(0, 0, 0, 0.5);
+        }
+
+        .seal-core .crest {
+            width: 22px;
+            height: 22px;
+            filter: brightness(0.25);
+        }
+
+        .seal-caption {
+            margin-top: 10px;
+            font-size: 8px;
+            letter-spacing: 0.4em;
+            color: var(--ink-faint);
+        }
+
+        .eyebrow {
+            position: relative;
+            margin-top: 18px;
+            font-size: 9.5px;
+            letter-spacing: 0.36em;
+            color: var(--gold-brass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .eyebrow::before,
+        .eyebrow::after {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--gold-deep);
+        }
+
+        .intro-title {
+            position: relative;
+            margin-top: 16px;
+            font-size: 31px;
+            line-height: 1.18;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 100% 300%;
+            animation: titleSheen 6s ease-in-out infinite;
+        }
+
+        @keyframes titleSheen {
+
+            0%,
+            100% {
+                background-position: 0 0%;
+            }
+
+            50% {
+                background-position: 0 100%;
+            }
+        }
+
+        .intro-rule {
+            width: 70px;
+            height: 1px;
+            margin: 16px auto 0;
+            background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
+            position: relative;
+        }
+
+        .intro-rule::before {
+            content: '◆';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 6px;
+            color: var(--gold);
+            background: var(--bg);
+            padding: 0 6px;
+        }
+
+        .intro-desc {
+            position: relative;
+            margin: 16px auto 0;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--ink-dim);
+            max-width: 300px;
+            font-weight: 500;
+        }
+
+        .intro-stats {
+            position: relative;
+            display: flex;
+            gap: 0;
+            margin-top: 26px;
+            border-top: 1px solid var(--hair);
+            border-bottom: 1px solid var(--hair);
+        }
+
+        .intro-stat {
+            flex: 1;
+            padding: 16px 6px;
+            text-align: center;
+            border-right: 1px solid var(--hair);
+        }
+
+        .intro-stat:last-child {
+            border-right: none;
+        }
+
+        .intro-stat b {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 19px;
+            color: var(--gold-pale);
+        }
+
+        .intro-stat span {
+            display: block;
+            margin-top: 4px;
+            font-size: 7.5px;
+            letter-spacing: 0.14em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        /* ============ FOIL FRAME ============ */
+        .foil-frame {
+            position: relative;
+            border-radius: 16px;
+            padding: 1px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .foil-frame::before {
+            content: '';
+            position: absolute;
+            inset: -60%;
+            z-index: 0;
+            background: conic-gradient(from 0deg, var(--foil, var(--gold-deep)), var(--gold-pale) 25%, var(--gold) 50%, var(--foil, var(--gold-deep)) 75%, var(--gold-pale) 100%);
+            animation: frameSpin 11s linear infinite;
+        }
+
+        @keyframes frameSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes shimmerSweep {
+            0% {
+                left: -60%;
+            }
+
+            60% {
+                left: 120%;
+            }
+
+            100% {
+                left: 120%;
+            }
+        }
+
+        /* ============ SECTION LABEL ============ */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            margin: 38px 0 18px;
+        }
+
+        .section-label .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--hair), transparent);
+        }
+
+        .section-label .line.left {
+            background: linear-gradient(90deg, transparent, var(--hair));
+        }
+
+        .section-label span {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: var(--gold-brass);
+            white-space: nowrap;
+        }
+
+        /* ============ TROPHY CABINET ============ */
+        .trophy-cabinet {
+            margin: 0 20px;
+            border-radius: 18px;
+            padding: 22px 18px 20px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(233, 185, 73, 0.07), transparent 60%), var(--surface);
+            border: 1px solid var(--line);
+        }
+
+        .trophy-cabinet::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -70%;
+            width: 40%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.035), transparent);
+            animation: shimmerSweep 10s ease-in-out infinite 1s;
+        }
+
+        .cab-lead {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--hair);
+        }
+
+        .cab-lead-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 35% 30%, #7fc4f5, #045d9e 60%, #023a63 100%);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: #eaf4ff;
+            box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px rgba(4, 93, 158, 0.4);
+        }
+
+        .cab-lead-text span {
+            display: block;
+            font-size: 8.5px;
+            letter-spacing: 0.16em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .cab-lead-text b {
+            display: block;
+            margin-top: 3px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gold-pale);
+            letter-spacing: 0.02em;
+        }
+
+        .trophy-chart {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .trophy-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 6px;
+            margin: -6px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .trophy-row:active {
+            background: color-mix(in srgb, var(--foil-t, var(--gold)) 12%, transparent);
+            transform: scale(0.985);
+        }
+
+        .trophy-row.is-empty {
+            cursor: default;
+        }
+
+        .trophy-row.is-empty:active {
+            background: none;
+            transform: none;
+        }
+
+        .trophy-tag {
+            flex-shrink: 0;
+            width: 40px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.03em;
+            color: var(--ink-dim);
+            font-weight: 700;
+        }
+
+        .trophy-track {
+            flex: 1;
+            height: 16px;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--hair);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .trophy-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--foil-t, var(--gold-deep)), var(--foil-t2, var(--gold)));
+            transition: width 1.3s cubic-bezier(.16, .8, .24, 1);
+            position: relative;
+        }
+
+        .trophy-fill.animate {
+            width: var(--w, 0%);
+        }
+
+        .trophy-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), transparent 55%);
+        }
+
+        .trophy-count {
+            flex-shrink: 0;
+            width: 14px;
+            text-align: right;
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold-pale);
+        }
+
+        .trophy-go {
+            flex-shrink: 0;
+            width: 12px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--gold-deep);
+            opacity: 0.7;
+        }
+
+        .trophy-row.is-empty .trophy-go {
+            opacity: 0.3;
+        }
+
+        .cab-hint {
+            position: relative;
+            z-index: 1;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--hair);
+            text-align: center;
+            font-size: 9.5px;
+            letter-spacing: 0.12em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        /* ============ ROLL OF HONOUR — SWIPE CAROUSEL ============ */
+        .honour-carousel {
+            display: flex;
+            gap: 14px;
+            padding: 6px 20px 8px;
+            margin: 0 -20px 0 0;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .honour-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .plaque-wrap {
+            flex: 0 0 80%;
+            max-width: 310px;
+            scroll-snap-align: center;
+        }
+
+        .plaque {
+            position: relative;
+            border-radius: 22px;
+            overflow: hidden;
+            aspect-ratio: 3/4;
+            background: radial-gradient(ellipse 150% 120% at 50% -10%, color-mix(in srgb, var(--foil, var(--gold)) 22%, transparent), var(--surface) 60%);
+            border: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 26px 22px;
+            text-align: center;
+            box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.65), 0 2px 0 rgba(255, 255, 255, 0.02) inset;
+        }
+
+        .plaque::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border-radius: 17px;
+            border: 1px solid var(--hair);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .plaque::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 45%;
+            height: 100%;
+            z-index: 4;
+            pointer-events: none;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+            animation: shimmerSweep 7s ease-in-out infinite;
+        }
+
+        .plaque-corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .plaque-corner.tl {
+            top: 12px;
+            left: 12px;
+            border-top: 1.5px solid var(--foil-l, var(--gold));
+            border-left: 1.5px solid var(--foil-l, var(--gold));
+        }
+
+        .plaque-corner.tr {
+            top: 12px;
+            right: 12px;
+            border-top: 1.5px solid var(--foil-l, var(--gold));
+            border-right: 1.5px solid var(--foil-l, var(--gold));
+        }
+
+        .plaque-corner.bl {
+            bottom: 12px;
+            left: 12px;
+            border-bottom: 1.5px solid var(--foil-l, var(--gold));
+            border-left: 1.5px solid var(--foil-l, var(--gold));
+        }
+
+        .plaque-corner.br {
+            bottom: 12px;
+            right: 12px;
+            border-bottom: 1.5px solid var(--foil-l, var(--gold));
+            border-right: 1.5px solid var(--foil-l, var(--gold));
+        }
+
+        .plaque-numeral {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 180px;
+            line-height: 1;
+            color: color-mix(in srgb, var(--foil, var(--gold)) 14%, transparent);
+            z-index: 0;
+            user-select: none;
+            transform: translateY(6%);
+        }
+
+        .plaque-pill {
+            position: relative;
+            z-index: 2;
+            padding: 5px 16px;
+            border-radius: 100px;
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 60%, var(--gold-brass));
+            color: #1a1206;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 9.5px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+
+        .plaque-laurel {
+            position: relative;
+            z-index: 2;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .plaque-ornament {
+            width: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--foil-l, var(--gold-deep)));
+        }
+
+        .plaque-laurel>.plaque-ornament:last-child {
+            background: linear-gradient(90deg, var(--foil-l, var(--gold-deep)), transparent);
+        }
+
+        .plaque-laurel span.leaf {
+            font-size: 11px;
+            margin: 0 8px;
+            opacity: 0.9;
+            flex-shrink: 0;
+        }
+
+        .plaque-team {
+            position: relative;
+            z-index: 2;
+            margin-top: 18px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 1.2;
+            letter-spacing: 0.01em;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 60%, var(--foil, var(--gold-deep)));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 24px color-mix(in srgb, var(--foil, var(--gold)) 45%, transparent);
+        }
+
+        .plaque-season {
+            position: relative;
+            z-index: 2;
+            margin-top: 18px;
+            padding: 4px 13px;
+            border-radius: 100px;
+            border: 1px solid color-mix(in srgb, var(--foil, var(--gold-deep)) 65%, var(--hair));
+            background: color-mix(in srgb, var(--foil, var(--gold)) 18%, transparent);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            color: var(--foil-l, var(--gold-pale));
+            text-transform: uppercase;
+        }
+
+        .plaque-title-tag {
+            position: relative;
+            z-index: 2;
+            margin-top: 10px;
+            font-size: 10.5px;
+            letter-spacing: 0.06em;
+            color: var(--ink-dim);
+        }
+
+        .plaque.jump-highlight {
+            animation: jumpFlash 1.4s ease-out;
+        }
+
+        @keyframes jumpFlash {
+            0% {
+                box-shadow: 0 0 0 0 color-mix(in srgb, var(--foil, var(--gold)) 70%, transparent), 0 0 0 3px var(--gold) inset;
+            }
+
+            100% {
+                box-shadow: 0 0 0 26px color-mix(in srgb, var(--foil, var(--gold)) 0%, transparent), 0 0 0 3px transparent inset;
+            }
+        }
+
+        .carousel-hint {
+            padding: 0 24px;
+            margin-top: 2px;
+            font-size: 9.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .season-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            justify-items: center;
+            row-gap: 10px;
+            column-gap: 7px;
+            margin-top: 20px;
+            padding: 0 20px;
+            max-width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .schip {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 10.5px;
+            color: var(--ink-dim);
+            background: var(--surface);
+            border: 1px solid var(--hair);
+            transition: all 0.3s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .schip:active {
+            transform: scale(0.9);
+        }
+
+        .schip.active {
+            width: 34px;
+            height: 34px;
+            color: #1a1206;
+            border-color: transparent;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-brass));
+            box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--hair), 0 3px 12px rgba(233, 185, 73, 0.35);
+        }
+
+        /* ============ CTA / SEAL BAND ============ */
+        .cta-band {
+            margin: 34px 20px 6px;
+            padding: 28px 22px 24px;
+            border-radius: 18px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 100% at 50% 0%, rgba(233, 185, 73, 0.12), var(--surface) 70%);
+            border: 1px solid var(--line);
+        }
+
+        .cta-band::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px solid var(--hair);
+            border-radius: 13px;
+            pointer-events: none;
+        }
+
+        .cta-eyebrow {
+            position: relative;
+            font-size: 9px;
+            letter-spacing: 0.3em;
+            color: var(--gold-brass);
+            text-transform: uppercase;
+        }
+
+        .cta-band h3 {
+            position: relative;
+            margin-top: 10px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 19px;
+            letter-spacing: 0.01em;
+            line-height: 1.3;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cta-band p {
+            position: relative;
+            margin-top: 10px;
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.6;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding: 13px 26px;
+            border-radius: 3px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            font-size: 11.5px;
+            letter-spacing: 0.14em;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 1px solid var(--gold-deep);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 60%, var(--gold-brass));
+            color: #1a1206;
+            box-shadow: 0 8px 22px rgba(233, 185, 73, 0.22);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            margin-top: 36px;
+            padding: 26px 20px 20px;
+            border-top: 1px solid var(--line);
+        }
+
+        .foot-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .foot-tag {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--ink-faint);
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .foot-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .soc {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-deep);
+            font-size: 13px;
+        }
+
+        .foot-copy {
+            margin-top: 20px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.03em;
+        }
+
+        /* ============ BACK TO TOP ============ */
+        .back-to-top {
+            position: fixed;
+            right: 18px;
+            bottom: 20px;
+            z-index: 70;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top svg {
+            position: absolute;
+            inset: 0;
+            transform: rotate(-90deg);
+        }
+
+        .btt-bg {
+            fill: rgba(15, 10, 5, 0.85);
+            stroke: rgba(233, 185, 73, 0.18);
+            stroke-width: 2;
+        }
+
+        .btt-fill {
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .back-to-top span {
+            position: relative;
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroll-progress">
+        <div class="scroll-progress-fill" id="scrollFill"></div>
+    </div>
+
+    <!-- SPLASH -->
+    <div id="splash">
+        <div class="ignite-wrap">
+            <div class="ignite-ring r1"></div>
+            <div class="ignite-ring r2"></div>
+            <div class="ignite-ring r3"></div>
+            <div class="ignite-core"></div>
+        </div>
+        <div class="splash-word">FREEFIREXIPL</div>
+        <div class="splash-sub">THE ROLL OF HONOUR</div>
+        <div class="splash-bar">
+            <div class="splash-bar-fill"></div>
+        </div>
+    </div>
+
+    <div class="embers" id="embers"></div>
+    <div class="ambient-glow"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-flex">
+            <a href="./index.html" class="back-btn" aria-label="Back to home">←</a>
+            <div class="brand">
+                <div class="crest"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    </header>
+
+    <!-- NAV DRAWER -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="nav-drawer" id="navDrawer">
+        <div class="nav-drawer-head">
+            <div class="brand">
+                <div class="crest" style="width:26px;height:26px;"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+            <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+        </div>
+        <div class="nav-links">
+            <a href="./index.html" class="nav-link"><span class="nav-link-icon">🏠</span> Home</a>
+            <a href="./register.html" class="nav-link nav-link-primary"><span class="nav-link-icon">📝</span>
+                Register</a>
+            <a href="./schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+            <a href="./points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
+            <a href="./leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+            <a href="./teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="./rules.html" class="nav-link"><span class="nav-link-icon">📜</span> Rulebook</a>
+            <a href="./hall-of-fame.html" class="nav-link nav-link-current"><span class="nav-link-icon">👑</span> Hall
+                of Fame</a>
+        </div>
+        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+    </nav>
+
+    <!-- INTRO / SEAL -->
+    <section class="intro">
+        <div class="seal fade-up">
+            <div class="seal-ring outer"></div>
+            <div class="seal-ring"></div>
+            <div class="seal-core">
+                <div class="crest"></div>
+            </div>
+        </div>
+        <div class="seal-caption fade-up d1">OFFICIAL ARCHIVE</div>
+        <div class="eyebrow fade-up d1">ESTABLISHED SEASON I</div>
+        <h1 class="intro-title serif fade-up d2">The Roll of<br>Honour</h1>
+        <div class="intro-rule fade-up d2"></div>
+        <p class="intro-desc fade-up d3">A permanent record of every franchise crowned champion of FREEFIREXIPL, and the
+            cabinet they have built across ten contested seasons.</p>
+        <div class="intro-stats fade-up d4">
+            <div class="intro-stat"><b>X</b><span>Seasons</span></div>
+            <div class="intro-stat"><b>VIII</b><span>Franchises</span></div>
+            <div class="intro-stat"><b>I</b><span>Dynasty</span></div>
+        </div>
+    </section>
+
+    <!-- TROPHY CABINET -->
+    <div class="section-label fade-up">
+        <div class="line left"></div><span>The Trophy Cabinet</span>
+        <div class="line"></div>
+    </div>
+    <div class="trophy-cabinet fade-up">
+        <div class="cab-lead">
+            <div class="cab-lead-badge">MI</div>
+            <div class="cab-lead-text"><span>Most Decorated Franchise</span><b>Mumbai Indians — Three Titles</b></div>
+        </div>
+        <div class="trophy-chart" id="trophyChart">
+            <div class="trophy-row" data-team="MI" style="--foil-t:#045d9e; --foil-t2:#3d9ee0;">
+                <div class="trophy-tag">MI</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:100%;"></div>
+                </div>
+                <div class="trophy-count">3</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row" data-team="RCB" style="--foil-t:#8a2029; --foil-t2:#c94854;">
+                <div class="trophy-tag">RCB</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:66%;"></div>
+                </div>
+                <div class="trophy-count">2</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row" data-team="CSK" style="--foil-t:#a8850f; --foil-t2:#e0bb3d;">
+                <div class="trophy-tag">CSK</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:33%;"></div>
+                </div>
+                <div class="trophy-count">1</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row" data-team="KKR" style="--foil-t:#5c3684; --foil-t2:#8b62b8;">
+                <div class="trophy-tag">KKR</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:33%;"></div>
+                </div>
+                <div class="trophy-count">1</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row" data-team="SRH" style="--foil-t:#a84a17; --foil-t2:#d97a3e;">
+                <div class="trophy-tag">SRH</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:33%;"></div>
+                </div>
+                <div class="trophy-count">1</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row" data-team="DC" style="--foil-t:#17408c; --foil-t2:#4879c9;">
+                <div class="trophy-tag">DC</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:33%;"></div>
+                </div>
+                <div class="trophy-count">1</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row" data-team="RR" style="--foil-t:#2a4ea8; --foil-t2:#6c8fd9;">
+                <div class="trophy-tag">RR</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:33%;"></div>
+                </div>
+                <div class="trophy-count">1</div>
+                <div class="trophy-go">›</div>
+            </div>
+            <div class="trophy-row is-empty" style="--foil-t:#7a2632; --foil-t2:#a8434f;">
+                <div class="trophy-tag">PBKS</div>
+                <div class="trophy-track">
+                    <div class="trophy-fill" style="--w:4%;"></div>
+                </div>
+                <div class="trophy-count">0</div>
+                <div class="trophy-go">·</div>
+            </div>
+        </div>
+        <div class="cab-hint">Tap a franchise to visit their title season</div>
+    </div>
+    </div>
+
+    <!-- ROLL OF HONOUR -->
+    <div class="section-label fade-up">
+        <div class="line left"></div><span>Ten Seasons of Champions</span>
+        <div class="line"></div>
+    </div>
+    <div class="honour-carousel" id="honourCarousel">
+      
+ <div class="plaque-wrap fade-up" style="--foil:#8b0a77; --foil-l:#7e0d4d;" data-team="RR">
+      <div class="plaque">
+        <div class="plaque-corner tl"></div><div class="plaque-corner tr"></div><div class="plaque-corner bl"></div><div class="plaque-corner br"></div>
+        <div class="plaque-numeral">XI</div>
+        <div class="plaque-pill">Champion</div>
+        <div class="plaque-laurel"><div class="plaque-ornament"></div><span class="leaf">❧</span><div class="plaque-ornament"></div></div>
+        <div class="plaque-team">Rajasthan ROYals</div>
+        <div class="plaque-season">Season XI</div>
+        <div class="plaque-title-tag">First Title</div>
+      </div>
+    </div>
+
+        <div class="plaque-wrap fade-up" style="--foil:#045d9e; --foil-l:#8fd0ff;" data-team="MI">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">X</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Mumbai Indians</div>
+                <div class="plaque-season">Season X</div>
+                <div class="plaque-title-tag">Third Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#2a4ea8; --foil-l:#9fbdf5;" data-team="RR">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">IX</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Rajasthan Royals</div>
+                <div class="plaque-season">Season IX</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#17408c; --foil-l:#8fb3f0;" data-team="DC">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">VIII</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Delhi Crushers</div>
+                <div class="plaque-season">Season VIII</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+
+        <div class="plaque-wrap fade-up" style="--foil:#8a2029; --foil-l:#f0a3ab;" data-team="RCB">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">VII</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Royal Challengers</div>
+                <div class="plaque-season">Season VII</div>
+                <div class="plaque-title-tag">Second Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#a84a17; --foil-l:#f0b384;" data-team="SRH">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">VI</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Sunrisers Blaze</div>
+                <div class="plaque-season">Season VI</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#5c3684; --foil-l:#c8a8f0;" data-team="KKR">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">V</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Kolkata Reapers</div>
+                <div class="plaque-season">Season V</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#045d9e; --foil-l:#8fd0ff;" data-team="MI">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">IV</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Mumbai Indians</div>
+                <div class="plaque-season">Season IV</div>
+                <div class="plaque-title-tag">Second Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#a8850f; --foil-l:#f0d97a;" data-team="CSK">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">III</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Chennai Serpents</div>
+                <div class="plaque-season">Season III</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#8a2029; --foil-l:#f0a3ab;" data-team="RCB">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">II</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Royal Challengers</div>
+                <div class="plaque-season">Season II</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+        <div class="plaque-wrap fade-up" style="--foil:#045d9e; --foil-l:#8fd0ff;" data-team="MI">
+            <div class="plaque">
+                <div class="plaque-corner tl"></div>
+                <div class="plaque-corner tr"></div>
+                <div class="plaque-corner bl"></div>
+                <div class="plaque-corner br"></div>
+                <div class="plaque-numeral">I</div>
+                <div class="plaque-pill">Champion</div>
+                <div class="plaque-laurel">
+                    <div class="plaque-ornament"></div><span class="leaf">❧</span>
+                    <div class="plaque-ornament"></div>
+                </div>
+                <div class="plaque-team">Mumbai Indians</div>
+                <div class="plaque-season">Season I</div>
+                <div class="plaque-title-tag">First Title</div>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div class="carousel-hint">Swipe to browse, or jump straight to a season</div>
+    <div class="season-strip" id="seasonStrip">
+       <div class="schip" data-index="10">S-1</div>
+        <div class="schip" data-index="9">S-2</div>
+        <div class="schip" data-index="8">S-3</div>
+        <div class="schip" data-index="7">S-4</div>
+        <div class="schip" data-index="6">S-5</div>
+        <div class="schip" data-index="5">S-6</div>
+        <div class="schip" data-index="4">S-7</div>
+        <div class="schip" data-index="3">S-8</div>
+        <div class="schip" data-index="2">S-9</div>
+        <div class="schip active" data-index="1">S-10</div>
+        <div class="schip" data-index="0">S-11</div>
+    </div>
+    <!-- CTA -->
+    <div class="cta-band fade-up">
+        <div class="cta-eyebrow">Season XI · In Progress</div>
+        <h3>A New Name Will Be<br>Written In Gold.</h3>
+        <p>Eight franchises are competing for the right to stand beside this record. Follow the campaign as it unfolds.
+        </p>
+        <a href="./teams.html" class="btn btn-primary">Meet The Contenders</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="foot-brand">
+            <div class="crest" style="width:26px;height:26px;"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
+            moment of the season.</p>
+        <div class="foot-social">
+            <div class="soc">✕</div>
+            <div class="soc">◎</div>
+            <div class="soc">▶</div>
+            <div class="soc">✈</div>
+        </div>
+        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle class="btt-bg" cx="24" cy="24" r="21" />
+            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
+                stroke-dashoffset="131.9" />
+        </svg>
+        <span>↑</span>
+    </button>
+
+    <script>
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+        window.addEventListener('pageshow', (event) => { if (event.persisted) { window.location.reload(); } });
+
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+            setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1900);
+        });
+
+        // Embers
+        const emberField = document.getElementById('embers');
+        for (let i = 0; i < 14; i++) {
+            const e = document.createElement('div');
+            e.className = 'ember';
+            e.style.left = Math.random() * 100 + '%';
+            e.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+            e.style.animationDuration = (7 + Math.random() * 6) + 's';
+            e.style.animationDelay = (Math.random() * 8) + 's';
+            emberField.appendChild(e);
+        }
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.fade-up');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+        }, { threshold: 0.1 });
+        revealEls.forEach(el => io.observe(el));
+
+        // Animated trophy bars
+        const trophyChart = document.querySelector('.trophy-chart');
+        if (trophyChart) {
+            const trophyIo = new IntersectionObserver((entries) => {
+                entries.forEach(en => {
+                    if (en.isIntersecting) {
+                        const fills = en.target.querySelectorAll('.trophy-fill');
+                        fills.forEach((f, i) => setTimeout(() => f.classList.add('animate'), i * 120));
+                        trophyIo.unobserve(en.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            trophyIo.observe(trophyChart);
+        }
+
+        // Carousel — season chip sync
+        const carousel = document.getElementById('honourCarousel');
+        const chips = document.querySelectorAll('.schip');
+        const totalSlides = document.querySelectorAll('.plaque-wrap').length;
+        if (carousel && chips.length) {
+            let ticking = false;
+            carousel.addEventListener('scroll', () => {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(() => {
+                    const slideWidth = carousel.scrollWidth / totalSlides;
+                    const idx = Math.min(totalSlides - 1, Math.round(carousel.scrollLeft / slideWidth));
+                    chips.forEach(c => c.classList.toggle('active', parseInt(c.dataset.index, 10) === idx));
+                    ticking = false;
+                });
+            }, { passive: true });
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const i = parseInt(chip.dataset.index, 10);
+                    const slideWidth = carousel.scrollWidth / totalSlides;
+                    carousel.scrollTo({ left: slideWidth * i, behavior: 'smooth' });
+                    const allWraps = document.querySelectorAll('.plaque-wrap');
+                    const plaqueEl = allWraps[i] ? allWraps[i].querySelector('.plaque') : null;
+                    if (plaqueEl) {
+                        plaqueEl.classList.remove('jump-highlight');
+                        void plaqueEl.offsetWidth;
+                        plaqueEl.classList.add('jump-highlight');
+                    }
+                });
+            });
+        }
+
+        // Trophy Cabinet — tap a franchise to jump to their title season(s)
+        const teamCycle = {};
+        document.querySelectorAll('.trophy-row[data-team]').forEach(row => {
+            row.addEventListener('click', () => {
+                const team = row.dataset.team;
+                const plaques = Array.from(document.querySelectorAll('.plaque-wrap[data-team="' + team + '"]'));
+                if (!plaques.length || !carousel) return;
+
+                const nextIndex = (teamCycle[team] || 0) % plaques.length;
+                teamCycle[team] = nextIndex + 1;
+                const targetWrap = plaques[nextIndex];
+                const allWraps = Array.from(document.querySelectorAll('.plaque-wrap'));
+                const slideIndex = allWraps.indexOf(targetWrap);
+
+                const doScroll = () => {
+                    const slideWidth = carousel.scrollWidth / allWraps.length;
+                    carousel.scrollTo({ left: slideWidth * slideIndex, behavior: 'smooth' });
+                    const plaqueEl = targetWrap.querySelector('.plaque');
+                    if (plaqueEl) {
+                        plaqueEl.classList.remove('jump-highlight');
+                        void plaqueEl.offsetWidth;
+                        plaqueEl.classList.add('jump-highlight');
+                    }
+                };
+
+                carousel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(doScroll, 380);
+            });
+        });
+
+        // Nav drawer
+        const menuBtn = document.getElementById('menuBtn');
+        const navDrawer = document.getElementById('navDrawer');
+        const navOverlay = document.getElementById('navOverlay');
+        const navClose = document.getElementById('navClose');
+        function openNav() { navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
+        function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); }
+        menuBtn.addEventListener('click', openNav);
+        navClose.addEventListener('click', closeNav);
+        navOverlay.addEventListener('click', closeNav);
+
+        // Scroll progress + back to top
+        const scrollFill = document.getElementById('scrollFill');
+        const backToTop = document.getElementById('backToTop');
+        const bttFill = document.getElementById('bttFill');
+        const bttCircumference = 131.9;
+        function onScroll() {
+            const scrollTop = window.scrollY;
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = max > 0 ? Math.min(1, scrollTop / max) : 0;
+            scrollFill.style.width = (pct * 100) + '%';
+            bttFill.style.strokeDashoffset = bttCircumference * (1 - pct);
+            backToTop.classList.toggle('show', scrollTop > 400);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Leaderboard — FREEFIREXIPL Season 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- Supabase JS client (CDN, no build step) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0705;
+    --bg-alt:#120c07;
+    --surface:#1a130b;
+    --surface-2:#221909;
+    --gold:#f0b93d;
+    --gold-deep:#b3811f;
+    --gold-pale:#fbe4a6;
+    --ink:#f4ecd8;
+    --ink-dim:#a9997d;
+    --ink-faint:#6b5f4c;
+    --live:#ff4433;
+    --line:rgba(240,185,61,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{background:var(--bg);}
+  body{
+    background:var(--bg); color:var(--ink); font-family:'Rajdhani',sans-serif;
+    max-width:480px; margin:0 auto; position:relative; overflow-x:hidden; min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  ::selection{background:var(--gold); color:#1a1206;}
+  .display{font-family:'Anton',sans-serif; letter-spacing:0.02em; text-transform:uppercase;}
+  .mono{font-family:'Space Mono',monospace;}
+
+  /* ============ SPLASH ============ */
+  #splash{
+    position:fixed; inset:0; z-index:999;
+    background:radial-gradient(ellipse at 50% 40%, #1c1206 0%, #0a0705 70%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    max-width:480px; margin:0 auto;
+    transition:opacity 0.7s ease, visibility 0.7s ease;
+  }
+  #splash.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .ignite-wrap{position:relative; width:150px; height:150px; display:flex; align-items:center; justify-content:center;}
+  .ignite-ring{position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--gold-deep); opacity:0; animation: ringPulse 1.8s ease-out infinite;}
+  .ignite-ring.r2{animation-delay:0.4s;} .ignite-ring.r3{animation-delay:0.8s;}
+  @keyframes ringPulse{0%{transform:scale(0.5); opacity:0;} 30%{opacity:0.9;} 100%{transform:scale(1.6); opacity:0;}}
+  .ignite-core{
+    width:64px; height:64px;
+    background:linear-gradient(145deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
+    clip-path:polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+    animation: coreSpin 2.4s ease-in-out infinite, coreGlow 1.6s ease-in-out infinite;
+    filter:drop-shadow(0 0 18px rgba(240,185,61,0.7));
+  }
+  @keyframes coreSpin{0%,100%{transform:rotate(-6deg) scale(1);} 50%{transform:rotate(6deg) scale(1.08);}}
+  @keyframes coreGlow{0%,100%{filter:drop-shadow(0 0 14px rgba(240,185,61,0.5));} 50%{filter:drop-shadow(0 0 28px rgba(240,185,61,0.9));}}
+  .splash-word{
+    margin-top:28px; font-size:22px; letter-spacing:0.06em;
+    background:linear-gradient(180deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    opacity:0; animation: wordIn 0.8s ease forwards 0.5s;
+  }
+  .splash-sub{margin-top:6px; font-size:11px; letter-spacing:0.4em; color:var(--ink-faint); opacity:0; animation: wordIn 0.8s ease forwards 0.9s;}
+  @keyframes wordIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  .splash-bar{margin-top:36px; width:130px; height:2px; background:rgba(240,185,61,0.15); border-radius:2px; overflow:hidden;}
+  .splash-bar-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--gold-deep),var(--gold)); animation: fillBar 1.9s ease forwards 0.3s;}
+  @keyframes fillBar{ to{width:100%;} }
+
+  /* ============ SCROLL PROGRESS ============ */
+  .scroll-progress{position:fixed; top:0; left:50%; transform:translateX(-50%); z-index:80; width:100%; max-width:480px; height:2px; background:transparent;}
+  .scroll-progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--gold-deep),var(--gold),var(--gold-pale)); box-shadow:0 0 8px rgba(240,185,61,0.6); transition:width 0.05s linear;}
+
+  /* ============ EMBERS ============ */
+  .embers{position:fixed; inset:0; max-width:480px; margin:0 auto; pointer-events:none; z-index:0; overflow:hidden;}
+  .ember{position:absolute; bottom:-10px; width:3px; height:3px; border-radius:50%; background:var(--gold); opacity:0; box-shadow:0 0 6px 1px rgba(240,185,61,0.8); animation-name: floatUp; animation-timing-function:ease-in; animation-iteration-count:infinite;}
+  @keyframes floatUp{0%{transform:translateY(0) translateX(0); opacity:0;} 10%{opacity:0.9;} 90%{opacity:0.3;} 100%{transform:translateY(-720px) translateX(var(--drift,20px)); opacity:0;}}
+
+  /* ============ HEADER ============ */
+  header{
+    position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px; background:rgba(10,7,5,0.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:9px;}
+  .back-btn{
+    width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--surface);
+    color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:16px;
+    text-decoration:none; flex-shrink:0;
+  }
+  .crest{
+    width:30px; height:30px;
+    background:linear-gradient(145deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep));
+    clip-path:polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+  }
+  .brand-text{font-size:16px; letter-spacing:0.06em;}
+  .brand-text b{color:var(--gold);}
+  .menu-btn{
+    width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--surface);
+    color:var(--gold); font-size:16px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; -webkit-tap-highlight-color:transparent; transition:transform 0.15s ease;
+  }
+  .menu-btn:active{transform:scale(0.92);}
+  .header-flex{display:flex; align-items:center; gap:10px;}
+
+  /* ============ NAV DRAWER ============ */
+  .nav-overlay{position:fixed; inset:0; z-index:90; max-width:480px; margin:0 auto; background:rgba(5,3,2,0.62); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity 0.32s ease;}
+  .nav-overlay.show{opacity:1; pointer-events:auto;}
+  .nav-drawer{
+    position:fixed; top:0; right:0; bottom:0; z-index:95; width:76%; max-width:300px;
+    background:linear-gradient(165deg,#160f08,#0c0805 75%); border-left:1px solid var(--line);
+    display:flex; flex-direction:column; padding:18px 16px 20px;
+    transform:translateX(100%); transition:transform 0.38s cubic-bezier(.2,.9,.25,1);
+    box-shadow:-24px 0 60px rgba(0,0,0,0.5);
+  }
+  .nav-drawer.show{transform:translateX(0);}
+  .nav-drawer-head{display:flex; align-items:center; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--line);}
+  .nav-close{width:30px; height:30px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--gold); font-size:13px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .nav-links{display:flex; flex-direction:column; gap:6px; margin-top:20px;}
+  .nav-link{display:flex; align-items:center; gap:12px; padding:13px 12px; border-radius:12px; color:var(--ink); font-size:14px; letter-spacing:0.03em; text-decoration:none; border:1px solid transparent; transition:background 0.18s ease, border-color 0.18s ease;}
+  .nav-link:active{background:rgba(240,185,61,0.08); border-color:var(--line);}
+  .nav-link-primary{background:rgba(240,185,61,0.1); border-color:var(--gold-deep); color:var(--gold-pale); font-weight:600;}
+  .nav-link-primary .nav-link-icon{background:rgba(240,185,61,0.18); color:var(--gold);}
+  .nav-link-current{border-color:var(--line); background:rgba(240,185,61,0.05);}
+  .nav-link-current .nav-link-icon{color:var(--gold);}
+  .nav-link-icon{width:30px; height:30px; border-radius:9px; flex-shrink:0; background:rgba(240,185,61,0.08); display:flex; align-items:center; justify-content:center; font-size:13px;}
+  .nav-drawer-foot{margin-top:auto; padding-top:16px; border-top:1px solid var(--line); font-size:9.5px; letter-spacing:0.18em; color:var(--ink-faint); text-align:center; text-transform:uppercase;}
+
+  /* ============ INTRO ============ */
+  .intro{
+    position:relative; padding:34px 20px 8px; overflow:hidden;
+    background:radial-gradient(ellipse 120% 60% at 50% 0%, rgba(240,185,61,0.10), transparent 60%), linear-gradient(180deg, transparent, var(--bg) 92%);
+  }
+  .intro::before{
+    content:''; position:absolute; inset:0;
+    background-image:linear-gradient(rgba(240,185,61,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(240,185,61,0.05) 1px, transparent 1px);
+    background-size:26px 26px;
+    mask-image:radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
+    animation: gridDrift 14s linear infinite;
+  }
+  @keyframes gridDrift{ from{background-position:0 0,0 0;} to{background-position:26px 26px,26px 26px;} }
+  .fade-up{opacity:0; transform:translateY(18px); transition:opacity 0.7s ease, transform 0.7s ease;}
+  .fade-up.in{opacity:1; transform:translateY(0);}
+  .fade-up.d1{transition-delay:0.05s;} .fade-up.d2{transition-delay:0.15s;}
+  .fade-up.d3{transition-delay:0.25s;} .fade-up.d4{transition-delay:0.35s;}
+  .eyebrow{position:relative; font-size:10.5px; letter-spacing:0.32em; color:var(--gold-deep); display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:''; width:16px; height:1px; background:var(--gold-deep);}
+  .intro-title{
+    position:relative; margin-top:12px; font-size:38px; line-height:0.95;
+    background:linear-gradient(180deg,var(--gold-pale) 10%,var(--gold) 55%,var(--gold-deep) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .intro-desc{position:relative; margin-top:12px; font-size:13.5px; line-height:1.55; color:var(--ink-dim); max-width:320px;}
+
+  /* ============ SYNC BADGE ============ */
+  .sync-row{display:flex; align-items:center; justify-content:space-between; padding:16px 20px 0;}
+  .sync-badge{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:100px; border:1px solid var(--line); background:var(--surface); font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-faint);}
+  .sync-dot{width:6px; height:6px; border-radius:50%; background:var(--ink-faint); flex-shrink:0;}
+  .sync-badge.live{color:#7cd992; border-color:rgba(124,217,146,0.35);}
+  .sync-badge.live .sync-dot{background:#7cd992; box-shadow:0 0 6px rgba(124,217,146,0.7); animation:pulseDot 1.8s ease-in-out infinite;}
+  .sync-badge.offline{color:var(--gold-deep);}
+  .sync-badge.offline .sync-dot{background:var(--gold-deep);}
+  .sync-badge.error{color:var(--live);}
+  .sync-badge.error .sync-dot{background:var(--live);}
+  @keyframes pulseDot{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.4; transform:scale(0.75);}}
+  .refresh-btn{width:28px; height:28px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer;}
+  .refresh-btn:active{transform:scale(0.9) rotate(90deg);}
+  .setup-banner{margin:12px 20px 0; padding:12px 14px; border-radius:12px; border:1px dashed var(--gold-deep); background:rgba(240,185,61,0.05); font-size:11.5px; color:var(--ink-dim); line-height:1.55;}
+  .setup-banner b{color:var(--gold-pale);}
+
+  /* ============ MVP HERO (rank 1) ============ */
+  .mvp-hero{
+    margin:22px 20px 0; padding:26px 20px 22px; border-radius:20px; position:relative; overflow:hidden; text-align:center;
+    background:radial-gradient(ellipse 140% 100% at 50% -20%, rgba(240,185,61,0.16), transparent 65%), var(--surface-2);
+    border:1px solid var(--gold-deep);
+  }
+  .mvp-crown{font-size:22px;}
+  .mvp-eyebrow{margin-top:6px; font-family:'Space Mono',monospace; font-size:9.5px; letter-spacing:0.22em; color:var(--gold-deep); text-transform:uppercase;}
+  .mvp-avatar{
+    width:64px; height:64px; border-radius:50%; margin:14px auto 0; display:flex; align-items:center; justify-content:center;
+    font-family:'Anton',sans-serif; font-size:22px; background:var(--team-c2); color:var(--team-c); border:2px solid var(--team-c);
+    position:relative; overflow:hidden;
+  }
+  .mvp-avatar img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .mvp-name{margin-top:12px; font-family:'Anton',sans-serif; font-size:24px; letter-spacing:0.01em; color:var(--ink);}
+  .mvp-team{display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:4px 12px; border-radius:100px; background:var(--team-c2); border:1px solid var(--team-c);}
+  .mvp-team-badge{width:16px; height:16px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:7px; font-family:'Anton',sans-serif; background:var(--team-c); color:#1a1206;}
+  .mvp-team span{font-size:10.5px; color:var(--team-c); letter-spacing:0.03em;}
+  .mvp-stats{display:flex; justify-content:center; gap:28px; margin-top:20px;}
+  .mvp-stat b{display:block; font-family:'Space Mono',monospace; font-size:28px; color:var(--gold-pale); line-height:1;}
+  .mvp-stat span{display:block; margin-top:4px; font-size:8.5px; letter-spacing:0.1em; color:var(--ink-faint); text-transform:uppercase;}
+
+  /* ============ LEADERBOARD LIST (rank 2-5) ============ */
+  .lb-list{padding:16px 20px 0; display:flex; flex-direction:column; gap:9px;}
+  .lb-row{
+    display:flex; align-items:center; gap:11px; padding:11px 13px; background:var(--surface-2);
+    border:1px solid var(--line); border-left:3px solid var(--team-c, var(--line)); border-radius:13px;
+  }
+  .lb-rank{width:22px; flex-shrink:0; text-align:center; font-family:'Anton',sans-serif; font-size:15px; color:var(--ink-faint);}
+  .lb-avatar{
+    width:36px; height:36px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Anton',sans-serif; font-size:13px; background:var(--team-c2); color:var(--team-c); position:relative; overflow:hidden;
+  }
+  .lb-avatar img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .lb-info{flex:1; min-width:0;}
+  .lb-player-name{font-family:'Space Mono',monospace; font-size:12.5px; color:var(--ink); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .lb-team-row{display:flex; align-items:center; gap:5px; margin-top:3px;}
+  .lb-team-badge{width:14px; height:14px; border-radius:4px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:6px; font-family:'Anton',sans-serif; background:var(--team-c2); color:var(--team-c);}
+  .lb-team-name{font-size:8.5px; color:var(--ink-faint); letter-spacing:0.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .lb-stats{display:flex; gap:16px; flex-shrink:0; text-align:center;}
+  .lb-stat b{display:block; font-family:'Space Mono',monospace; font-size:15px; color:var(--gold-pale);}
+  .lb-stat span{display:block; font-size:7px; letter-spacing:0.06em; color:var(--ink-faint); text-transform:uppercase; margin-top:2px;}
+  .lb-empty{text-align:center; padding:30px 20px; color:var(--ink-faint); font-size:12.5px; border:1px dashed var(--line); border-radius:14px; margin:16px 20px 0;}
+
+ /* ============ CTA ============ */
+  .cta-band{
+    margin:36px 20px 0; padding:26px 20px; border-radius:18px; text-align:center;
+    background:linear-gradient(150deg, #221708, #16100a 60%);
+    border:1px solid var(--gold-deep); position:relative; overflow:hidden;
+  }
+  .cta-band h3{font-family:'Anton',sans-serif; font-size:20px; color:var(--gold-pale); letter-spacing:0.02em;}
+  .cta-band p{margin-top:6px; font-size:12.5px; color:var(--ink-dim);}
+  .btn{
+    flex:1; text-align:center; padding:14px 0; border-radius:11px; font-size:13.5px;
+    letter-spacing:0.1em; font-weight:600; text-transform:uppercase; border:none;
+    transition:transform 0.15s ease; display:inline-block; text-decoration:none; box-sizing:border-box; cursor:pointer;
+  }
+  .btn:active{transform:scale(0.96);}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
+    color:#1a1206; box-shadow:0 8px 24px rgba(240,185,61,0.25);
+  }
+  .btn-ghost{background:var(--surface); color:var(--ink-dim); border:1px solid var(--line);}
+  .cta-band .btn{margin-top:16px; width:100%;}
+
+  /* ============ FOOTER ============ */
+  footer{margin-top:36px; padding:26px 20px 20px; border-top:1px solid var(--line);}
+  .foot-brand{display:flex; align-items:center; gap:9px;}
+  .foot-tag{margin-top:10px; font-size:12px; color:var(--ink-faint); line-height:1.6; max-width:300px;}
+  .foot-social{display:flex; gap:10px; margin-top:16px;}
+  .soc{width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--surface); display:flex; align-items:center; justify-content:center; color:var(--gold-deep); font-size:13px;}
+  .foot-copy{margin-top:20px; font-size:10.5px; color:var(--ink-faint); letter-spacing:0.03em;}
+  .foot-admin{margin-top:14px;}
+  .foot-admin-link{font-size:9.5px; letter-spacing:0.08em; color:var(--ink-faint); text-transform:uppercase; background:none; border:none; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
+
+  /* ============ BACK TO TOP ============ */
+  .back-to-top{
+    position:fixed; right:18px; bottom:20px; z-index:70; width:48px; height:48px; border-radius:50%; border:none; background:transparent;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    opacity:0; transform:translateY(10px) scale(0.9); pointer-events:none;
+    transition:opacity 0.3s ease, transform 0.3s ease;
+  }
+  .back-to-top.show{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+  .back-to-top svg{position:absolute; inset:0; transform:rotate(-90deg);}
+  .btt-bg{fill:rgba(15,10,5,0.85); stroke:rgba(240,185,61,0.18); stroke-width:2;}
+  .btt-fill{fill:none; stroke:var(--gold); stroke-width:2; stroke-linecap:round; transition:stroke-dashoffset 0.1s linear;}
+  .back-to-top span{position:relative; color:var(--gold); font-size:16px; font-weight:700;}
+
+  /* ============ ADMIN ============ */
+  .admin-fab{
+    position:fixed; left:18px; bottom:20px; z-index:70; width:44px; height:44px; border-radius:12px;
+    border:1px solid var(--line); background:rgba(15,10,5,0.85); backdrop-filter:blur(8px);
+    color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;
+  }
+  .admin-fab:active{transform:scale(0.92);}
+  .admin-overlay{position:fixed; inset:0; z-index:150; max-width:480px; margin:0 auto; background:rgba(5,3,2,0.7); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity 0.3s ease;}
+  .admin-overlay.show{opacity:1; pointer-events:auto;}
+  .admin-panel{
+    position:fixed; left:0; right:0; bottom:0; z-index:155; max-width:480px; margin:0 auto; max-height:86vh;
+    background:linear-gradient(165deg,#160f08,#0c0805 80%); border-top:1px solid var(--line); border-radius:20px 20px 0 0;
+    transform:translateY(100%); transition:transform 0.36s cubic-bezier(.2,.9,.25,1);
+    display:flex; flex-direction:column; box-shadow:0 -20px 60px rgba(0,0,0,0.5);
+  }
+  .admin-panel.show{transform:translateY(0);}
+  .admin-head{display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--line); flex-shrink:0;}
+  .admin-title{font-family:'Anton',sans-serif; font-size:14.5px; letter-spacing:0.02em; color:var(--gold-pale);}
+  .admin-sub{margin-top:2px; font-size:9.5px; color:var(--ink-faint); letter-spacing:0.04em;}
+  .admin-body{padding:16px 18px 22px; overflow-y:auto;}
+  .admin-gate{display:flex; flex-direction:column; gap:12px;}
+  .admin-p{font-size:12px; color:var(--ink-dim); line-height:1.55;}
+  .admin-input{width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:'Rajdhani',sans-serif; font-size:14px;}
+  .admin-input:focus{outline:none; border-color:var(--gold-deep);}
+  .admin-err{font-size:11px; color:var(--live); display:none;}
+  .admin-err.show{display:block;}
+
+  .admin-tabs{display:flex; gap:8px; margin-bottom:14px;}
+  .admin-tab{flex:1; padding:9px 0; text-align:center; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink-dim); font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer;}
+  .admin-tab.active{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep)); color:#1a1206; border-color:transparent;}
+  .admin-pane{display:none;}
+  .admin-pane.active{display:block;}
+
+  .ql-select-row{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;}
+  .ql-select-row select{width:100%; padding:10px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-family:'Space Mono',monospace; font-size:12px;}
+  .ql-side{margin-bottom:14px;}
+  .ql-side-label{font-size:9px; letter-spacing:0.08em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:7px;}
+  .ql-player-row{display:flex; align-items:center; gap:10px; padding:8px 10px; background:var(--surface); border:1px solid var(--line); border-radius:9px; margin-bottom:6px;}
+  .ql-player-row span{flex:1; font-family:'Space Mono',monospace; font-size:11.5px; color:var(--ink);}
+  .ql-player-row input{width:54px; padding:7px 8px; border-radius:7px; border:1px solid var(--line); background:var(--surface-2); color:var(--gold-pale); font-family:'Space Mono',monospace; font-size:12px; text-align:center;}
+  .ql-empty{font-size:11.5px; color:var(--ink-faint); text-align:center; padding:16px 0;}
+
+  .admin-md{margin-bottom:10px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface);}
+  .admin-md-toggle{display:flex; align-items:center; justify-content:space-between; padding:11px 13px; cursor:pointer; list-style:none;}
+  .admin-md-toggle::-webkit-details-marker{display:none;}
+  .admin-md-toggle b{font-family:'Space Mono',monospace; font-size:11px; color:var(--gold-pale); letter-spacing:0.04em;}
+  .admin-md-toggle .chev{color:var(--gold-deep); font-size:11px; transition:transform 0.25s ease;}
+  .admin-md[open] .chev{transform:rotate(180deg);}
+  .admin-md-body{padding:0 11px 11px;}
+  .admin-row{background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:9px 11px; margin-top:8px;}
+  .admin-row-head{font-family:'Space Mono',monospace; font-size:11px; color:var(--ink); margin-bottom:8px;}
+  .admin-fields2{display:grid; grid-template-columns:1fr 1fr; gap:7px;}
+  .admin-field{display:flex; flex-direction:column; gap:3px;}
+  .admin-field label{font-size:8px; letter-spacing:0.06em; color:var(--ink-faint); text-transform:uppercase;}
+  .admin-field input{padding:8px 9px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-family:'Space Mono',monospace; font-size:11px; width:100%;}
+  .admin-field input:focus{outline:none; border-color:var(--gold-deep);}
+  .admin-actions{display:flex; gap:10px; margin-top:6px; position:sticky; bottom:0; background:linear-gradient(0deg,#0c0805 55%,transparent); padding:12px 0 2px;}
+  .admin-lock{margin-top:14px; text-align:center;}
+  .admin-lock button{background:none; border:none; color:var(--ink-faint); font-size:10.5px; letter-spacing:0.06em; text-decoration:underline; text-underline-offset:3px; cursor:pointer;}
+
+  .admin-toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(10px); z-index:170; max-width:400px; width:calc(100% - 40px);
+    background:var(--surface-2); border:1px solid var(--gold-deep); border-radius:12px; padding:12px 16px;
+    font-size:12.5px; color:var(--gold-pale); text-align:center; opacity:0; pointer-events:none; transition:opacity 0.25s ease, transform 0.25s ease;
+  }
+  .admin-toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+  <div class="scroll-progress"><div class="scroll-progress-fill" id="scrollFill"></div></div>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <div class="ignite-wrap">
+      <div class="ignite-ring r1"></div><div class="ignite-ring r2"></div><div class="ignite-ring r3"></div>
+      <div class="ignite-core"></div>
+    </div>
+    <div class="splash-word display">FREEFIREXIPL</div>
+    <div class="splash-sub">TOP FRAGGERS</div>
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  </div>
+
+  <div class="embers" id="embers"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-flex">
+      <a href="./index.html" class="back-btn" aria-label="Back to home">←</a>
+      <div class="brand"><div class="crest"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  </header>
+
+  <!-- NAV DRAWER -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-head">
+      <div class="brand"><div class="crest" style="width:26px;height:26px;"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
+      <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+    </div>
+    <div class="nav-links">
+      <a href="./index.html" class="nav-link"><span class="nav-link-icon">🏠</span> Home</a>
+      <a href="./register.html" class="nav-link nav-link-primary"><span class="nav-link-icon">📝</span> Register</a>
+      <a href="./schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+      <a href="./points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
+      <a href="./leaderboard.html" class="nav-link nav-link-current"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+      <a href="./teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+    </div>
+    <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+  </nav>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <div class="eyebrow fade-up">MVP RACE</div>
+    <h1 class="intro-title display fade-up d1">Top<br>Fraggers.</h1>
+    <p class="intro-desc fade-up d2">The five deadliest players in the tournament right now, ranked by total kills.</p>
+  </section>
+
+  <!-- SYNC STATUS -->
+  <div class="sync-row fade-up">
+    <span class="sync-badge offline" id="syncBadge"><span class="sync-dot"></span><span id="syncBadgeText">Connecting…</span></span>
+    <button class="refresh-btn" id="refreshBtn" aria-label="Refresh leaderboard">⟳</button>
+  </div>
+  <div class="setup-banner fade-up" id="setupBanner" style="display:none;">
+    <b>Live sync not connected.</b> This leaderboard is showing local demo data. To make admin kill-logging sync instantly across every device, add your Supabase project URL and anon key near the top of this page's script.
+  </div>
+
+  <!-- MVP HERO (rank 1) -->
+  <div id="mvpHero"><!-- rendered by JS --></div>
+
+  <!-- LEADERBOARD LIST (rank 2-5) -->
+  <div class="lb-list" id="lbList"><!-- rendered by JS --></div>
+
+  <!-- CTA -->
+  <div class="cta-band fade-up">
+    <h3>See the full squads</h3>
+    <p>Check every roster behind these frag counts.</p>
+    <a href="./teams.html" class="btn btn-primary">View All Teams</a>
+  </div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-brand">
+      <div class="crest" style="width:26px;height:26px;"></div>
+      <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+    </div>
+    <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch moment of the season.</p>
+    <div class="foot-social"><div class="soc">✕</div><div class="soc">◎</div><div class="soc">▶</div><div class="soc">✈</div></div>
+    <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
+    <div class="foot-admin"><button class="foot-admin-link" id="footAdminLink">Organizer Admin</button></div>
+  </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="48" height="48" viewBox="0 0 48 48">
+      <circle class="btt-bg" cx="24" cy="24" r="21"/>
+      <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9" stroke-dashoffset="131.9"/>
+    </svg>
+    <span>↑</span>
+  </button>
+
+  <!-- ADMIN FAB -->
+  <button class="admin-fab" id="adminFab" aria-label="Admin panel">⚙</button>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-overlay" id="adminOverlay"></div>
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-head">
+      <div>
+        <div class="admin-title">Leaderboard Admin</div>
+        <div class="admin-sub">Log match kills or edit any player</div>
+      </div>
+      <button class="nav-close" id="adminClose" aria-label="Close admin panel">✕</button>
+    </div>
+    <div class="admin-body" id="adminBody"><!-- rendered by JS --></div>
+  </div>
+
+  <div class="admin-toast" id="adminToast"></div>
+
+<script>
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+  window.scrollTo(0, 0);
+  window.addEventListener('pageshow', (event) => { if (event.persisted) { window.location.reload(); } });
+
+  window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+    setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1900);
+  });
+
+  // Embers
+  const emberField = document.getElementById('embers');
+  for (let i = 0; i < 18; i++) {
+    const e = document.createElement('div');
+    e.className = 'ember';
+    e.style.left = Math.random() * 100 + '%';
+    e.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+    e.style.animationDuration = (6 + Math.random() * 6) + 's';
+    e.style.animationDelay = (Math.random() * 8) + 's';
+    emberField.appendChild(e);
+  }
+
+  // Nav drawer
+  const menuBtn = document.getElementById('menuBtn');
+  const navDrawer = document.getElementById('navDrawer');
+  const navOverlay = document.getElementById('navOverlay');
+  const navClose = document.getElementById('navClose');
+  function openNav() { navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
+  function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); }
+  menuBtn.addEventListener('click', openNav);
+  navClose.addEventListener('click', closeNav);
+  navOverlay.addEventListener('click', closeNav);
+
+  // Scroll progress + back to top
+  const scrollFill = document.getElementById('scrollFill');
+  const backToTop = document.getElementById('backToTop');
+  const bttFill = document.getElementById('bttFill');
+  const bttCircumference = 131.9;
+  function onScroll() {
+    const scrollTop = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? Math.min(1, scrollTop / max) : 0;
+    scrollFill.style.width = (pct * 100) + '%';
+    bttFill.style.strokeDashoffset = bttCircumference * (1 - pct);
+    backToTop.classList.toggle('show', scrollTop > 400);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  let io;
+  function observeFadeUps() {
+    if (!io) {
+      io = new IntersectionObserver((entries) => {
+        entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { threshold: 0.1 });
+    }
+    document.querySelectorAll('.fade-up:not(.in)').forEach(el => io.observe(el));
+  }
+
+  /* ===================================================================
+     TEAM + PLAYER DATA (matches teams.html rosters exactly)
+  =================================================================== */
+  const TEAMS = {
+    RR:   { name: 'Rajasthan Royals',            color: '#3d6fe0', light: '#7fa2f0' },
+    CSK:  { name: 'Chennai Super Kings',         color: '#f5c518', light: '#f5c518' },
+    PBKS: { name: 'Punjab Kings',                color: '#e2394a', light: '#ff8298' },
+    KKR:  { name: 'Kolkata Knight Riders',       color: '#7d4bb0', light: '#b98fe6' },
+    DC:   { name: 'Delhi Capitals',              color: '#1f5fc4', light: '#6fa0e8' },
+    MI:   { name: 'Mumbai Indians',               color: '#045d9e', light: '#4db6e8' },
+    RCB:  { name: 'Royal Challengers Bengaluru', color: '#d2122e', light: '#ff6b7a' },
+    SRH:  { name: 'Sunrisers Hyderabad',         color: '#f26522', light: '#ffab7a' }
+  };
+
+  // 5 active roster players per team (excludes coaches) — 40 total, matches teams.html
+  const PLAYERS = [
+    { id:'RR-Nyx',        team:'RR',  name:'Nyx' },
+    { id:'RR-Falconn',    team:'RR',  name:'Falconn' },
+    { id:'RR-Drexo',      team:'RR',  name:'Drexo' },
+    { id:'RR-Sablewind',  team:'RR',  name:'Sablewind' },
+    { id:'RR-Emberlyn',   team:'RR',  name:'Emberlyn' },
+
+    { id:'CSK-Whistler',  team:'CSK', name:'Whistler' },
+    { id:'CSK-IceVeil',   team:'CSK', name:'IceVeil' },
+    { id:'CSK-Marnus',    team:'CSK', name:'Marnus' },
+    { id:'CSK-Solvane',   team:'CSK', name:'Solvane' },
+    { id:'CSK-Duskrider', team:'CSK', name:'Duskrider' },
+
+    { id:'PBKS-Rampage',  team:'PBKS',name:'Rampage' },
+    { id:'PBKS-ObiTwo',   team:'PBKS',name:'ObiTwo' },
+    { id:'PBKS-Kestrel',  team:'PBKS',name:'Kestrel' },
+    { id:'PBKS-Warthorn', team:'PBKS',name:'Warthorn' },
+    { id:'PBKS-Nightjar', team:'PBKS',name:'Nightjar' },
+
+    { id:'KKR-Phantm',    team:'KKR', name:'Phantm' },
+    { id:'KKR-Zeal',      team:'KKR', name:'Zeal' },
+    { id:'KKR-Riven',     team:'KKR', name:'Riven' },
+    { id:'KKR-Wraith',    team:'KKR', name:'Wraith' },
+    { id:'KKR-Solace',    team:'KKR', name:'Solace' },
+
+    { id:'DC-Kryo',       team:'DC',  name:'Kryo' },
+    { id:'DC-Nocturn',    team:'DC',  name:'Nocturn' },
+    { id:'DC-Ashlar',     team:'DC',  name:'Ashlar' },
+    { id:'DC-Wintermere', team:'DC',  name:'Wintermere' },
+    { id:'DC-Fenrix',     team:'DC',  name:'Fenrix' },
+
+    { id:'MI-Tidal',      team:'MI',  name:'Tidal' },
+    { id:'MI-Marrow',     team:'MI',  name:'Marrow' },
+    { id:'MI-Hexen',      team:'MI',  name:'Hexen' },
+    { id:'MI-Undertow',   team:'MI',  name:'Undertow' },
+    { id:'MI-Squall',     team:'MI',  name:'Squall' },
+
+    { id:'RCB-Solstice',  team:'RCB', name:'Solstice' },
+    { id:'RCB-Grimm',     team:'RCB', name:'Grimm' },
+    { id:'RCB-Vantage',   team:'RCB', name:'Vantage' },
+    { id:'RCB-Ironclad',  team:'RCB', name:'Ironclad' },
+    { id:'RCB-Duskveil',  team:'RCB', name:'Duskveil' },
+
+    { id:'SRH-Cinder',    team:'SRH', name:'Cinder' },
+    { id:'SRH-Duskfall',  team:'SRH', name:'Duskfall' },
+    { id:'SRH-Ryder',     team:'SRH', name:'Ryder' },
+    { id:'SRH-Emberfall', team:'SRH', name:'Emberfall' },
+    { id:'SRH-Solarian',  team:'SRH', name:'Solarian' }
+  ];
+
+  // Seed stats from matches already completed on schedule.html
+  const DEFAULT_STATS = {
+    'CSK-Whistler': { matches: 2, kills: 19 },
+    'CSK-Marnus':   { matches: 2, kills: 16 },
+    'RR-Nyx':       { matches: 1, kills: 14 },
+    'MI-Hexen':     { matches: 1, kills: 13 },
+    'DC-Nocturn':   { matches: 2, kills: 12 }
+  };
+
+  /* ===================================================================
+     SUPABASE CONFIG
+     ------------------------------------------------------------------
+     To make admin kill-logging sync live across every device:
+       1. Create a free project at supabase.com (the same one used for
+          points.html works fine — this just adds another table to it)
+       2. Run this SQL in the SQL Editor:
+
+          create table ffxipl_leaderboard_stats (
+            player_id text primary key,
+            matches int not null default 0,
+            kills int not null default 0,
+            updated_at timestamptz not null default now()
+          );
+          alter table ffxipl_leaderboard_stats enable row level security;
+          create policy "Public read" on ffxipl_leaderboard_stats for select using (true);
+          create policy "Public insert" on ffxipl_leaderboard_stats for insert with check (true);
+          create policy "Public update" on ffxipl_leaderboard_stats for update using (true);
+          alter publication supabase_realtime add table ffxipl_leaderboard_stats;
+
+          insert into ffxipl_leaderboard_stats (player_id, matches, kills) values
+            ('CSK-Whistler',2,19), ('CSK-Marnus',2,16), ('RR-Nyx',1,14),
+            ('MI-Hexen',1,13), ('DC-Nocturn',2,12);
+          -- any player not inserted here just starts at 0/0 — the page
+          -- fills gaps automatically and creates their row the first
+          -- time you log a match or edit them in the admin panel.
+
+       3. In Project Settings → API, copy the "Project URL" and "anon
+          public" key into SUPABASE_URL / SUPABASE_ANON_KEY below.
+       4. Note: the "Public update" policy lets anyone with the anon key
+          write to this table — fine behind the admin password gate
+          below, but it is not real authentication.
+     ------------------------------------------------------------------ */
+ const SUPABASE_URL = "https://izoysudepwjajyqqurfl.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6b3lzdWRlcHdqYWp5cXF1cmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2Mjg1NDgsImV4cCI6MjEwMTIwNDU0OH0.hSB09Hf56B8wJdFbHzrrI-F6ukw9SOm7FcwTFK1obLg";
+  const SUPABASE_CONFIGURED = SUPABASE_URL.indexOf('http') === 0 && SUPABASE_ANON_KEY.length > 20;
+
+  let sb = null;
+  let realtimeChannel = null;
+  if (SUPABASE_CONFIGURED && window.supabase) {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+
+  const STORAGE_KEY = 'ffxipl_leaderboard_local_v1';
+  // Isolated on purpose: unique key + password just for the Leaderboard
+  // admin, so it never overlaps with your Points Table, registration, or
+  // auction admin panels.
+  const ADMIN_UNLOCK_KEY = 'ffxipl_leaderboardAdmin_unlocked_v1';
+  const ADMIN_PASSWORD = 'fraggerxipl2026'; // simple on-device lock — not real auth, change freely
+
+  function fillDefaults(partial) {
+    const out = {};
+    PLAYERS.forEach(p => {
+      out[p.id] = partial[p.id] || DEFAULT_STATS[p.id] || { matches: 0, kills: 0 };
+    });
+    return out;
+  }
+  function getLocalStats() {
+    let stored = {};
+    try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch (e) {}
+    return fillDefaults(stored);
+  }
+  function saveLocalStats(stats) { localStorage.setItem(STORAGE_KEY, JSON.stringify(stats)); }
+
+  let currentStats = getLocalStats(); // in-memory cache used for rendering
+
+  /* ===================================================================
+     SYNC STATUS
+  =================================================================== */
+  const syncBadge = document.getElementById('syncBadge');
+  const syncBadgeText = document.getElementById('syncBadgeText');
+  const setupBanner = document.getElementById('setupBanner');
+  function setSyncStatus(state) {
+    syncBadge.className = 'sync-badge ' + state;
+    if (state === 'live') syncBadgeText.textContent = 'Live Synced';
+    else if (state === 'error') syncBadgeText.textContent = 'Connection Error';
+    else syncBadgeText.textContent = 'Offline · Local Only';
+    setupBanner.style.display = SUPABASE_CONFIGURED ? 'none' : 'block';
+  }
+
+  /* ===================================================================
+     LOAD / SAVE (Supabase if configured, else localStorage)
+  =================================================================== */
+  async function loadStats(flash) {
+    if (SUPABASE_CONFIGURED && sb) {
+      try {
+        const { data, error } = await sb.from('ffxipl_leaderboard_stats').select('*');
+        if (error) throw error;
+        const partial = {};
+        (data || []).forEach(row => { partial[row.player_id] = { matches: row.matches, kills: row.kills }; });
+        currentStats = fillDefaults(partial);
+        setSyncStatus('live');
+        renderLeaderboard(flash);
+        return;
+      } catch (e) {
+        setSyncStatus('error');
+      }
+    }
+    currentStats = getLocalStats();
+    if (!SUPABASE_CONFIGURED) setSyncStatus('offline');
+    renderLeaderboard(flash);
+  }
+
+  async function persistStats(updatedRows) {
+    // updatedRows: array of { player_id, matches, kills }
+    updatedRows.forEach(r => { currentStats[r.player_id] = { matches: r.matches, kills: r.kills }; });
+    if (SUPABASE_CONFIGURED && sb) {
+      try {
+        const rows = updatedRows.map(r => ({ ...r, updated_at: new Date().toISOString() }));
+        const { error } = await sb.from('ffxipl_leaderboard_stats').upsert(rows, { onConflict: 'player_id' });
+        if (error) throw error;
+        return true;
+      } catch (e) {
+        saveLocalStats(currentStats);
+        return false;
+      }
+    }
+    saveLocalStats(currentStats);
+    return true;
+  }
+
+  function subscribeRealtime() {
+    if (!(SUPABASE_CONFIGURED && sb)) return;
+    realtimeChannel = sb.channel('ffxipl_leaderboard_stats_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_leaderboard_stats' }, () => {
+        loadStats(true);
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') setSyncStatus('live');
+      });
+  }
+
+  document.getElementById('refreshBtn').addEventListener('click', () => loadStats(true));
+
+  /* ===================================================================
+     RENDER LEADERBOARD
+  =================================================================== */
+  function computeRanked() {
+    return PLAYERS
+      .map(p => ({ ...p, matches: currentStats[p.id].matches, kills: currentStats[p.id].kills }))
+      .filter(p => p.matches > 0)
+      .sort((a, b) => b.kills - a.kills || a.matches - b.matches);
+  }
+
+  function avatarHtml(p, cls) {
+    return `<div class="${cls}" style="--team-c:${TEAMS[p.team].light};--team-c2:${TEAMS[p.team].color}22;">
+      <img src="players/${p.id.toLowerCase()}.png" alt="${p.name}" onerror="this.style.display='none'">
+      ${p.name.charAt(0)}
+    </div>`;
+  }
+
+  function renderLeaderboard(flash) {
+    const ranked = computeRanked();
+    const hero = document.getElementById('mvpHero');
+    const list = document.getElementById('lbList');
+
+    if (!ranked.length) {
+      hero.innerHTML = '';
+      list.innerHTML = `<div class="lb-empty fade-up">No kills logged yet — use the admin panel to log the first match.</div>`;
+      observeFadeUps();
+      return;
+    }
+
+    const top = ranked[0];
+    const t = TEAMS[top.team];
+    hero.innerHTML = `
+      <div class="mvp-hero fade-up" style="--team-c:${t.light};--team-c2:${t.color}22;">
+        <div class="mvp-crown">👑</div>
+        <div class="mvp-eyebrow">Top Fragger</div>
+        ${avatarHtml(top, 'mvp-avatar')}
+        <div class="mvp-name">${top.name}</div>
+        <div class="mvp-team">
+          <span class="mvp-team-badge">${top.team}</span>
+          <span>${t.name}</span>
+        </div>
+        <div class="mvp-stats">
+          <div class="mvp-stat"><b>${top.matches}</b><span>Matches</span></div>
+          <div class="mvp-stat"><b>${top.kills}</b><span>Kills</span></div>
+        </div>
+      </div>`;
+
+    const rest = ranked.slice(1, 5);
+    list.innerHTML = rest.map((p, i) => {
+      const tm = TEAMS[p.team];
+      return `
+      <div class="lb-row fade-up" style="--team-c:${tm.light};--team-c2:${tm.color}22;">
+        <div class="lb-rank">${i + 2}</div>
+        ${avatarHtml(p, 'lb-avatar')}
+        <div class="lb-info">
+          <div class="lb-player-name">${p.name}</div>
+          <div class="lb-team-row">
+            <span class="lb-team-badge">${p.team}</span>
+            <span class="lb-team-name">${tm.name}</span>
+          </div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-stat"><b>${p.matches}</b><span>Matches</span></div>
+          <div class="lb-stat"><b>${p.kills}</b><span>Kills</span></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    if (flash) {
+      document.querySelectorAll('.mvp-hero, .lb-row').forEach(el => {
+        el.style.transition = 'background 0.3s ease';
+        const orig = el.style.background;
+        el.style.background = 'rgba(240,185,61,0.18)';
+        setTimeout(() => { el.style.background = orig; }, 900);
+      });
+    }
+    observeFadeUps();
+  }
+
+  loadStats(false);
+  subscribeRealtime();
+  onScroll();
+  observeFadeUps();
+
+  /* ===================================================================
+     ADMIN PANEL
+  =================================================================== */
+  const adminFab = document.getElementById('adminFab');
+  const adminOverlay = document.getElementById('adminOverlay');
+  const adminPanel = document.getElementById('adminPanel');
+  const adminClose = document.getElementById('adminClose');
+  const adminBody = document.getElementById('adminBody');
+  const footAdminLink = document.getElementById('footAdminLink');
+  const adminToast = document.getElementById('adminToast');
+
+  function isUnlocked() { return localStorage.getItem(ADMIN_UNLOCK_KEY) === 'true'; }
+
+  function openAdmin() {
+    adminOverlay.classList.add('show');
+    adminPanel.classList.add('show');
+    renderAdminBody();
+  }
+  function closeAdmin() {
+    adminOverlay.classList.remove('show');
+    adminPanel.classList.remove('show');
+  }
+  adminFab.addEventListener('click', openAdmin);
+  footAdminLink.addEventListener('click', openAdmin);
+  adminClose.addEventListener('click', closeAdmin);
+  adminOverlay.addEventListener('click', closeAdmin);
+
+  function toast(msg) {
+    adminToast.textContent = msg;
+    adminToast.classList.add('show');
+    setTimeout(() => adminToast.classList.remove('show'), 2400);
+  }
+
+  function playersByTeam(code) { return PLAYERS.filter(p => p.team === code); }
+
+  function renderQuickLogPane() {
+    const codes = Object.keys(TEAMS);
+    return `
+      <p class="admin-p" style="margin-bottom:12px;">Pick the two teams that just played. Enter each player's kills from the in-game match summary, then tap Add — matches +1 and kills add on top of their current totals for all 10 players at once.</p>
+      <div class="ql-select-row">
+        <select id="qlTeamA">
+          <option value="">Team A</option>
+          ${codes.map(c => `<option value="${c}">${c} — ${TEAMS[c].name}</option>`).join('')}
+        </select>
+        <select id="qlTeamB">
+          <option value="">Team B</option>
+          ${codes.map(c => `<option value="${c}">${c} — ${TEAMS[c].name}</option>`).join('')}
+        </select>
+      </div>
+      <div id="qlSides"><div class="ql-empty">Choose both teams to load their rosters.</div></div>
+      <div class="admin-actions">
+        <button class="btn btn-primary" id="qlAddBtn" style="flex:1;" disabled>Add Match to Totals</button>
+      </div>`;
+  }
+
+  function renderQlSides() {
+    const a = document.getElementById('qlTeamA').value;
+    const b = document.getElementById('qlTeamB').value;
+    const sidesEl = document.getElementById('qlSides');
+    const addBtn = document.getElementById('qlAddBtn');
+    if (!a || !b || a === b) {
+      sidesEl.innerHTML = `<div class="ql-empty">${a && b && a === b ? 'Pick two different teams.' : 'Choose both teams to load their rosters.'}</div>`;
+      addBtn.disabled = true;
+      return;
+    }
+    addBtn.disabled = false;
+    function sideHtml(code) {
+      return `
+        <div class="ql-side">
+          <div class="ql-side-label">${code} — ${TEAMS[code].name}</div>
+          ${playersByTeam(code).map(p => `
+            <div class="ql-player-row" data-id="${p.id}">
+              <span>${p.name}</span>
+              <input type="number" min="0" class="ql-kills" placeholder="0">
+            </div>`).join('')}
+        </div>`;
+    }
+    sidesEl.innerHTML = sideHtml(a) + sideHtml(b);
+  }
+
+  function renderEditRosterPane() {
+    const stats = currentStats;
+    const groups = Object.keys(TEAMS).map(code => `
+      <details class="admin-md">
+        <summary class="admin-md-toggle"><b>${code} — ${TEAMS[code].name}</b><span class="chev">▾</span></summary>
+        <div class="admin-md-body">
+          ${playersByTeam(code).map(p => `
+            <div class="admin-row" data-id="${p.id}">
+              <div class="admin-row-head">${p.name}</div>
+              <div class="admin-fields2">
+                <div class="admin-field"><label>Matches</label><input type="number" class="f-matches" value="${stats[p.id].matches}" min="0"></div>
+                <div class="admin-field"><label>Kills</label><input type="number" class="f-kills" value="${stats[p.id].kills}" min="0"></div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </details>`).join('');
+
+    return `
+      ${groups}
+      <div class="admin-actions">
+        <button class="btn btn-primary" id="erSaveBtn" style="flex:1;">Save Roster Edits</button>
+        <button class="btn btn-ghost" id="erResetBtn" style="flex:1;">Reset All</button>
+      </div>`;
+  }
+
+  function renderAdminBody() {
+    if (!isUnlocked()) {
+      adminBody.innerHTML = `
+        <div class="admin-gate">
+          <p class="admin-p">Enter the Leaderboard admin password. This lock is specific to this page — separate from your Points Table, registration, and auction admin passwords — and is a simple on-device lock, not secure authentication.</p>
+          <input type="password" class="admin-input" id="adminPassInput" placeholder="Organizer password" autocomplete="off">
+          <div class="admin-err" id="adminErr">Incorrect password — try again.</div>
+          <button class="btn btn-primary" id="adminUnlockBtn">Unlock Admin</button>
+        </div>`;
+      document.getElementById('adminUnlockBtn').addEventListener('click', () => {
+        const val = document.getElementById('adminPassInput').value;
+        if (val === ADMIN_PASSWORD) {
+          localStorage.setItem(ADMIN_UNLOCK_KEY, 'true');
+          renderAdminBody();
+        } else {
+          document.getElementById('adminErr').classList.add('show');
+        }
+      });
+      document.getElementById('adminPassInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('adminUnlockBtn').click();
+      });
+      return;
+    }
+
+    adminBody.innerHTML = `
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="quick">Quick Log</button>
+        <button class="admin-tab" data-tab="edit">Edit Roster</button>
+      </div>
+      <div class="admin-pane active" id="paneQuick">${renderQuickLogPane()}</div>
+      <div class="admin-pane" id="paneEdit">${renderEditRosterPane()}</div>
+      <div class="admin-lock"><button id="adminLockBtn">Lock admin panel</button></div>`;
+
+    // tab switching
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab === 'quick' ? 'paneQuick' : 'paneEdit').classList.add('active');
+      });
+    });
+
+    // quick log wiring
+    document.getElementById('qlTeamA').addEventListener('change', renderQlSides);
+    document.getElementById('qlTeamB').addEventListener('change', renderQlSides);
+    document.getElementById('qlAddBtn').addEventListener('click', async () => {
+      const updated = [];
+      document.querySelectorAll('.ql-player-row').forEach(row => {
+        const id = row.dataset.id;
+        const kills = Number(row.querySelector('.ql-kills').value) || 0;
+        updated.push({ player_id: id, matches: currentStats[id].matches + 1, kills: currentStats[id].kills + kills });
+      });
+      const ok = await persistStats(updated);
+      renderLeaderboard(true);
+      toast(ok && SUPABASE_CONFIGURED ? 'Match logged — synced to every device' : (SUPABASE_CONFIGURED ? 'Sync failed — saved on this device only' : 'Match logged — saved on this device'));
+      document.getElementById('qlTeamA').value = '';
+      document.getElementById('qlTeamB').value = '';
+      renderQlSides();
+    });
+
+    // edit roster wiring
+    document.getElementById('erSaveBtn').addEventListener('click', async () => {
+      const updated = [];
+      document.querySelectorAll('#paneEdit .admin-row').forEach(row => {
+        const id = row.dataset.id;
+        updated.push({
+          player_id: id,
+          matches: Number(row.querySelector('.f-matches').value) || 0,
+          kills: Number(row.querySelector('.f-kills').value) || 0
+        });
+      });
+      const ok = await persistStats(updated);
+      renderLeaderboard(true);
+      toast(ok && SUPABASE_CONFIGURED ? 'Roster updated for everyone' : (SUPABASE_CONFIGURED ? 'Sync failed — saved on this device only' : 'Roster stats updated on this device'));
+      closeAdmin();
+    });
+    document.getElementById('erResetBtn').addEventListener('click', async () => {
+      const defaults = PLAYERS.map(p => ({
+        player_id: p.id,
+        matches: (DEFAULT_STATS[p.id] || { matches: 0 }).matches,
+        kills: (DEFAULT_STATS[p.id] || { kills: 0 }).kills
+      }));
+      await persistStats(defaults);
+      localStorage.removeItem(STORAGE_KEY);
+      renderLeaderboard(true);
+      renderAdminBody();
+      toast('Reset to default leaderboard');
+    });
+
+    document.getElementById('adminLockBtn').addEventListener('click', () => {
+      localStorage.removeItem(ADMIN_UNLOCK_KEY);
+      renderAdminBody();
+    });
+  }
+</script>
+</body>
+</html>

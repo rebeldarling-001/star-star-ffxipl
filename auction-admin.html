@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Admin — Auction Center — FREEFIREXIPL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg: #0a0705;
+      --surface: #1a130b;
+      --surface-2: #221909;
+      --gold: #f0b93d;
+      --gold-deep: #b3811f;
+      --gold-pale: #fbe4a6;
+      --ink: #f4ecd8;
+      --ink-dim: #a9997d;
+      --ink-faint: #6b5f4c;
+      --live: #ff4433;
+      --good: #4ade80;
+      --line: rgba(240, 185, 61, 0.14);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      background: var(--bg);
+    }
+
+    body {
+      color: var(--ink);
+      font-family: 'Rajdhani', sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .display {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .mono {
+      font-family: 'Space Mono', monospace;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 18px;
+      background: rgba(10, 7, 5, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .crest {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    .brand-text {
+      font-size: 15px;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-text b {
+      color: var(--gold);
+    }
+
+    .tag {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    .conn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ink-faint);
+    }
+
+    .dot.on {
+      background: var(--good);
+      box-shadow: 0 0 8px var(--good);
+    }
+
+    /* LOGIN */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      gap: 18px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 320px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px 22px;
+      text-align: center;
+    }
+
+    .login-card h1 {
+      font-size: 20px;
+      margin-top: 10px;
+      color: var(--gold-pale);
+    }
+
+    .login-card p {
+      font-size: 12px;
+      color: var(--ink-faint);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .field label {
+      display: block;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--gold-deep);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 13px 18px;
+      border-radius: 11px;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+      color: #1a1206;
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    .btn-live {
+      background: linear-gradient(135deg, #ff6a5c, var(--live));
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--ink-dim);
+      border: 1px solid var(--line);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold-deep);
+    }
+
+    .btn-sm {
+      padding: 9px 12px;
+      font-size: 11px;
+      border-radius: 9px;
+    }
+
+    .err-msg {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--live);
+      min-height: 16px;
+    }
+
+    /* LAYOUT */
+    main {
+      display: none;
+      padding: 16px 16px 0;
+    }
+
+    main.show {
+      display: block;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 26px 2px 12px;
+    }
+
+    .section-title h2 {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    /* BLOCK (current player) */
+    .block-card {
+      position: relative;
+      background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(240, 185, 61, 0.10), transparent 60%), var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .status-pill {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 100px;
+      border: 1px solid var(--line);
+      color: var(--ink-faint);
+    }
+
+    .status-pill.live {
+      color: var(--live);
+      border-color: var(--live);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .status-pill.sold {
+      color: var(--good);
+      border-color: var(--good);
+    }
+
+    .status-pill.unsold {
+      color: var(--ink-faint);
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.45;
+      }
+    }
+
+    .block-empty {
+      text-align: center;
+      padding: 30px 10px;
+      color: var(--ink-faint);
+      font-size: 13px;
+    }
+
+    .block-player {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .block-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 24px;
+      color: var(--gold);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .block-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .block-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 20px;
+      color: var(--gold-pale);
+      line-height: 1.1;
+    }
+
+    .block-meta {
+      margin-top: 3px;
+      font-size: 11.5px;
+      color: var(--ink-faint);
+    }
+
+    .block-bid-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .bid-box {
+      flex: 1;
+      background: rgba(240, 185, 61, 0.05);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .bid-box .lbl {
+      font-size: 8.5px;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    .bid-box .val {
+      margin-top: 5px;
+      font-family: 'Space Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold-pale);
+    }
+
+    .bid-box .val.team {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .block-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .block-actions .btn {
+      flex: 1;
+      min-width: 100px;
+    }
+
+    /* QUEUE */
+    .queue-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      background: var(--surface-2);
+    }
+
+    .queue-name {
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .queue-meta {
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      margin-top: 2px;
+    }
+
+    .queue-price {
+      margin-left: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 12.5px;
+      color: var(--gold-pale);
+      flex-shrink: 0;
+    }
+
+    .badge {
+      font-size: 8.5px;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .badge.sold {
+      background: rgba(74, 222, 128, 0.12);
+      color: var(--good);
+    }
+
+    .badge.unsold {
+      background: rgba(107, 95, 76, 0.2);
+      color: var(--ink-faint);
+    }
+
+    .empty-note {
+      font-size: 12px;
+      color: var(--ink-faint);
+      text-align: center;
+      padding: 14px;
+    }
+
+    /* ADD PLAYER FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-grid .field {
+      margin-top: 0;
+    }
+
+    .form-grid .field.full {
+      grid-column: 1/-1;
+    }
+
+    /* TEAMS GRID */
+    .teams-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .team-card {
+      border-radius: 14px;
+      padding: 13px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--tc, var(--gold));
+      opacity: 0.06;
+    }
+
+    .team-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .team-abbr {
+      font-family: 'Anton', sans-serif;
+      font-size: 14px;
+      color: var(--tc, var(--gold));
+    }
+
+    .team-squad {
+      font-family: 'Space Mono', monospace;
+      font-size: 10.5px;
+      color: var(--ink-faint);
+    }
+
+    .purse-bar {
+      position: relative;
+      height: 6px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      margin-top: 9px;
+      overflow: hidden;
+    }
+
+    .purse-bar-fill {
+      height: 100%;
+      background: var(--tc, var(--gold));
+      border-radius: 6px;
+    }
+
+    .purse-nums {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 7px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--ink-dim);
+    }
+
+    .team-edit-btn {
+      position: relative;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    /* BID FEED */
+
+    /* BID FEED */
+    .feed-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 0;
+      border-bottom: 1px dashed var(--line);
+      font-size: 12px;
+    }
+
+    .feed-row:last-child {
+      border-bottom: none;
+    }
+
+    .feed-team-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--tc, var(--gold));
+      flex-shrink: 0;
+    }
+
+    .feed-amt {
+      margin-left: auto;
+      font-family: 'Space Mono', monospace;
+      color: var(--gold-pale);
+      flex-shrink: 0;
+    }
+
+    .feed-time {
+      font-size: 9.5px;
+      color: var(--ink-faint);
+      flex-shrink: 0;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 200;
+      max-width: 90%;
+      background: #2a1010;
+      border: 1px solid var(--live);
+      color: #ffd7d0;
+      font-size: 12.5px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .toast.ok {
+      background: #0f2a17;
+      border-color: var(--good);
+      color: #d6ffe4;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .inc-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inc-row input {
+      width: 80px;
+    }
+
+    details.edit-panel {
+      margin-top: 8px;
+    }
+
+    details.edit-panel summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 10px;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    details.edit-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .edit-panel-body {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .edit-panel-body input {
+      width: 100%;
+      padding: 8px;
+      font-size: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    /* REGISTRATIONS */
+    .reg-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .reg-tab {
+      flex: 1;
+      padding: 9px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--ink-faint);
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .reg-tab.active {
+      background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+      color: #1a1206;
+      border-color: transparent;
+    }
+
+    .reg-card {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface-2);
+      margin-bottom: 10px;
+    }
+
+    .reg-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--bg);
+      cursor: pointer;
+      border: 1px solid var(--line);
+    }
+
+    .reg-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .reg-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .reg-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold-pale);
+    }
+
+    .reg-meta {
+      font-size: 11px;
+      color: var(--ink-faint);
+      margin-top: 2px;
+    }
+
+    .reg-note {
+      font-size: 10.5px;
+      color: var(--ink-faint);
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .reg-actions {
+      display: flex;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .reg-actions .btn {
+      flex: 1;
+    }
+
+    .btn-reject {
+      background: rgba(255, 68, 51, 0.1);
+      color: #ff9c8f;
+      border: 1px solid rgba(255, 68, 51, 0.3);
+    }
+
+    #regLightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      background: rgba(5, 3, 2, 0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #regLightbox.show {
+      display: flex;
+    }
+
+    #regLightbox img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+
+    #regLightboxClose {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--ink);
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <div class="crest" style="margin:0 auto;"></div>
+      <h1 class="display">Admin Access</h1>
+      <p>Enter the auction admin PIN to open the control room.</p>
+      <div class="field">
+        <label>Admin PIN</label>
+        <input type="password" id="pinInput" placeholder="••••••" autocomplete="off">
+      </div>
+      <button class="btn btn-gold" id="loginBtn">Unlock Control Room</button>
+      <div class="err-msg" id="loginErr"></div>
+    </div>
+    <p class="tag" style="max-width:280px; text-align:center; line-height:1.6;">Not configured yet? Open this file and
+      fill in SUPABASE_URL / SUPABASE_ANON_KEY at the top of the script.</p>
+  </div>
+
+  <!-- APP -->
+  <header id="appHeader" style="display:none;">
+    <div class="brand">
+      <div class="crest"></div>
+      <div>
+        <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        <div class="tag">Admin Auction Center</div>
+      </div>
+    </div>
+    <div class="conn"><span class="dot" id="connDot"></span><span id="connLabel">Connecting</span></div>
+  </header>
+
+  <main id="app">
+
+    <!-- ON THE BLOCK -->
+    <div class="section-title">
+      <h2>On The Block</h2>
+      <div class="inc-row">
+        <span class="tag">Increment ₹L</span>
+        <input type="number" id="incInput" class="mono" style="padding:7px 9px; border-radius:8px; font-size:12px;">
+        <button class="btn btn-ghost btn-sm" id="incSaveBtn">Set</button>
+      </div>
+    </div>
+    <div class="block-card" id="blockCard"></div>
+
+    <!-- TEAMS -->
+    <div class="section-title">
+      <h2>Franchises</h2>
+    </div>
+    <div class="teams-grid" id="teamsGrid"></div>
+
+    <!-- QUEUE -->
+    <div class="section-title">
+      <h2>Player Queue</h2>
+    </div>
+    <div class="card">
+      <div id="queueList"></div>
+      <details style="margin-top:10px;">
+        <summary class="btn btn-outline btn-sm" style="display:inline-flex; cursor:pointer;">+ Add Player</summary>
+        <div class="form-grid" style="margin-top:12px;">
+          <div class="field"><label>Name</label><input id="npName" placeholder="Player IGN"></div>
+          <div class="field"><label>Role</label><input id="npRole" placeholder="Sniper / Support..."></div>
+          <div class="field"><label>Category</label><input id="npCategory" placeholder="Marquee / Icon / Base"></div>
+          <div class="field"><label>Base Price (₹L)</label><input id="npBase" type="number" value="5"></div>
+          <div class="field full"><label>Image URL (optional)</label><input id="npImage" placeholder="https://...">
+          </div>
+        </div>
+        <button class="btn btn-gold btn-sm" id="addPlayerBtn" style="margin-top:12px; width:100%;">Add To Queue</button>
+      </details>
+    </div>
+
+    <!-- LIVE BID FEED -->
+    <div class="section-title">
+      <h2>Bid Feed</h2>
+    </div>
+    <div class="card">
+      <div id="feedList">
+        <p class="empty-note">No bids yet this session.</p>
+      </div>
+    </div>
+
+    <!-- SOLD / UNSOLD LOG -->
+    <div class="section-title">
+      <h2>Results</h2>
+    </div>
+    <div class="card">
+      <div id="resultsList">
+        <p class="empty-note">Nothing sold or passed yet.</p>
+      </div>
+    </div>
+
+    <!-- PLAYER REGISTRATIONS -->
+    <div class="section-title">
+      <h2>Player Registrations</h2>
+      <a href="registration.html" target="_blank"
+        style="font-size:10.5px; color:var(--gold); text-decoration:none;">Open form ↗</a>
+    </div>
+    <div class="card">
+      <div class="reg-tabs">
+        <div class="reg-tab active" data-tab="pending">Pending <span id="countPending"></span></div>
+        <div class="reg-tab" data-tab="approved">Approved <span id="countApproved"></span></div>
+        <div class="reg-tab" data-tab="rejected">Rejected <span id="countRejected"></span></div>
+      </div>
+      <div id="regList">
+        <p class="empty-note">Loading…</p>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="regLightbox">
+    <button id="regLightboxClose">✕</button>
+    <img id="regLightboxImg" alt="ID Screenshot">
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================================
+    // CONFIG — paste your Supabase project values here
+    // ============================================================
+ const SUPABASE_URL = "https://izoysudepwjajyqqurfl.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6b3lzdWRlcHdqYWp5cXF1cmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2Mjg1NDgsImV4cCI6MjEwMTIwNDU0OH0.hSB09Hf56B8wJdFbHzrrI-F6ukw9SOm7FcwTFK1obLg";
+    // ============================================================
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let ADMIN_PIN = sessionStorage.getItem('ffx_admin_pin') || null;
+
+    let TEAMS = [], PLAYERS = [], STATE = null, RECENT_BIDS = [];
+
+    function fmtMoney(n) {
+      if (n === null || n === undefined) return '—';
+      n = Number(n);
+      if (Math.abs(n) >= 100) return '₹' + (n / 100).toFixed(2).replace(/\.?0+$/, '') + 'Cr';
+      return '₹' + (Number.isInteger(n) ? n : n.toFixed(2)) + 'L';
+    }
+    function toast(msg, ok) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast show' + (ok ? ' ok' : '');
+      clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3400);
+    }
+    function teamById(id) { return TEAMS.find(t => t.id === id); }
+    function playerById(id) { return PLAYERS.find(p => p.id === id); }
+
+    // ---------------- LOGIN ----------------
+    document.getElementById('loginBtn').addEventListener('click', doLogin);
+    document.getElementById('pinInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    async function doLogin() {
+      const pin = document.getElementById('pinInput').value.trim();
+      const errEl = document.getElementById('loginErr');
+      errEl.textContent = '';
+      if (!pin) { errEl.textContent = 'Enter the PIN.'; return; }
+      const btn = document.getElementById('loginBtn'); btn.disabled = true; btn.textContent = 'Checking…';
+      const { data, error } = await sb.rpc('admin_login', { p_pin: pin });
+      btn.disabled = false; btn.textContent = 'Unlock Control Room';
+      if (error || !data) { errEl.textContent = 'Incorrect PIN. Try again.'; return; }
+      ADMIN_PIN = pin;
+      sessionStorage.setItem('ffx_admin_pin', pin);
+      enterApp();
+    }
+    if (ADMIN_PIN) { enterApp(); }
+
+    function enterApp() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appHeader').style.display = 'flex';
+      document.getElementById('app').classList.add('show');
+      fetchAll();
+      fetchRegistrations();
+      subscribeRealtime();
+    }
+
+    // ---------------- DATA ----------------
+    async function fetchAll() {
+      const [teamsRes, playersRes, stateRes, bidsRes] = await Promise.all([
+        sb.from('teams').select('*').order('code'),
+        sb.from('players').select('*').order('display_order'),
+        sb.from('auction_state').select('*').eq('id', 1).single(),
+        sb.from('bids').select('*').order('created_at', { ascending: false }).limit(25)
+      ]);
+      TEAMS = teamsRes.data || [];
+      PLAYERS = playersRes.data || [];
+      STATE = stateRes.data || null;
+      RECENT_BIDS = bidsRes.data || [];
+      renderAll();
+    }
+
+    let realtimeTimer = null;
+    function subscribeRealtime() {
+      const ch = sb.channel('admin-room')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'auction_state' }, debouncedRefresh)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'players' }, debouncedRefresh)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'teams' }, debouncedRefresh)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'bids' }, debouncedRefresh)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'registrations' }, debouncedRegRefresh)
+        .subscribe(status => {
+          const dot = document.getElementById('connDot'), lbl = document.getElementById('connLabel');
+          if (status === 'SUBSCRIBED') { dot.classList.add('on'); lbl.textContent = 'Live'; }
+          else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') { dot.classList.remove('on'); lbl.textContent = 'Offline'; }
+        });
+    }
+    function debouncedRefresh() { clearTimeout(realtimeTimer); realtimeTimer = setTimeout(fetchAll, 150); }
+
+    // ---------------- REGISTRATIONS ----------------
+    let REGISTRATIONS = [];
+    let REG_TAB = 'pending';
+    let regRealtimeTimer = null;
+    function debouncedRegRefresh() { clearTimeout(regRealtimeTimer); regRealtimeTimer = setTimeout(fetchRegistrations, 150); }
+
+    async function fetchRegistrations() {
+      const { data, error } = await sb.rpc('admin_list_registrations', { p_pin: ADMIN_PIN, p_status: null });
+      if (error) { toast(error.message, false); return; }
+      REGISTRATIONS = data || [];
+      renderRegistrations();
+    }
+
+    document.querySelectorAll('.reg-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        REG_TAB = tab.dataset.tab;
+        document.querySelectorAll('.reg-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderRegistrations();
+      });
+    });
+
+    function renderRegistrations() {
+      const counts = { pending: 0, approved: 0, rejected: 0 };
+      REGISTRATIONS.forEach(r => counts[r.status] = (counts[r.status] || 0) + 1);
+      document.getElementById('countPending').textContent = counts.pending ? `(${counts.pending})` : '';
+      document.getElementById('countApproved').textContent = counts.approved ? `(${counts.approved})` : '';
+      document.getElementById('countRejected').textContent = counts.rejected ? `(${counts.rejected})` : '';
+
+      const list = REGISTRATIONS.filter(r => r.status === REG_TAB);
+      const el = document.getElementById('regList');
+      if (list.length === 0) { el.innerHTML = `<p class="empty-note">No ${REG_TAB} registrations.</p>`; return; }
+
+      el.innerHTML = list.map(r => {
+        const submitted = new Date(r.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        let actions = '';
+        if (r.status === 'pending') {
+          actions = `<div class="reg-actions">
+          <button class="btn btn-live btn-sm" data-approve="${r.id}">Approve</button>
+          <button class="btn btn-reject btn-sm" data-reject="${r.id}">Reject</button>
+        </div>`;
+        } else if (r.status === 'rejected' && r.admin_note) {
+          actions = `<div class="reg-note">Reason: ${r.admin_note}</div>`;
+        }
+        return `<div class="reg-card">
+        <div class="reg-thumb" data-img="${r.screenshot_url}"><img src="${r.screenshot_url}" loading="lazy" alt="${r.ff_name}"></div>
+        <div class="reg-body">
+          <div class="reg-name">${r.ff_name}</div>
+          <div class="reg-meta">${r.real_name ? r.real_name + ' · ' : ''}UID ${r.ff_uid}${r.ff_level ? ' · LVL ' + r.ff_level : ''} · ${submitted}</div>
+          ${actions}
+        </div>
+      </div>`;
+      }).join('');
+
+      el.querySelectorAll('[data-img]').forEach(t => {
+        t.addEventListener('click', () => {
+          document.getElementById('regLightboxImg').src = t.dataset.img;
+          document.getElementById('regLightbox').classList.add('show');
+        });
+      });
+      el.querySelectorAll('[data-approve]').forEach(btn => {
+        btn.addEventListener('click', () => reviewRegistration(btn.dataset.approve, 'approved'));
+      });
+      el.querySelectorAll('[data-reject]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const reason = prompt('Reason for rejecting this registration (optional):') || null;
+          reviewRegistration(btn.dataset.reject, 'rejected', reason);
+        });
+      });
+    }
+
+    async function reviewRegistration(id, decision, note) {
+      const { error } = await sb.rpc('admin_review_registration', {
+        p_pin: ADMIN_PIN, p_id: id, p_decision: decision, p_note: note || null
+      });
+      if (error) { toast(error.message, false); return; }
+      toast(decision === 'approved' ? 'Player approved.' : 'Registration rejected.', decision === 'approved');
+      fetchRegistrations();
+    }
+
+    document.getElementById('regLightboxClose').addEventListener('click', () => {
+      document.getElementById('regLightbox').classList.remove('show');
+    });
+    document.getElementById('regLightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'regLightbox') document.getElementById('regLightbox').classList.remove('show');
+    });
+
+    // ---------------- RENDER ----------------
+    function renderAll() {
+      document.getElementById('incInput').value = STATE ? STATE.min_increment : 5;
+      renderBlock(); renderTeams(); renderQueue(); renderFeed(); renderResults();
+    }
+
+    function renderBlock() {
+      const el = document.getElementById('blockCard');
+      if (!STATE || !STATE.current_player_id || STATE.status === 'idle') {
+        el.innerHTML = `<div class="block-empty">No player on the block.<br>Post one from the queue below to start bidding.</div>`;
+        return;
+      }
+      const p = playerById(STATE.current_player_id);
+      if (!p) { el.innerHTML = `<div class="block-empty">Loading player…</div>`; return; }
+      const leadTeam = STATE.current_bid_team ? teamById(STATE.current_bid_team) : null;
+      const statusClass = STATE.status === 'live' ? 'live' : (STATE.status === 'sold' ? 'sold' : 'unsold');
+      const statusLabel = STATE.status.toUpperCase();
+
+      let actions = '';
+      if (STATE.status === 'live') {
+        actions = `
+        <button class="btn btn-live" data-action="sold">Mark Sold</button>
+        <button class="btn btn-ghost" data-action="unsold">Mark Unsold</button>`;
+      } else {
+        actions = `
+        <button class="btn btn-ghost" data-action="reopen" data-player="${p.id}">Undo — Reopen Player</button>
+        <button class="btn btn-outline" data-action="clear">Clear Block</button>`;
+      }
+
+      el.innerHTML = `
+      <span class="status-pill ${statusClass}">${statusLabel}</span>
+      <div class="block-player">
+        <div class="block-avatar">${p.image_url ? `<img src="${p.image_url}" onerror="this.parentElement.textContent='${(p.name || '?')[0]}'">` : (p.name || '?')[0]}</div>
+        <div>
+          <div class="block-name">${p.name}</div>
+          <div class="block-meta">${p.role || ''}${p.category ? ' · ' + p.category : ''} · Base ${fmtMoney(p.base_price)}</div>
+        </div>
+      </div>
+      <div class="block-bid-row">
+        <div class="bid-box"><div class="lbl">Current Bid</div><div class="val">${fmtMoney(STATE.current_bid)}</div></div>
+        <div class="bid-box"><div class="lbl">Leading Team</div><div class="val team" style="color:${leadTeam ? leadTeam.color : 'var(--ink-faint)'}">${leadTeam ? leadTeam.code : '— none —'}</div></div>
+      </div>
+      <div class="block-actions">${actions}</div>
+    `;
+      el.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.dataset.action;
+          if (action === 'sold') return doAdmin('admin_mark_sold', {}, 'Player sold!');
+          if (action === 'unsold') return doAdmin('admin_mark_unsold', {}, 'Player marked unsold.');
+          if (action === 'clear') return doAdmin('admin_clear_block', {}, 'Block cleared.');
+          if (action === 'reopen') return doAdmin('admin_reopen_player', { p_player_id: btn.dataset.player }, 'Player reopened.');
+        });
+      });
+    }
+
+    function renderTeams() {
+      const el = document.getElementById('teamsGrid');
+      el.innerHTML = TEAMS.map(t => {
+        const squadCount = PLAYERS.filter(p => p.sold_to_team === t.id).length;
+        const remaining = t.purse_total - t.purse_spent;
+        const pct = t.purse_total > 0 ? Math.min(100, (t.purse_spent / t.purse_total) * 100) : 0;
+        return `
+      <div class="team-card" style="--tc:${t.color}">
+        <div class="team-card-top">
+          <span class="team-abbr">${t.code}</span>
+          <span class="team-squad">${squadCount}/${t.squad_target}</span>
+        </div>
+        <div style="font-size:10.5px; color:var(--ink-faint); margin-top:2px;">${t.name}</div>
+        <div class="purse-bar"><div class="purse-bar-fill" style="width:${pct}%"></div></div>
+        <div class="purse-nums"><span>${fmtMoney(remaining)} left</span><span>${fmtMoney(t.purse_total)} total</span></div>
+        <details class="edit-panel">
+          <summary>Edit purse / squad size</summary>
+          <div class="edit-panel-body">
+            <input type="number" class="mono" value="${t.purse_total}" data-edit-purse="${t.id}" placeholder="Purse ₹L">
+            <input type="number" class="mono" value="${t.squad_target}" data-edit-squad="${t.id}" placeholder="Squad #" style="max-width:60px;">
+            <button class="btn btn-ghost btn-sm" data-save-team="${t.id}">Save</button>
+          </div>
+        </details>
+      </div>`;
+      }).join('');
+      el.querySelectorAll('[data-save-team]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.saveTeam;
+          const purse = parseFloat(el.querySelector(`[data-edit-purse="${id}"]`).value);
+          const squad = parseInt(el.querySelector(`[data-edit-squad="${id}"]`).value, 10);
+          doAdmin('admin_update_team', { p_team_id: id, p_purse_total: purse, p_squad_target: squad }, 'Team updated.');
+        });
+      });
+    }
+
+    function renderQueue() {
+      const el = document.getElementById('queueList');
+      const pending = PLAYERS.filter(p => p.status === 'pending');
+      if (pending.length === 0) { el.innerHTML = `<p class="empty-note">Queue is empty — add a player below.</p>`; return; }
+      el.innerHTML = pending.map(p => `
+      <div class="queue-row">
+        <div>
+          <div class="queue-name">${p.name}</div>
+          <div class="queue-meta">${p.role || ''}${p.category ? ' · ' + p.category : ''}</div>
+        </div>
+        <div class="queue-price mono">${fmtMoney(p.base_price)}</div>
+        <button class="btn btn-gold btn-sm" data-post="${p.id}">Post</button>
+      </div>`).join('');
+      el.querySelectorAll('[data-post]').forEach(btn => {
+        btn.addEventListener('click', () => doAdmin('admin_post_player', { p_player_id: btn.dataset.post }, 'Player posted to auction.'));
+      });
+    }
+
+    function renderFeed() {
+      const el = document.getElementById('feedList');
+      if (RECENT_BIDS.length === 0) { el.innerHTML = `<p class="empty-note">No bids yet this session.</p>`; return; }
+      el.innerHTML = RECENT_BIDS.map(b => {
+        const t = teamById(b.team_id);
+        const time = new Date(b.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        return `<div class="feed-row"><span class="feed-team-dot" style="--tc:${t ? t.color : '#999'}"></span>
+        <span>${t ? t.code : '—'} bid</span>
+        <span class="feed-time">${time}</span>
+        <span class="feed-amt">${fmtMoney(b.amount)}</span></div>`;
+      }).join('');
+    }
+
+    function renderResults() {
+      const el = document.getElementById('resultsList');
+      const done = PLAYERS.filter(p => p.status === 'sold' || p.status === 'unsold').sort((a, b) => (b.display_order || 0) - (a.display_order || 0));
+      if (done.length === 0) { el.innerHTML = `<p class="empty-note">Nothing sold or passed yet.</p>`; return; }
+      el.innerHTML = done.map(p => {
+        const t = p.sold_to_team ? teamById(p.sold_to_team) : null;
+        return `<div class="queue-row">
+        <div><div class="queue-name">${p.name}</div><div class="queue-meta">${p.role || ''}</div></div>
+        ${p.status === 'sold'
+            ? `<div class="queue-price mono" style="color:${t ? t.color : 'var(--gold-pale)'}">${t ? t.code : ''} · ${fmtMoney(p.sold_price)}</div>`
+            : `<span class="badge unsold">Unsold</span>`}
+      </div>`;
+      }).join('');
+    }
+
+    // ---------------- ACTIONS ----------------
+    async function doAdmin(fn, extraArgs, successMsg) {
+      const args = Object.assign({ p_pin: ADMIN_PIN }, extraArgs);
+      const { data, error } = await sb.rpc(fn, args);
+      if (error) { toast(error.message || 'Action failed', false); return; }
+      toast(successMsg, true);
+    }
+
+    document.getElementById('incSaveBtn').addEventListener('click', () => {
+      const val = parseFloat(document.getElementById('incInput').value);
+      if (isNaN(val) || val <= 0) { toast('Enter a valid increment.', false); return; }
+      doAdmin('admin_set_increment', { p_increment: val }, 'Increment updated.');
+    });
+
+    document.getElementById('addPlayerBtn').addEventListener('click', async () => {
+      const name = document.getElementById('npName').value.trim();
+      const role = document.getElementById('npRole').value.trim();
+      const category = document.getElementById('npCategory').value.trim();
+      const base = parseFloat(document.getElementById('npBase').value);
+      const image = document.getElementById('npImage').value.trim();
+      if (!name || isNaN(base)) { toast('Name and base price are required.', false); return; }
+      const { error } = await sb.rpc('admin_add_player', {
+        p_pin: ADMIN_PIN, p_name: name, p_role: role || null, p_category: category || null,
+        p_base_price: base, p_image_url: image || null
+      });
+      if (error) { toast(error.message, false); return; }
+      toast('Player added to queue.', true);
+      document.getElementById('npName').value = ''; document.getElementById('npRole').value = '';
+      document.getElementById('npCategory').value = ''; document.getElementById('npBase').value = '5';
+      document.getElementById('npImage').value = '';
+    });
+  </script>
+</body>
+
+</html>

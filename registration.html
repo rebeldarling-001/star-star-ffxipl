@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Player Registration — FREEFIREXIPL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg: #0a0705;
+            --surface: #170f08;
+            --surface-2: #20160b;
+            --gold: #eab34a;
+            --gold-deep: #a9791f;
+            --gold-pale: #f6dfa3;
+            --gold-line: rgba(234, 179, 74, 0.22);
+            --ink: #f4ecd8;
+            --ink-dim: #a9997d;
+            --ink-faint: #6b5f4c;
+            --live: #ff4433;
+            --good: #4ade80;
+            --line: rgba(240, 185, 61, 0.14);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            background: var(--bg);
+        }
+
+        body {
+            color: var(--ink);
+            font-family: 'Rajdhani', sans-serif;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding-bottom: 50px;
+            background-image: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(234, 179, 74, 0.05), transparent 60%);
+        }
+
+        .display {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 18px;
+            background: rgba(10, 7, 5, 0.94);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .crest {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .brand-text {
+            font-size: 15px;
+            letter-spacing: 0.05em;
+        }
+
+        .brand-text b {
+            color: var(--gold);
+        }
+
+        .tag {
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .header-link {
+            font-size: 11px;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        main {
+            padding: 22px 16px 0;
+        }
+
+        /* LETTERHEAD */
+        .letterhead {
+            text-align: center;
+            padding: 6px 0 22px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before,
+        .eyebrow::after {
+            content: '';
+            width: 16px;
+            height: 1px;
+            background: var(--gold-deep);
+        }
+
+        .letterhead h1 {
+            margin-top: 12px;
+            font-size: 26px;
+            color: var(--gold-pale);
+        }
+
+        .letterhead p {
+            margin-top: 10px;
+            font-size: 13.5px;
+            color: var(--ink-faint);
+            line-height: 1.6;
+            max-width: 360px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+        }
+
+        /* CERTIFICATE CARD */
+        .cert-card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--gold-line);
+            border-radius: 20px;
+            padding: 26px 22px;
+            overflow: hidden;
+        }
+
+        .cert-inner-border {
+            position: absolute;
+            inset: 7px;
+            border: 1px solid rgba(234, 179, 74, 0.10);
+            border-radius: 13px;
+            pointer-events: none;
+        }
+
+        .cert-watermark {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .cert-watermark span {
+            font-family: 'Anton', sans-serif;
+            font-size: 64px;
+            color: rgba(234, 179, 74, 0.025);
+            white-space: nowrap;
+            transform: rotate(-10deg);
+            letter-spacing: 0.08em;
+        }
+
+        .cert-corner {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: var(--gold-deep);
+            opacity: 0.55;
+            z-index: 2;
+        }
+
+        .cert-corner.tl {
+            top: 9px;
+            left: 9px;
+            border-top: 1.5px solid;
+            border-left: 1.5px solid;
+            border-radius: 3px 0 0 0;
+        }
+
+        .cert-corner.tr {
+            top: 9px;
+            right: 9px;
+            border-top: 1.5px solid;
+            border-right: 1.5px solid;
+            border-radius: 0 3px 0 0;
+        }
+
+        .cert-corner.bl {
+            bottom: 9px;
+            left: 9px;
+            border-bottom: 1.5px solid;
+            border-left: 1.5px solid;
+            border-radius: 0 0 0 3px;
+        }
+
+        .cert-corner.br {
+            bottom: 9px;
+            right: 9px;
+            border-bottom: 1.5px solid;
+            border-right: 1.5px solid;
+            border-radius: 0 0 3px 0;
+        }
+
+        .cert-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .field {
+            margin-top: 19px;
+        }
+
+        .field:first-child {
+            margin-top: 0;
+        }
+
+        .field label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            color: var(--ink-dim);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .field-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(234, 179, 74, 0.12);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            flex-shrink: 0;
+        }
+
+        .field .hint {
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .field input[type=text],
+        .field input[type=number] {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: var(--surface-2);
+            color: var(--ink);
+            font-size: 14.5px;
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: var(--gold-deep);
+            box-shadow: 0 0 0 3px rgba(234, 179, 74, 0.08);
+        }
+
+        .field-err {
+            margin-top: 6px;
+            font-size: 11.5px;
+            color: var(--live);
+            min-height: 14px;
+        }
+
+        /* FILE UPLOAD */
+        .upload-zone {
+            position: relative;
+            border: 1.5px dashed var(--gold-line);
+            border-radius: 14px;
+            padding: 22px 14px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--surface-2);
+            transition: border-color 0.15s ease;
+        }
+
+        .upload-zone:active {
+            border-color: var(--gold-deep);
+        }
+
+        .upload-zone input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 24px;
+            opacity: 0.85;
+        }
+
+        .upload-label {
+            margin-top: 8px;
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            font-weight: 600;
+        }
+
+        .upload-sub {
+            margin-top: 3px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+        }
+
+        .preview-wrap {
+            position: relative;
+            margin-top: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--gold-line);
+            display: none;
+        }
+
+        .preview-wrap.show {
+            display: block;
+        }
+
+        .preview-wrap img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(10, 7, 5, 0.75);
+            color: var(--ink);
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            letter-spacing: 0.06em;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.12s ease, opacity 0.12s ease;
+            width: 100%;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            color: #1a1206;
+            margin-top: 24px;
+            box-shadow: 0 8px 22px rgba(234, 179, 74, 0.12);
+        }
+
+        .form-err {
+            margin-top: 14px;
+            padding: 11px 14px;
+            border-radius: 11px;
+            background: rgba(255, 68, 51, 0.08);
+            border: 1px solid rgba(255, 68, 51, 0.3);
+            color: #ff9c8f;
+            font-size: 12.5px;
+            text-align: center;
+            display: none;
+        }
+
+        .form-err.show {
+            display: block;
+        }
+
+        .cert-footnote {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            line-height: 1.5;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 12.5px;
+        }
+
+        .spinner {
+            width: 15px;
+            height: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.25);
+            border-top-color: #1a1206;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* SUCCESS — CONFIRMATION RECEIPT */
+        #successScreen {
+            display: none;
+            padding: 8px 0;
+        }
+
+        #successScreen.show {
+            display: block;
+        }
+
+        .receipt-card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--gold-line);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .receipt-top {
+            padding: 32px 24px 22px;
+            text-align: center;
+        }
+
+        .seal {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 8px 24px rgba(234, 179, 74, 0.25);
+        }
+
+        .receipt-title {
+            margin-top: 16px;
+            font-size: 20px;
+            color: var(--gold-pale);
+        }
+
+        .receipt-sub {
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--ink-faint);
+            line-height: 1.65;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .perforation {
+            position: relative;
+            height: 0;
+            border-top: 1.5px dashed var(--gold-line);
+            margin: 0 20px;
+        }
+
+        .perforation::before,
+        .perforation::after {
+            content: '';
+            position: absolute;
+            top: -9px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--bg);
+        }
+
+        .perforation::before {
+            left: -27px;
+        }
+
+        .perforation::after {
+            right: -27px;
+        }
+
+        .receipt-bottom {
+            padding: 22px 24px 26px;
+            text-align: center;
+        }
+
+        .ref-label {
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        .ref-value {
+            margin-top: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 16px;
+            letter-spacing: 0.1em;
+            color: var(--gold-pale);
+        }
+
+        .stamp {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 8px 18px;
+            border: 2px solid rgba(234, 179, 74, 0.55);
+            border-radius: 8px;
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            transform: rotate(-3deg);
+            opacity: 0.9;
+        }
+
+        .success-actions {
+            margin-top: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold-deep);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="crest"></div>
+            <div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+                <div class="tag">Official Registration</div>
+            </div>
+        </div>
+        <a class="header-link" href="registered-players.html">Registered →</a>
+    </header>
+
+    <main>
+        <div id="formScreen">
+            <div class="letterhead">
+                <span class="eyebrow">Season 11</span>
+                <h1 class="display">Player Registration</h1>
+                <p>Submit your details for review. Approved players are added to the official auction pool.</p>
+            </div>
+
+            <div class="cert-card">
+                <div class="cert-watermark"><span>FFXIPL · FFXIPL · FFXIPL</span></div>
+                <div class="cert-corner tl"></div>
+                <div class="cert-corner tr"></div>
+                <div class="cert-corner bl"></div>
+                <div class="cert-corner br"></div>
+                <div class="cert-inner-border"></div>
+
+                <div class="cert-content">
+                    <form id="regForm" novalidate>
+                        <div class="field">
+                            <label><span class="field-num">1</span>Real Name</label>
+                            <input type="text" id="realName" placeholder="As per your ID" autocomplete="off" required>
+                            <div class="field-err" id="errRealName"></div>
+                        </div>
+                        <div class="field">
+                            <label><span class="field-num">2</span>Free Fire Name (IGN)</label>
+                            <input type="text" id="ffName" placeholder="e.g. ShadowSniper_07" autocomplete="off"
+                                required>
+                            <div class="field-err" id="errFfName"></div>
+                        </div>
+                        <div class="field">
+                            <label><span class="field-num">3</span>Free Fire UID</label>
+                            <input type="text" id="ffUid" placeholder="e.g. 123456789" inputmode="numeric"
+                                autocomplete="off" required>
+                            <div class="field-err" id="errFfUid"></div>
+                        </div>
+                        <div class="field">
+                            <label><span class="field-num">4</span>Free Fire Level</label>
+                            <input type="number" id="ffLevel" placeholder="e.g. 62" min="1" max="100" required>
+                            <div class="field-err" id="errFfLevel"></div>
+                        </div>
+                        <div class="field">
+                            <label><span class="field-num">5</span>ID Screenshot</label>
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp">
+                                <div class="upload-icon">📁</div>
+                                <div class="upload-label">Tap to upload a screenshot</div>
+                                <div class="upload-sub">Your in-game profile screen · PNG/JPG, up to 5MB</div>
+                            </div>
+                            <div class="preview-wrap" id="previewWrap">
+                                <img id="previewImg" alt="Screenshot preview">
+                                <button type="button" class="preview-remove" id="previewRemove">✕</button>
+                            </div>
+                            <div class="field-err" id="errFile"></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold" id="submitBtn">Submit Registration</button>
+                        <div class="form-err" id="formErr"></div>
+                        <p class="cert-footnote">By submitting, you confirm the details above are accurate. Approval is
+                            at the discretion of tournament admins.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="successScreen">
+            <div class="receipt-card">
+                <div class="receipt-top">
+                    <div class="seal">✓</div>
+                    <div class="receipt-title display">Registration Received</div>
+                    <div class="receipt-sub">Your submission is in the review queue. Once approved, you'll appear on the
+                        Registered Players page and be eligible for the auction.</div>
+                </div>
+                <div class="perforation"></div>
+                <div class="receipt-bottom">
+                    <div class="ref-label">Reference Number</div>
+                    <div class="ref-value" id="refId"></div>
+                    <div class="stamp">Pending Review</div>
+                </div>
+            </div>
+            <div class="success-actions">
+                <a class="btn btn-outline" href="registered-players.html">View Registered Players</a>
+                <button class="btn"
+                    style="background:var(--surface-2); color:var(--ink-dim); border:1px solid var(--line);"
+                    id="registerAnotherBtn">Register Another Player</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ============================================================
+        // CONFIG — paste your Supabase project values here
+        // ============================================================
+        const SUPABASE_URL = "https://izoysudepwjajyqqurfl.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6b3lzdWRlcHdqYWp5cXF1cmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2Mjg1NDgsImV4cCI6MjEwMTIwNDU0OH0.hSB09Hf56B8wJdFbHzrrI-F6ukw9SOm7FcwTFK1obLg";
+        // ============================================================
+
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const MAX_FILE_BYTES = 5 * 1024 * 1024;
+        let selectedFile = null;
+
+        const fileInput = document.getElementById('fileInput');
+        const uploadZone = document.getElementById('uploadZone');
+        const previewWrap = document.getElementById('previewWrap');
+        const previewImg = document.getElementById('previewImg');
+
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            document.getElementById('errFile').textContent = '';
+            if (!file) return;
+            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                document.getElementById('errFile').textContent = 'Please upload a PNG, JPG, or WEBP image.';
+                fileInput.value = '';
+                return;
+            }
+            if (file.size > MAX_FILE_BYTES) {
+                document.getElementById('errFile').textContent = 'File is too large — max 5MB.';
+                fileInput.value = '';
+                return;
+            }
+            selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = e => {
+                previewImg.src = e.target.result;
+                previewWrap.classList.add('show');
+                uploadZone.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('previewRemove').addEventListener('click', () => {
+            selectedFile = null;
+            fileInput.value = '';
+            previewWrap.classList.remove('show');
+            uploadZone.style.display = 'block';
+        });
+
+        function clearFieldErrors() {
+            ['errRealName', 'errFfName', 'errFfUid', 'errFfLevel', 'errFile'].forEach(id => document.getElementById(id).textContent = '');
+            const fe = document.getElementById('formErr'); fe.textContent = ''; fe.classList.remove('show');
+        }
+        function showFormError(msg) {
+            const fe = document.getElementById('formErr'); fe.textContent = msg; fe.classList.add('show');
+        }
+
+        function sanitizeFileName(name) {
+            return name.replace(/[^a-zA-Z0-9.\-_]/g, '_').slice(-60);
+        }
+
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearFieldErrors();
+
+            const realName = document.getElementById('realName').value.trim();
+            const ffName = document.getElementById('ffName').value.trim();
+            const ffUid = document.getElementById('ffUid').value.trim();
+            const ffLevelRaw = document.getElementById('ffLevel').value;
+            const ffLevel = ffLevelRaw ? parseInt(ffLevelRaw, 10) : null;
+
+            let hasErr = false;
+            if (!realName) { document.getElementById('errRealName').textContent = 'Enter your real name.'; hasErr = true; }
+            if (!ffName) { document.getElementById('errFfName').textContent = 'Enter your Free Fire name.'; hasErr = true; }
+            if (!ffUid) { document.getElementById('errFfUid').textContent = 'Enter your Free Fire UID.'; hasErr = true; }
+            if (!ffLevel || ffLevel < 1 || ffLevel > 100) { document.getElementById('errFfLevel').textContent = 'Enter a level between 1 and 100.'; hasErr = true; }
+            if (!selectedFile) { document.getElementById('errFile').textContent = 'Please upload your ID screenshot.'; hasErr = true; }
+            if (hasErr) return;
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Submitting…';
+
+            try {
+                const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${sanitizeFileName(selectedFile.name)}`;
+                const { error: uploadError } = await sb.storage.from('ff-screenshots').upload(path, selectedFile, {
+                    cacheControl: '3600', upsert: false, contentType: selectedFile.type
+                });
+                if (uploadError) throw new Error('Screenshot upload failed: ' + uploadError.message);
+
+                const { data: urlData } = sb.storage.from('ff-screenshots').getPublicUrl(path);
+                const screenshotUrl = urlData.publicUrl;
+
+                const { data: regId, error: rpcError } = await sb.rpc('submit_registration', {
+                    p_real_name: realName, p_ff_name: ffName, p_ff_uid: ffUid, p_ff_level: ffLevel, p_screenshot_url: screenshotUrl
+                });
+                if (rpcError) throw new Error(rpcError.message);
+
+                document.getElementById('refId').textContent = 'FFX-' + regId.slice(0, 8).toUpperCase();
+                document.getElementById('formScreen').style.display = 'none';
+                document.getElementById('successScreen').classList.add('show');
+            } catch (err) {
+                showFormError(err.message || 'Something went wrong. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Registration';
+            }
+        });
+
+        document.getElementById('registerAnotherBtn').addEventListener('click', () => {
+            document.getElementById('regForm').reset();
+            selectedFile = null;
+            previewWrap.classList.remove('show');
+            uploadZone.style.display = 'block';
+            clearFieldErrors();
+            document.getElementById('successScreen').classList.remove('show');
+            document.getElementById('formScreen').style.display = 'block';
+        });
+    </script>
+</body>
+
+</html>

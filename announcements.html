@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>News — FREEFIREXIPL Season 11</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0705;
+            --bg-alt: #120c07;
+            --surface: #1a130b;
+            --surface-2: #221909;
+            --gold: #f0b93d;
+            --gold-deep: #b3811f;
+            --gold-pale: #fbe4a6;
+            --ink: #f4ecd8;
+            --ink-dim: #a9997d;
+            --ink-faint: #6b5f4c;
+            --live: #ff4433;
+            --line: rgba(240, 185, 61, 0.14);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            background: var(--bg);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Rajdhani', sans-serif;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: #1a1206;
+        }
+
+        .display {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* ============ SPLASH ============ */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: radial-gradient(ellipse at 50% 40%, #1c1206 0%, #0a0705 70%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 480px;
+            margin: 0 auto;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #splash.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .ignite-wrap {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ignite-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold-deep);
+            opacity: 0;
+            animation: ringPulse 1.8s ease-out infinite;
+        }
+
+        .ignite-ring.r2 {
+            animation-delay: 0.4s;
+        }
+
+        .ignite-ring.r3 {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes ringPulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: scale(1.6);
+                opacity: 0;
+            }
+        }
+
+        .ignite-core {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+            animation: coreSpin 2.4s ease-in-out infinite, coreGlow 1.6s ease-in-out infinite;
+            filter: drop-shadow(0 0 18px rgba(240, 185, 61, 0.7));
+        }
+
+        @keyframes coreSpin {
+
+            0%,
+            100% {
+                transform: rotate(-6deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(6deg) scale(1.08);
+            }
+        }
+
+        @keyframes coreGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 14px rgba(240, 185, 61, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 28px rgba(240, 185, 61, 0.9));
+            }
+        }
+
+        .splash-word {
+            margin-top: 28px;
+            font-size: 22px;
+            letter-spacing: 0.06em;
+            background: linear-gradient(180deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            animation: wordIn 0.8s ease forwards 0.5s;
+        }
+
+        .splash-sub {
+            margin-top: 6px;
+            font-size: 11px;
+            letter-spacing: 0.4em;
+            color: var(--ink-faint);
+            opacity: 0;
+            animation: wordIn 0.8s ease forwards 0.9s;
+        }
+
+        @keyframes wordIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .splash-bar {
+            margin-top: 36px;
+            width: 130px;
+            height: 2px;
+            background: rgba(240, 185, 61, 0.15);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .splash-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold));
+            animation: fillBar 1.9s ease forwards 0.3s;
+        }
+
+        @keyframes fillBar {
+            to {
+                width: 100%;
+            }
+        }
+
+        /* ============ SCROLL PROGRESS ============ */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 80;
+            width: 100%;
+            max-width: 480px;
+            height: 2px;
+            background: transparent;
+        }
+
+        .scroll-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-pale));
+            box-shadow: 0 0 8px rgba(240, 185, 61, 0.6);
+            transition: width 0.05s linear;
+        }
+
+        /* ============ EMBERS ============ */
+        .embers {
+            position: fixed;
+            inset: 0;
+            max-width: 480px;
+            margin: 0 auto;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ember {
+            position: absolute;
+            bottom: -10px;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0;
+            box-shadow: 0 0 6px 1px rgba(240, 185, 61, 0.8);
+            animation-name: floatUp;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.9;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(-720px) translateX(var(--drift, 20px));
+                opacity: 0;
+            }
+        }
+
+        /* ============ HEADER ============ */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: rgba(10, 7, 5, 0.82);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .back-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .crest {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, var(--gold-pale), var(--gold) 60%, var(--gold-deep));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .brand-text {
+            font-size: 16px;
+            letter-spacing: 0.06em;
+        }
+
+        .brand-text b {
+            color: var(--gold);
+        }
+
+        .menu-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.15s ease;
+        }
+
+        .menu-btn:active {
+            transform: scale(0.92);
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ============ NAV DRAWER ============ */
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(5, 3, 2, 0.62);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.32s ease;
+        }
+
+        .nav-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 95;
+            width: 76%;
+            max-width: 300px;
+            background: linear-gradient(165deg, #160f08, #0c0805 75%);
+            border-left: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            padding: 18px 16px 20px;
+            transform: translateX(100%);
+            transition: transform 0.38s cubic-bezier(.2, .9, .25, 1);
+            box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-drawer.show {
+            transform: translateX(0);
+        }
+
+        .nav-drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 20px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 12px;
+            border-radius: 12px;
+            color: var(--ink);
+            font-size: 14px;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .nav-link:active {
+            background: rgba(240, 185, 61, 0.08);
+            border-color: var(--line);
+        }
+
+        .nav-link-primary {
+            background: rgba(240, 185, 61, 0.1);
+            border-color: var(--gold-deep);
+            color: var(--gold-pale);
+            font-weight: 600;
+        }
+
+        .nav-link-primary .nav-link-icon {
+            background: rgba(240, 185, 61, 0.18);
+            color: var(--gold);
+        }
+
+        .nav-link-current {
+            border-color: var(--line);
+            background: rgba(240, 185, 61, 0.05);
+        }
+
+        .nav-link-current .nav-link-icon {
+            color: var(--gold);
+        }
+
+        .nav-link-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            flex-shrink: 0;
+            background: rgba(240, 185, 61, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .nav-drawer-foot {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+            font-size: 9.5px;
+            letter-spacing: 0.18em;
+            color: var(--ink-faint);
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* ============ INTRO ============ */
+        .intro {
+            position: relative;
+            padding: 34px 20px 8px;
+            overflow: hidden;
+            background: radial-gradient(ellipse 120% 60% at 50% 0%, rgba(240, 185, 61, 0.10), transparent 60%), linear-gradient(180deg, transparent, var(--bg) 92%);
+        }
+
+        .intro::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(240, 185, 61, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(240, 185, 61, 0.05) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: radial-gradient(ellipse 90% 60% at 50% 20%, black 20%, transparent 75%);
+            animation: gridDrift 14s linear infinite;
+        }
+
+        @keyframes gridDrift {
+            from {
+                background-position: 0 0, 0 0;
+            }
+
+            to {
+                background-position: 26px 26px, 26px 26px;
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-up.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up.d1 {
+            transition-delay: 0.05s;
+        }
+
+        .fade-up.d2 {
+            transition-delay: 0.15s;
+        }
+
+        .fade-up.d3 {
+            transition-delay: 0.25s;
+        }
+
+        .fade-up.d4 {
+            transition-delay: 0.35s;
+        }
+
+        .eyebrow {
+            position: relative;
+            font-size: 10.5px;
+            letter-spacing: 0.32em;
+            color: var(--gold-deep);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 16px;
+            height: 1px;
+            background: var(--gold-deep);
+        }
+
+        .intro-title {
+            position: relative;
+            margin-top: 12px;
+            font-size: 38px;
+            line-height: 0.95;
+            background: linear-gradient(180deg, var(--gold-pale) 10%, var(--gold) 55%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .intro-desc {
+            position: relative;
+            margin-top: 12px;
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+            max-width: 320px;
+        }
+
+        .intro-stats {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .intro-stat {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            padding: 14px 8px;
+            text-align: center;
+        }
+
+        .intro-stat b {
+            display: block;
+            font-family: 'Anton', sans-serif;
+            font-size: 20px;
+            color: var(--gold);
+        }
+
+        .intro-stat span {
+            display: block;
+            margin-top: 3px;
+            font-size: 8.5px;
+            letter-spacing: 0.1em;
+            color: var(--ink-faint);
+            text-transform: uppercase;
+        }
+
+        /* ============ FOIL FRAME ============ */
+        .foil-frame {
+            position: relative;
+            border-radius: 22px;
+            padding: 2px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .foil-frame::before {
+            content: '';
+            position: absolute;
+            inset: -60%;
+            z-index: 0;
+            background: conic-gradient(from 0deg, var(--foil, var(--gold-deep)), var(--gold-pale) 25%, var(--gold) 50%, var(--foil, var(--gold-deep)) 75%, var(--gold-pale) 100%);
+            animation: frameSpin 8s linear infinite;
+        }
+
+        @keyframes frameSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes shimmerSweep {
+            0% {
+                left: -60%;
+            }
+
+            55% {
+                left: 120%;
+            }
+
+            100% {
+                left: 120%;
+            }
+        }
+
+        /* ============ FILTER CHIPS ============ */
+        .news-filter {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 20px 4px;
+            margin-top: 6px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .news-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--ink-dim);
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .filter-chip.active {
+            background: rgba(240, 185, 61, 0.14);
+            border-color: var(--gold-deep);
+            color: var(--gold-pale);
+        }
+
+        .filter-chip:active {
+            transform: scale(0.96);
+        }
+
+        /* ============ FEATURED STORY ============ */
+        .featured-wrap {
+            padding: 16px 20px 0;
+        }
+
+        .featured-card {
+            position: relative;
+            z-index: 1;
+            border-radius: 20px;
+            padding: 20px 18px;
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(240, 185, 61, 0.14), transparent 60%), var(--surface);
+        }
+
+        .featured-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -70%;
+            width: 45%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+            animation: shimmerSweep 9s ease-in-out infinite;
+        }
+
+        .featured-tag {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--live);
+            background: rgba(255, 68, 51, 0.12);
+            border: 1px solid rgba(255, 68, 51, 0.3);
+            padding: 4px 10px;
+            border-radius: 100px;
+        }
+
+        .featured-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--live);
+            box-shadow: 0 0 6px rgba(255, 68, 51, 0.8);
+        }
+
+        .featured-title {
+            position: relative;
+            z-index: 2;
+            margin-top: 12px;
+            font-family: 'Anton', sans-serif;
+            font-size: 21px;
+            line-height: 1.12;
+            letter-spacing: 0.01em;
+            color: var(--gold-pale);
+        }
+
+        .featured-desc {
+            position: relative;
+            z-index: 2;
+            margin-top: 8px;
+            font-size: 12.5px;
+            line-height: 1.55;
+            color: var(--ink-dim);
+        }
+
+        .featured-meta {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--ink-faint);
+            letter-spacing: 0.03em;
+        }
+
+        .featured-meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--ink-faint);
+        }
+
+        /* ============ NEWS LIST ============ */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px 20px 6px;
+        }
+
+        .news-card {
+            position: relative;
+            z-index: 1;
+            border-radius: 20px;
+            padding: 16px 16px 14px;
+            overflow: hidden;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(240, 185, 61, 0.09), transparent 60%), var(--surface);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.55s ease, transform 0.15s ease;
+        }
+
+        .news-card:active {
+            transform: scale(0.985);
+        }
+
+        .news-card.active {
+            background:
+                radial-gradient(140% 110% at 50% -10%, var(--foil-bg, rgba(240, 185, 61, 0.4)), transparent 68%),
+                linear-gradient(165deg, var(--foil-bg2, rgba(240, 185, 61, 0.1)), var(--surface) 85%);
+        }
+
+        .news-top {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .news-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(240, 185, 61, 0.1);
+            border: 1px solid var(--line);
+        }
+
+        .news-body {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .news-tag {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 8.5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--foil, var(--gold-deep));
+            background: rgba(240, 185, 61, 0.08);
+            border: 1px solid var(--line);
+            padding: 3px 8px;
+            border-radius: 100px;
+        }
+
+        .news-headline {
+            margin-top: 7px;
+            font-size: 14.5px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--ink);
+        }
+
+        .news-meta {
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.02em;
+        }
+
+        .news-meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--ink-faint);
+        }
+
+        .news-details {
+            position: relative;
+            z-index: 2;
+            margin-top: 12px;
+        }
+
+        .news-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            list-style: none;
+            padding: 10px 0;
+            border-top: 1px dashed rgba(240, 185, 61, 0.15);
+            font-size: 10.5px;
+            letter-spacing: 0.12em;
+            color: var(--ink-dim);
+            text-transform: uppercase;
+        }
+
+        .news-toggle::-webkit-details-marker {
+            display: none;
+        }
+
+        .chev {
+            transition: transform 0.25s ease;
+            color: var(--gold-deep);
+            font-size: 11px;
+        }
+
+        .news-details[open] .chev {
+            transform: rotate(180deg);
+        }
+
+        .news-full {
+            margin-top: 10px;
+            font-size: 12.5px;
+            line-height: 1.65;
+            color: var(--ink-dim);
+        }
+
+        .news-full p+p {
+            margin-top: 10px;
+        }
+
+        /* ============ CTA ============ */
+        .cta-band {
+            margin: 36px 20px 0;
+            padding: 26px 20px;
+            border-radius: 18px;
+            text-align: center;
+            background: linear-gradient(150deg, #221708, #16100a 60%);
+            border: 1px solid var(--gold-deep);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-band h3 {
+            font-family: 'Anton', sans-serif;
+            font-size: 20px;
+            color: var(--gold-pale);
+            letter-spacing: 0.02em;
+        }
+
+        .cta-band p {
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: var(--ink-dim);
+        }
+
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 14px 0;
+            border-radius: 11px;
+            font-size: 13.5px;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: none;
+            transition: transform 0.15s ease;
+            display: inline-block;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+            color: #1a1206;
+            box-shadow: 0 8px 24px rgba(240, 185, 61, 0.25);
+        }
+
+        .cta-band .btn {
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            margin-top: 36px;
+            padding: 26px 20px 20px;
+            border-top: 1px solid var(--line);
+        }
+
+        .foot-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .foot-tag {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--ink-faint);
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .foot-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .soc {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-deep);
+            font-size: 13px;
+        }
+
+        .foot-copy {
+            margin-top: 20px;
+            font-size: 10.5px;
+            color: var(--ink-faint);
+            letter-spacing: 0.03em;
+        }
+
+        /* ============ BACK TO TOP ============ */
+        .back-to-top {
+            position: fixed;
+            right: 18px;
+            bottom: 20px;
+            z-index: 70;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top svg {
+            position: absolute;
+            inset: 0;
+            transform: rotate(-90deg);
+        }
+
+        .btt-bg {
+            fill: rgba(15, 10, 5, 0.85);
+            stroke: rgba(240, 185, 61, 0.18);
+            stroke-width: 2;
+        }
+
+        .btt-fill {
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 2;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .back-to-top span {
+            position: relative;
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* ============ EMPTY STATE ============ */
+        .news-empty {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--ink-faint);
+            font-size: 12.5px;
+        }
+
+        .news-empty.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroll-progress">
+        <div class="scroll-progress-fill" id="scrollFill"></div>
+    </div>
+
+    <!-- SPLASH -->
+    <div id="splash">
+        <div class="ignite-wrap">
+            <div class="ignite-ring r1"></div>
+            <div class="ignite-ring r2"></div>
+            <div class="ignite-ring r3"></div>
+            <div class="ignite-core"></div>
+        </div>
+        <div class="splash-word display">FREEFIREXIPL</div>
+        <div class="splash-sub">THE WIRE</div>
+        <div class="splash-bar">
+            <div class="splash-bar-fill"></div>
+        </div>
+    </div>
+
+    <div class="embers" id="embers"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-flex">
+            <a href="./index.html" class="back-btn" aria-label="Back to home">←</a>
+            <div class="brand">
+                <div class="crest"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    </header>
+
+    <!-- NAV DRAWER -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="nav-drawer" id="navDrawer">
+        <div class="nav-drawer-head">
+            <div class="brand">
+                <div class="crest" style="width:26px;height:26px;"></div>
+                <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+            </div>
+            <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
+        </div>
+        <div class="nav-links">
+            <a href="./index.html" class="nav-link"><span class="nav-link-icon">🏠</span> Home</a>
+            <a href="./news.html" class="nav-link nav-link-current"><span class="nav-link-icon">📰</span> News</a>
+            <a href="./register.html" class="nav-link nav-link-primary"><span class="nav-link-icon">📝</span>
+                Register</a>
+            <a href="./schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
+            <a href="./points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
+            <a href="./leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
+            <a href="./teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+        </div>
+        <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
+    </nav>
+
+    <!-- INTRO -->
+    <section class="intro">
+        <div class="eyebrow fade-up">THE WIRE</div>
+        <h1 class="intro-title display fade-up d1">Every Story.<br>Every Angle.</h1>
+        <p class="intro-desc fade-up d2">Announcements, match reports and roster moves — everything happening across
+            Season 11, as it happens.</p>
+        <div class="intro-stats fade-up d3">
+            <div class="intro-stat"><b>24</b><span>Stories</span></div>
+            <div class="intro-stat"><b>6</b><span>This Week</span></div>
+            <div class="intro-stat"><b>LIVE</b><span>Coverage</span></div>
+        </div>
+    </section>
+
+    <!-- FILTER CHIPS -->
+    <div class="news-filter fade-up">
+        <button class="filter-chip active" data-filter="all">All</button>
+        <button class="filter-chip" data-filter="announcement">Announcements</button>
+        <button class="filter-chip" data-filter="match">Match Reports</button>
+        <button class="filter-chip" data-filter="roster">Rosters</button>
+        <button class="filter-chip" data-filter="community">Community</button>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="featured-wrap fade-up">
+        <div class="foil-frame" style="--foil:#ff4433;">
+            <div class="featured-card">
+                <span class="featured-tag">Breaking</span>
+                <h2 class="featured-title">Prize Pool Boosted to ₹5 Crore for Season 11</h2>
+                <p class="featured-desc">Organizers confirm the biggest prize pool in league history, with a revamped
+                    playoff bonus structure rewarding every squad that makes the final eight.</p>
+                <div class="featured-meta">
+                    <span>Aug 1, 2026</span><span class="dot"></span><span>League Desk</span><span
+                        class="dot"></span><span>2 min read</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEWS LIST -->
+    <div class="news-list" id="newsList">
+
+        <div class="foil-frame" style="--foil:#3d6fe0;" data-category="announcement">
+            <div class="news-card">
+                <div class="news-top">
+                    <div class="news-icon">📅</div>
+                    <div class="news-body">
+                        <span class="news-tag" style="--foil:#3d6fe0;">Announcement</span>
+                        <h3 class="news-headline">Season 11 Group Stage Fixtures Officially Announced</h3>
+                        <div class="news-meta"><span>Aug 1, 2026</span><span class="dot"></span><span>3 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <details class="news-details">
+                    <summary class="news-toggle">Read Story <span class="chev">▾</span></summary>
+                    <div class="news-full">
+                        <p>The wait is over — the full group stage schedule for Season 11 is live. All eight franchises
+                            have been split into two groups of four, with each squad facing every other team in their
+                            group twice across the opening five weeks.</p>
+                        <p>The top two from each group advance directly to the semifinals, while third and fourth place
+                            battle it out in an elimination bracket for the final two playoff spots. Full fixtures are
+                            available on the Schedule page.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="foil-frame" style="--foil:#ff4433;" data-category="match">
+            <div class="news-card">
+                <div class="news-top">
+                    <div class="news-icon">🔥</div>
+                    <div class="news-body">
+                        <span class="news-tag" style="--foil:#ff4433;">Match Report</span>
+                        <h3 class="news-headline">RR Blaze Stuns CSK in a Week 1 Nail-Biter</h3>
+                        <div class="news-meta"><span>Jul 29, 2026</span><span class="dot"></span><span>4 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <details class="news-details">
+                    <summary class="news-toggle">Read Story <span class="chev">▾</span></summary>
+                    <div class="news-full">
+                        <p>Nobody expected RR Blaze to open their campaign by taking down last season's runners-up, but
+                            a clutch final-circle read from their entry fragger flipped the match in the closing
+                            seconds.</p>
+                        <p>CSK will look to bounce back next week, while RR Blaze rides the momentum into what's shaping
+                            up to be one of the tightest groups in tournament history.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="foil-frame" style="--foil:#f5c518;" data-category="roster">
+            <div class="news-card">
+                <div class="news-top">
+                    <div class="news-icon">🛡️</div>
+                    <div class="news-body">
+                        <span class="news-tag" style="--foil:#f5c518;">Roster Move</span>
+                        <h3 class="news-headline">Three Franchises Reshuffle Rosters Ahead of Playoffs</h3>
+                        <div class="news-meta"><span>Jul 24, 2026</span><span class="dot"></span><span>3 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <details class="news-details">
+                    <summary class="news-toggle">Read Story <span class="chev">▾</span></summary>
+                    <div class="news-full">
+                        <p>With the transfer window closing this weekend, three squads made last-minute changes to
+                            sharpen their playoff push — swapping in substitutes who've been in red-hot form on the
+                            scrim circuit.</p>
+                        <p>Full roster updates are reflected on each franchise's page under Teams.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="foil-frame" style="--foil:#2ecc71;" data-category="community">
+            <div class="news-card">
+                <div class="news-top">
+                    <div class="news-icon">🗳️</div>
+                    <div class="news-body">
+                        <span class="news-tag" style="--foil:#2ecc71;">Community</span>
+                        <h3 class="news-headline">Fan Vote Opens for Player of the Month</h3>
+                        <div class="news-meta"><span>Jul 20, 2026</span><span class="dot"></span><span>2 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <details class="news-details">
+                    <summary class="news-toggle">Read Story <span class="chev">▾</span></summary>
+                    <div class="news-full">
+                        <p>Voting is now open for July's Player of the Month, with five standout performers nominated
+                            across the group stage's opening weeks. The winner receives an in-game badge and a shoutout
+                            on the official broadcast.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="foil-frame" style="--foil:#3d6fe0;" data-category="announcement">
+            <div class="news-card">
+                <div class="news-top">
+                    <div class="news-icon">📢</div>
+                    <div class="news-body">
+                        <span class="news-tag" style="--foil:#3d6fe0;">Announcement</span>
+                        <h3 class="news-headline">LAN Finals Venue Confirmed for Season 11</h3>
+                        <div class="news-meta"><span>Jul 15, 2026</span><span class="dot"></span><span>2 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <details class="news-details">
+                    <summary class="news-toggle">Read Story <span class="chev">▾</span></summary>
+                    <div class="news-full">
+                        <p>The Season 11 grand finals will be held on LAN for the first time in league history. Ticket
+                            details and travel information for fans will be announced closer to the playoff bracket
+                            reveal.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="foil-frame" style="--foil:#ff4433;" data-category="match">
+            <div class="news-card">
+                <div class="news-top">
+                    <div class="news-icon">⚔️</div>
+                    <div class="news-body">
+                        <span class="news-tag" style="--foil:#ff4433;">Match Report</span>
+                        <h3 class="news-headline">Behind the Scenes: How Squads Prep for a LAN Stage</h3>
+                        <div class="news-meta"><span>Jul 10, 2026</span><span class="dot"></span><span>5 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <details class="news-details">
+                    <summary class="news-toggle">Read Story <span class="chev">▾</span></summary>
+                    <div class="news-full">
+                        <p>From scrim schedules to sleep routines, we spoke to three coaches about what changes when a
+                            team's practice shifts from online qualifiers to the pressure of a live stage.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="news-empty" id="newsEmpty">No stories in this category yet — check back soon.</div>
+
+    <!-- CTA -->
+    <div class="cta-band fade-up">
+        <h3>Don't miss a fixture</h3>
+        <p>Every match, every week, mapped out for the full season.</p>
+        <a href="./schedule.html" class="btn btn-primary">View Full Schedule</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="foot-brand">
+            <div class="crest" style="width:26px;height:26px;"></div>
+            <div class="brand-text">FREEFIRE<b>XIPL</b></div>
+        </div>
+        <p class="foot-tag">The unofficial home of Free Fire XIPL Season 11 — fixtures, standings and every clutch
+            moment of the season.</p>
+        <div class="foot-social">
+            <div class="soc">✕</div>
+            <div class="soc">◎</div>
+            <div class="soc">▶</div>
+            <div class="soc">✈</div>
+        </div>
+        <div class="foot-copy">© 2026 FREEFIRE XIPL. Fan-made tournament hub. Not affiliated with Garena.</div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle class="btt-bg" cx="24" cy="24" r="21" />
+            <circle class="btt-fill" id="bttFill" cx="24" cy="24" r="21" stroke-dasharray="131.9"
+                stroke-dashoffset="131.9" />
+        </svg>
+        <span>↑</span>
+    </button>
+
+    <script>
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+        window.addEventListener('pageshow', (event) => { if (event.persisted) { window.location.reload(); } });
+
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+            setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 1900);
+        });
+
+        // Embers
+        const emberField = document.getElementById('embers');
+        for (let i = 0; i < 18; i++) {
+            const e = document.createElement('div');
+            e.className = 'ember';
+            e.style.left = Math.random() * 100 + '%';
+            e.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+            e.style.animationDuration = (6 + Math.random() * 6) + 's';
+            e.style.animationDelay = (Math.random() * 8) + 's';
+            emberField.appendChild(e);
+        }
+
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.fade-up');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+        }, { threshold: 0.1 });
+        revealEls.forEach(el => io.observe(el));
+
+        // Tap a news card to reveal its accent color
+        document.querySelectorAll('.news-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.news-details')) return;
+                const wasActive = card.classList.contains('active');
+                document.querySelectorAll('.news-card.active').forEach(c => c.classList.remove('active'));
+                if (!wasActive) card.classList.add('active');
+            });
+        });
+
+        // Category filter
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const newsFrames = document.querySelectorAll('#newsList > .foil-frame');
+        const newsEmpty = document.getElementById('newsEmpty');
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const filter = chip.getAttribute('data-filter');
+                let visibleCount = 0;
+                newsFrames.forEach(frame => {
+                    const match = filter === 'all' || frame.getAttribute('data-category') === filter;
+                    frame.style.display = match ? '' : 'none';
+                    if (match) visibleCount++;
+                });
+                newsEmpty.classList.toggle('show', visibleCount === 0);
+            });
+        });
+
+        // Nav drawer
+        const menuBtn = document.getElementById('menuBtn');
+        const navDrawer = document.getElementById('navDrawer');
+        const navOverlay = document.getElementById('navOverlay');
+        const navClose = document.getElementById('navClose');
+        function openNav() { navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
+        function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); }
+        menuBtn.addEventListener('click', openNav);
+        navClose.addEventListener('click', closeNav);
+        navOverlay.addEventListener('click', closeNav);
+
+        // Scroll progress + back to top
+        const scrollFill = document.getElementById('scrollFill');
+        const backToTop = document.getElementById('backToTop');
+        const bttFill = document.getElementById('bttFill');
+        const bttCircumference = 131.9;
+        function onScroll() {
+            const scrollTop = window.scrollY;
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = max > 0 ? Math.min(1, scrollTop / max) : 0;
+            scrollFill.style.width = (pct * 100) + '%';
+            bttFill.style.strokeDashoffset = bttCircumference * (1 - pct);
+            backToTop.classList.toggle('show', scrollTop > 400);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+</body>
+
+</html>
