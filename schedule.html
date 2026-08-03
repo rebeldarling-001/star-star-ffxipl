@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Match Schedule — FREEFIREXIPL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#0a0705; --surface:#170f08; --surface-2:#20160b;
+    --gold:#eab34a; --gold-deep:#a9791f; --gold-pale:#f6dfa3; --gold-line:rgba(234,179,74,0.22);
+    --ink:#f4ecd8; --ink-dim:#a9997d; --ink-faint:#6b5f4c;
+    --live:#ff4433; --good:#4ade80; --line:rgba(240,185,61,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--bg);}
+  body{color:var(--ink); font-family:'Rajdhani',sans-serif; max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:50px;}
+  .display{font-family:'Anton',sans-serif; letter-spacing:0.02em; text-transform:uppercase;}
+  .mono{font-family:'Space Mono',monospace;}
+  button, input, select{font-family:inherit;}
+
+  header{position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 18px; background:rgba(10,7,5,0.94); backdrop-filter:blur(10px); border-bottom:1px solid var(--gold-line);}
+  .brand{display:flex; align-items:center; gap:9px;}
+  .crest{width:26px; height:26px; background:linear-gradient(145deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep)); clip-path:polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 100%, 50% 76%, 21% 100%, 32% 57%, 2% 35%, 39% 35%); flex-shrink:0;}
+  .brand-text{font-size:14px; letter-spacing:0.04em;}
+  .brand-text b{color:var(--gold);}
+  .tag{font-size:9px; letter-spacing:0.16em; color:var(--ink-faint); text-transform:uppercase;}
+  .header-right{display:flex; align-items:center; gap:12px;}
+  .home-link{font-size:15px; opacity:0.8; text-decoration:none;}
+  .admin-toggle{font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; padding:7px 12px; border-radius:100px; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-dim); cursor:pointer;}
+  .admin-toggle.on{background:rgba(74,222,128,0.12); border-color:rgba(74,222,128,0.35); color:var(--good);}
+
+  main{padding:20px 16px 0;}
+  .letterhead{text-align:center; padding:0 0 22px;}
+  .eyebrow{display:flex; align-items:center; justify-content:center; gap:8px; font-size:10px; letter-spacing:0.22em; color:var(--gold); text-transform:uppercase;}
+  .eyebrow::before, .eyebrow::after{content:''; width:16px; height:1px; background:var(--gold-deep);}
+  .letterhead h1{margin-top:10px; font-size:25px; color:var(--gold-pale);}
+  .letterhead p{margin-top:8px; font-size:13.5px; color:var(--ink-faint); font-family:'Cormorant Garamond',serif; font-style:italic;}
+
+  .progress-strip{display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:13px; padding:12px 14px; margin-bottom:22px;}
+  .progress-bar{flex:1; height:6px; border-radius:6px; background:rgba(255,255,255,0.06); overflow:hidden;}
+  .progress-bar-fill{height:100%; background:linear-gradient(90deg,var(--gold-deep),var(--gold-pale)); border-radius:6px;}
+  .progress-label{font-size:11px; color:var(--ink-dim); white-space:nowrap; font-family:'Space Mono',monospace;}
+
+  .section-title{display:flex; align-items:center; justify-content:space-between; margin:24px 2px 12px;}
+  .section-title h2{font-size:12px; letter-spacing:0.2em; color:var(--ink-faint); text-transform:uppercase;}
+
+  /* MATCH DAY CARD */
+  .day-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:12px;}
+  .day-header{display:flex; align-items:center; justify-content:space-between;}
+  .day-date{font-size:14px; font-weight:700; color:var(--gold-pale);}
+  .day-date .dow{font-size:10px; color:var(--ink-faint); font-weight:600; display:block; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:2px;}
+  .day-remove{font-size:10px; color:var(--live); background:none; border:none; cursor:pointer; opacity:0.75;}
+  .match-row{display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px dashed var(--line);}
+  .match-row:first-of-type{border-top:none; padding-top:12px;}
+  .match-num{width:30px; height:30px; border-radius:9px; background:var(--surface-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:11px; color:var(--gold); flex-shrink:0;}
+  .match-info{flex:1; min-width:0;}
+  .match-label{font-size:13px; font-weight:600;}
+  .match-time{font-size:11px; color:var(--ink-faint); margin-top:1px; font-family:'Space Mono',monospace;}
+  .match-actions{display:flex; gap:6px; flex-shrink:0;}
+  .icon-btn{width:26px; height:26px; border-radius:7px; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-dim); font-size:11px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .icon-btn.danger{color:var(--live);}
+
+  /* PLAYOFF CARD */
+  .playoff-card{position:relative; background:radial-gradient(ellipse 130% 90% at 50% -10%, rgba(234,179,74,0.10), transparent 60%), var(--surface); border:1px solid var(--gold-line); border-radius:16px; padding:16px; margin-bottom:12px; overflow:hidden;}
+  .playoff-badge{display:inline-block; font-size:9px; letter-spacing:0.14em; padding:4px 10px; border-radius:100px; text-transform:uppercase; font-weight:700;}
+  .playoff-badge.sf{background:rgba(234,179,74,0.12); color:var(--gold); border:1px solid var(--gold-line);}
+  .playoff-badge.final{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep)); color:#1a1206;}
+  .playoff-title{margin-top:10px; font-family:'Anton',sans-serif; font-size:17px; color:var(--gold-pale);}
+  .playoff-meta{margin-top:5px; font-size:12px; color:var(--ink-faint); font-family:'Space Mono',monospace;}
+  .playoff-actions{margin-top:12px; display:flex; gap:6px;}
+
+  .empty-note{font-size:12.5px; color:var(--ink-faint); text-align:center; padding:26px 10px; background:var(--surface); border:1px dashed var(--line); border-radius:14px;}
+
+  /* ADMIN PANEL */
+  .admin-panel{background:var(--surface-2); border:1px solid var(--gold-line); border-radius:16px; padding:16px; margin-bottom:20px; display:none;}
+  .admin-panel.show{display:block;}
+  .admin-panel h3{font-size:11px; letter-spacing:0.12em; color:var(--gold); text-transform:uppercase; margin-bottom:12px;}
+  .field{margin-top:12px;}
+  .field:first-child{margin-top:0;}
+  .field label{display:block; font-size:9.5px; letter-spacing:0.1em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:6px;}
+  .field input, .field select{width:100%; padding:11px 12px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink); font-size:13.5px;}
+  .field input:focus, .field select:focus{outline:none; border-color:var(--gold-deep);}
+  .form-row{display:flex; gap:8px;}
+  .form-row .field{flex:1;}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:12px 16px; border-radius:10px; font-size:12.5px; letter-spacing:0.05em; font-weight:700; text-transform:uppercase; border:none; cursor:pointer; width:100%;}
+  .btn:active{transform:scale(0.98);}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep)); color:#1a1206; margin-top:14px;}
+  .btn-outline{background:transparent; border:1px solid var(--gold-deep); color:var(--gold);}
+  .pin-row{display:flex; gap:8px;}
+  .pin-row input{flex:1;}
+  .pin-row button{width:auto; padding:11px 16px; margin-top:0;}
+  .err-msg{margin-top:8px; font-size:11.5px; color:var(--live); min-height:14px;}
+  .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); z-index:200; max-width:90%; background:#2a1010; border:1px solid var(--live); color:#ffd7d0; font-size:12.5px; padding:12px 18px; border-radius:12px; opacity:0; transition:opacity 0.25s ease, transform 0.25s ease; pointer-events:none; text-align:center;}
+  .toast.ok{background:#0f2a17; border-color:var(--good); color:#d6ffe4;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  details.add-panel summary{cursor:pointer; list-style:none; font-size:11.5px; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:0.04em;}
+  details.add-panel summary::-webkit-details-marker{display:none;}
+  details.add-panel{margin-top:14px; padding-top:14px; border-top:1px dashed var(--gold-line);}
+  details.add-panel:first-of-type{margin-top:0; padding-top:0; border-top:none;}
+
+  /* INLINE EDIT */
+  .edit-inline{display:none; gap:6px; margin-top:8px;}
+  .edit-inline.show{display:flex;}
+  .edit-inline input{flex:1; padding:8px 9px; font-size:12px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink);}
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="brand"><div class="crest"></div><div><div class="brand-text">FREEFIRE<b>XIPL</b></div><div class="tag">Match Schedule</div></div></div>
+    <div class="header-right">
+      <a class="home-link" href="auction-centre.html">🏠</a>
+      <button class="admin-toggle" id="adminToggleBtn">🔒 Admin</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="letterhead">
+      <span class="eyebrow">Season 11</span>
+      <h1 class="display">Official Match Schedule</h1>
+      <p>Group stage, semi finals & the grand final</p>
+    </div>
+
+    <div class="progress-strip">
+      <span class="progress-label" id="progressLabel">0 / 10</span>
+      <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+      <span class="progress-label">Group Matches</span>
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div class="admin-panel" id="adminLoginPanel">
+      <h3>Admin Login</h3>
+      <div class="pin-row">
+        <input type="password" id="pinInput" placeholder="Admin PIN">
+        <button class="btn btn-gold" id="pinSubmitBtn" style="margin-top:0;">Unlock</button>
+      </div>
+      <div class="err-msg" id="pinErr"></div>
+    </div>
+
+    <!-- ADMIN CONTROLS -->
+    <div class="admin-panel" id="adminControlsPanel">
+      <h3>Schedule Controls</h3>
+
+      <details class="add-panel" open>
+        <summary>+ Add Match Day (Group Stage)</summary>
+        <div class="form-row" style="margin-top:12px;">
+          <div class="field"><label>Date</label><input type="date" id="dayDateInput"></div>
+          <div class="field" style="max-width:90px;"><label>Matches</label><input type="number" id="dayCountInput" value="3" min="1" max="20"></div>
+        </div>
+        <button class="btn btn-outline" id="addDayBtn" style="margin-top:12px;">Add Match Day</button>
+      </details>
+
+      <details class="add-panel">
+        <summary>+ Add Playoff Match</summary>
+        <div class="field" style="margin-top:12px;">
+          <label>Phase</label>
+          <select id="playoffPhaseInput">
+            <option value="semifinal">Semi Final</option>
+            <option value="final">Final</option>
+          </select>
+        </div>
+        <div class="field"><label>Label</label><input type="text" id="playoffLabelInput" placeholder="e.g. Semi Final 1"></div>
+        <div class="form-row">
+          <div class="field"><label>Date</label><input type="date" id="playoffDateInput"></div>
+          <div class="field"><label>Time</label><input type="text" id="playoffTimeInput" placeholder="e.g. 7:00 PM"></div>
+        </div>
+        <button class="btn btn-outline" id="addPlayoffBtn" style="margin-top:12px;">Add Playoff Match</button>
+      </details>
+    </div>
+
+    <div class="section-title"><h2>Group Stage</h2></div>
+    <div id="groupList"></div>
+
+    <div class="section-title"><h2>Playoffs</h2></div>
+    <div id="playoffList"></div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ============================================================
+  // CONFIG — paste your Supabase project values here
+  // ============================================================
+  const SUPABASE_URL = "https://izoysudepwjajyqqurfl.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6b3lzdWRlcHdqYWp5cXF1cmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2Mjg1NDgsImV4cCI6MjEwMTIwNDU0OH0.hSB09Hf56B8wJdFbHzrrI-F6ukw9SOm7FcwTFK1obLg";
+    // ============================================================
+  // ============================================================
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const GROUP_TARGET = 10;
+  let ADMIN_PIN = sessionStorage.getItem('ffx_admin_pin') || null;
+  let ADMIN_MODE = false;
+  let MATCHES = [];
+
+  function toast(msg, ok){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast show' + (ok ? ' ok' : '');
+    clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 3200);
+  }
+
+  function fmtDayHeader(dateStr){
+    const d = new Date(dateStr + 'T00:00:00');
+    const dow = d.toLocaleDateString([], { weekday: 'long' });
+    const rest = d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+    return { dow, rest };
+  }
+
+  // ---------------- ADMIN TOGGLE ----------------
+  document.getElementById('adminToggleBtn').addEventListener('click', ()=>{
+    if(ADMIN_MODE){
+      ADMIN_MODE = false;
+      document.getElementById('adminToggleBtn').classList.remove('on');
+      document.getElementById('adminToggleBtn').textContent = '🔒 Admin';
+      document.getElementById('adminControlsPanel').classList.remove('show');
+      renderAll();
+      return;
+    }
+    if(ADMIN_PIN){
+      verifyAndEnterAdmin(ADMIN_PIN);
+    } else {
+      document.getElementById('adminLoginPanel').classList.add('show');
+    }
+  });
+
+  document.getElementById('pinSubmitBtn').addEventListener('click', async ()=>{
+    const pin = document.getElementById('pinInput').value.trim();
+    if(!pin){ document.getElementById('pinErr').textContent = 'Enter the admin PIN.'; return; }
+    await verifyAndEnterAdmin(pin);
+  });
+
+  async function verifyAndEnterAdmin(pin){
+    const errEl = document.getElementById('pinErr');
+    errEl.textContent = '';
+    const { data, error } = await sb.rpc('admin_login', { p_pin: pin });
+    if(error || !data){
+      errEl.textContent = 'Incorrect PIN.';
+      ADMIN_PIN = null;
+      sessionStorage.removeItem('ffx_admin_pin');
+      return;
+    }
+    ADMIN_PIN = pin;
+    sessionStorage.setItem('ffx_admin_pin', pin);
+    ADMIN_MODE = true;
+    document.getElementById('adminLoginPanel').classList.remove('show');
+    document.getElementById('adminControlsPanel').classList.add('show');
+    document.getElementById('adminToggleBtn').classList.add('on');
+    document.getElementById('adminToggleBtn').textContent = '🔓 Admin On';
+    renderAll();
+  }
+
+  // ---------------- DATA ----------------
+  async function fetchAll(){
+    const { data, error } = await sb.from('ffxipl_match_schedule').select('*').order('match_date').order('display_order');
+    MATCHES = error ? [] : (data || []);
+    renderAll();
+  }
+
+  let realtimeTimer = null;
+  sb.channel('schedule-room')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'ffxipl_match_schedule' }, ()=>{
+      clearTimeout(realtimeTimer); realtimeTimer = setTimeout(fetchAll, 150);
+    })
+    .subscribe();
+
+  // ---------------- RENDER ----------------
+  function renderAll(){
+    const groupMatches = MATCHES.filter(m => m.phase === 'group');
+    const playoffMatches = MATCHES.filter(m => m.phase !== 'group');
+
+    const pct = Math.min(100, (groupMatches.length / GROUP_TARGET) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${groupMatches.length} / ${GROUP_TARGET}`;
+
+    renderGroupStage(groupMatches);
+    renderPlayoffs(playoffMatches);
+  }
+
+  function renderGroupStage(matches){
+    const el = document.getElementById('groupList');
+    if(matches.length === 0){
+      el.innerHTML = `<div class="empty-note">No group stage matches scheduled yet.</div>`;
+      return;
+    }
+    const byDate = {};
+    matches.forEach(m => { (byDate[m.match_date] = byDate[m.match_date] || []).push(m); });
+    const dates = Object.keys(byDate).sort();
+
+    el.innerHTML = dates.map(date => {
+      const { dow, rest } = fmtDayHeader(date);
+      const dayMatches = byDate[date];
+      return `
+      <div class="day-card">
+        <div class="day-header">
+          <div class="day-date"><span class="dow">${dow}</span>${rest}</div>
+          ${ADMIN_MODE ? `<button class="day-remove" data-remove-day="${date}">🗑 Remove Day</button>` : ''}
+        </div>
+        ${dayMatches.map(m => matchRowHtml(m)).join('')}
+      </div>`;
+    }).join('');
+
+    wireMatchRowEvents(el);
+    el.querySelectorAll('[data-remove-day]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(confirm('Remove all matches on this day?')) scheduleAction('schedule_delete_day', { p_match_date: btn.dataset.removeDay }, 'Match day removed.');
+      });
+    });
+  }
+
+  function matchRowHtml(m){
+    return `
+      <div class="match-row" data-match-id="${m.id}">
+        <div class="match-num">M${m.match_number ?? '?'}</div>
+        <div class="match-info">
+          <div class="match-label">Match ${m.match_number ?? ''}</div>
+          <div class="match-time">${m.match_time || 'Time TBA'}</div>
+          <div class="edit-inline" id="edit-${m.id}">
+            <input type="text" placeholder="Time (e.g. 6:00 PM)" value="${m.match_time || ''}" data-edit-time="${m.id}">
+            <button class="icon-btn" data-save-match="${m.id}">✓</button>
+          </div>
+        </div>
+        ${ADMIN_MODE ? `
+        <div class="match-actions">
+          <button class="icon-btn" data-toggle-edit="${m.id}">✎</button>
+          <button class="icon-btn danger" data-delete-match="${m.id}">🗑</button>
+        </div>` : ''}
+      </div>`;
+  }
+
+  function wireMatchRowEvents(container){
+    container.querySelectorAll('[data-toggle-edit]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.getElementById('edit-' + btn.dataset.toggleEdit).classList.toggle('show');
+      });
+    });
+    container.querySelectorAll('[data-save-match]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.saveMatch;
+        const time = container.querySelector(`[data-edit-time="${id}"]`).value.trim();
+        scheduleAction('schedule_update_match', { p_id: id, p_match_time: time || null }, 'Match updated.');
+      });
+    });
+    container.querySelectorAll('[data-delete-match]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(confirm('Delete this match?')) scheduleAction('schedule_delete_match', { p_id: btn.dataset.deleteMatch }, 'Match deleted.');
+      });
+    });
+  }
+
+  function renderPlayoffs(matches){
+    const el = document.getElementById('playoffList');
+    if(matches.length === 0){
+      el.innerHTML = `<div class="empty-note">Semi finals and the final will appear here once scheduled.</div>`;
+      return;
+    }
+    const sorted = [...matches].sort((a,b) => (a.match_date > b.match_date ? 1 : -1) || (a.display_order - b.display_order));
+    el.innerHTML = sorted.map(m => {
+      const isFinal = m.phase === 'final';
+      const { dow, rest } = fmtDayHeader(m.match_date);
+      return `
+      <div class="playoff-card">
+        <span class="playoff-badge ${isFinal ? 'final' : 'sf'}">${isFinal ? '🏆 Grand Final' : 'Semi Final'}</span>
+        <div class="playoff-title">${m.label || (isFinal ? 'Grand Final' : 'Semi Final')}</div>
+        <div class="playoff-meta">${dow}, ${rest} · ${m.match_time || 'Time TBA'}</div>
+        <div class="edit-inline" id="edit-${m.id}">
+          <input type="text" placeholder="Label" value="${m.label || ''}" data-edit-label="${m.id}">
+          <input type="text" placeholder="Time" value="${m.match_time || ''}" data-edit-time="${m.id}">
+          <button class="icon-btn" data-save-playoff="${m.id}">✓</button>
+        </div>
+        ${ADMIN_MODE ? `
+        <div class="playoff-actions">
+          <button class="icon-btn" data-toggle-edit="${m.id}">✎ Edit</button>
+          <button class="icon-btn danger" data-delete-match="${m.id}">🗑 Delete</button>
+        </div>` : ''}
+      </div>`;
+    }).join('');
+
+    el.querySelectorAll('[data-toggle-edit]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.getElementById('edit-' + btn.dataset.toggleEdit).classList.toggle('show');
+      });
+    });
+    el.querySelectorAll('[data-save-playoff]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.savePlayoff;
+        const label = el.querySelector(`[data-edit-label="${id}"]`).value.trim();
+        const time = el.querySelector(`[data-edit-time="${id}"]`).value.trim();
+        scheduleAction('schedule_update_match', { p_id: id, p_label: label || null, p_match_time: time || null }, 'Match updated.');
+      });
+    });
+    el.querySelectorAll('[data-delete-match]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(confirm('Delete this match?')) scheduleAction('schedule_delete_match', { p_id: btn.dataset.deleteMatch }, 'Match deleted.');
+      });
+    });
+  }
+
+  // ---------------- ADMIN ACTIONS ----------------
+  async function scheduleAction(fn, extraArgs, successMsg){
+    const args = Object.assign({ p_pin: ADMIN_PIN }, extraArgs);
+    const { error } = await sb.rpc(fn, args);
+    if(error){ toast(error.message || 'Action failed', false); return; }
+    toast(successMsg, true);
+  }
+
+  document.getElementById('addDayBtn').addEventListener('click', ()=>{
+    const date = document.getElementById('dayDateInput').value;
+    const count = parseInt(document.getElementById('dayCountInput').value, 10);
+    if(!date){ toast('Pick a date first.', false); return; }
+    if(!count || count < 1){ toast('Enter a valid match count.', false); return; }
+    scheduleAction('schedule_add_match_day', { p_match_date: date, p_count: count }, `${count} match(es) added.`);
+  });
+
+  document.getElementById('addPlayoffBtn').addEventListener('click', ()=>{
+    const phase = document.getElementById('playoffPhaseInput').value;
+    const label = document.getElementById('playoffLabelInput').value.trim();
+    const date = document.getElementById('playoffDateInput').value;
+    const time = document.getElementById('playoffTimeInput').value.trim();
+    if(!label){ toast('Enter a label for this match.', false); return; }
+    if(!date){ toast('Pick a date first.', false); return; }
+    scheduleAction('schedule_add_match', { p_phase: phase, p_label: label, p_match_date: date, p_match_time: time || null }, 'Playoff match added.');
+    document.getElementById('playoffLabelInput').value = '';
+    document.getElementById('playoffTimeInput').value = '';
+  });
+
+  if(ADMIN_PIN){ verifyAndEnterAdmin(ADMIN_PIN); }
+  fetchAll();
+</script>
+</body>
+</html>
