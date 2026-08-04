@@ -161,11 +161,10 @@
   .nav-drawer-foot{margin-top:auto; padding-top:16px; border-top:1px solid var(--line); font-size:9.5px; letter-spacing:0.18em; color:var(--ink-faint); text-align:center; text-transform:uppercase;}
 
   /* ============ INTRO ============ */
-.intro{
+  .intro{
     position:relative; padding:34px 20px 8px; overflow:hidden;
-    background:
-radial-gradient(ellipse 120% 70% at 50% 35%, rgba(240,185,61,.22), transparent 65%),
-linear-gradient(180deg, #171109 0%, var(--bg) 92%);  }
+    background:radial-gradient(ellipse 120% 60% at 50% 0%, rgba(240,185,61,0.10), transparent 60%), linear-gradient(180deg, transparent, var(--bg) 92%);
+  }
   .intro::before{
     content:''; position:absolute; inset:0;
     background-image:linear-gradient(rgba(240,185,61,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(240,185,61,0.05) 1px, transparent 1px);
@@ -187,7 +186,6 @@ linear-gradient(180deg, #171109 0%, var(--bg) 92%);  }
   }
   .intro-desc{position:relative; margin-top:12px; font-size:13.5px; line-height:1.55; color:var(--ink-dim); max-width:320px;}
 
-  
   /* ============ SYNC BADGE ============ */
   .sync-row{display:flex; align-items:center; justify-content:space-between; padding:16px 20px 0;}
   .sync-badge{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:100px; border:1px solid var(--line); background:var(--surface); font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-faint);}
