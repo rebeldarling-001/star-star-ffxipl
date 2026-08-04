@@ -177,7 +177,9 @@ q
   .eyebrow::before{content:''; width:16px; height:1px; background:var(--gold-deep);}
   .intro-title{
     position:relative; margin-top:12px; font-size:38px; line-height:0.95;
-    background: transparent;
+    background:linear-gradient(180deg,var(--gold-pale) 10%,var(--gold) 55%,var(--gold-deep) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
   .intro-desc{position:relative; margin-top:12px; font-size:13.5px; line-height:1.55; color:var(--ink-dim); max-width:320px;}
 
   /* ============ SYNC BADGE ============ */
