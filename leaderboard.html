@@ -159,7 +159,16 @@ q
   /* ============ INTRO ============ */
   .intro{
     position:relative; padding:34px 20px 8px; overflow:hidden;
-    background: transparent;
+    .intro{
+    position:relative;
+    padding:34px 20px 8px;
+    overflow:hidden;
+    background:radial-gradient(
+        ellipse 120% 60% at 50% 0%,
+        rgba(240,185,61,.08),
+        transparent 70%
+    );
+}
   }
   .intro::before{
     content:''; position:absolute; inset:0;
