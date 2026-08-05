@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // Apply saved theme immediately, before first paint, to avoid a flash of the default theme
+        (function () {
+            try {
+                var saved = localStorage.getItem('xipl-theme');
+                if (saved) document.documentElement.setAttribute('data-theme', saved);
+            } catch (e) { /* localStorage unavailable — default theme will render */ }
+        })();
+    </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -12,37 +21,531 @@
 <!-- Supabase JS client (CDN, no build step) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
-  :root{
-    --bg:#0a0705;
-    --bg-alt:#120c07;
-    --surface:#1a130b;
-    --surface-2:#221909;
-    --gold:#f0b93d;
-    --gold-deep:#b3811f;
-    --gold-pale:#fbe4a6;
-    --ink:#f4ecd8;
-    --ink-dim:#a9997d;
-    --ink-faint:#6b5f4c;
-    --live:#ff4433;
-    --line:rgba(240,185,61,0.14);
+        :root,
+        [data-theme="golden-fire"] {
+            --bg: #0a0705;
+            --bg-alt: #120c07;
+            --surface: #1a130b;
+            --surface-2: #221909;
+            --gold: #f0b93d;
+            --gold-deep: #b3811f;
+            --gold-pale: #fbe4a6;
+            --ink: #f4ecd8;
+            --ink-dim: #a9997d;
+            --ink-faint: #6b5f4c;
+            --live: #ff4433;
+            --line: rgba(var(--gold-rgb), 0.14);
+            --shadow-gold: 0 0 40px rgba(var(--gold-rgb), 0.18);
+
+            --bg-rgb: 10, 7, 5;
+            --gold-rgb: 240, 185, 61;
+            --live-rgb: 255, 68, 51;
+            --mvp-glow-rgb: 178, 110, 224;
+            --on-accent: #1a1206;
+
+            --card-a: #1d1509;
+            --card-b: #100b06;
+            --nav-a: #160f08;
+            --nav-b: #0c0805;
+            --cta-a: #221708;
+            --cta-b: #16100a;
+            --splash-a: #1c1206;
+            --splash-b: #0a0705;
+            --btt-bg: rgba(15, 10, 5, 0.85);
+
+            --amb1: rgba(240, 185, 61, .20);
+            --amb2: rgba(251, 228, 166, .14);
+            --amb3: rgba(179, 129, 31, .10);
+            --body-1: #0a0705;
+            --body-2: #120c07;
+            --body-3: #1a130b;
+            --body-4: #060402;
+        }
+
+        [data-theme="og-bar"] {
+            --bg: #0a0705;
+            --bg-alt: #120c07;
+            --surface: #1a130b;
+            --surface-2: #221909;
+            --gold: #f0b93d;
+            --gold-deep: #b3811f;
+            --gold-pale: #fbe4a6;
+            --ink: #f4ecd8;
+            --ink-dim: #a9997d;
+            --ink-faint: #6b5f4c;
+            --live: #ff4433;
+            --line: rgba(var(--gold-rgb), 0.14);
+            --shadow-gold: 0 0 40px rgba(var(--gold-rgb), 0.18);
+
+            --bg-rgb: 10, 7, 5;
+            --gold-rgb: 240, 185, 61;
+            --live-rgb: 255, 68, 51;
+            --mvp-glow-rgb: 178, 110, 224;
+            --on-accent: #1a1206;
+
+            --card-a: #1d1509;
+            --card-b: #100b06;
+            --nav-a: #160f08;
+            --nav-b: #0c0805;
+            --cta-a: #221708;
+            --cta-b: #16100a;
+            --splash-a: #1c1206;
+            --splash-b: #0a0705;
+            --btt-bg: rgba(15, 10, 5, 0.85);
+
+            --amb1: rgba(0, 180, 255, .18);
+            --amb2: rgba(130, 80, 255, .16);
+            --amb3: rgba(0, 255, 180, .08);
+            --body-1: #040814;
+            --body-2: #08101F;
+            --body-3: #0B1628;
+            --body-4: #05070D;
+        }
+
+        /* ============ THEME DEFINITIONS ============ */
+        [data-theme="crystal-light"] {
+            --bg: #eef6fb9a;
+            --bg-alt: #ffffff76;
+            --surface: #ffffff7b;
+            --surface-2: #e4f2fa67;
+            --gold: #2ea8e0;
+            --gold-deep: #1c7fb0;
+            --gold-pale: #8fd6ff;
+            --ink: #10344a;
+            --ink-dim: #4d7286;
+            --ink-faint: #86a4b3;
+            --live: #ff5252;
+            --line: rgba(28, 127, 176, 0.16);
+            --shadow-gold: 0 8px 30px rgba(46, 168, 224, 0.16);
+
+            --bg-rgb: 238, 246, 251;
+            --gold-rgb: 46, 168, 224;
+            --live-rgb: 255, 82, 82;
+            --mvp-glow-rgb: 130, 190, 255;
+            --on-accent: #ffffff8d;
+
+            --card-a: #ffffff72;
+            --card-b: #dcf0fb;
+            --nav-a: #ffffff;
+            --nav-b: #dcf0fb;
+            --cta-a: #ffffff;
+            --cta-b: #d7edfa;
+            --splash-a: #ffffff;
+            --splash-b: #d7edfa;
+            --btt-bg: rgba(255, 255, 255, 0.85);
+
+            --amb1: rgba(46, 168, 224, .16);
+            --amb2: rgba(120, 190, 255, .14);
+            --amb3: rgba(150, 230, 255, .12);
+            --body-1: #eaf6ff;
+            --body-2: #f2fbff;
+            --body-3: #e6f4fd;
+            --body-4: #eef6fb;
+        }
+
+        [data-theme="neon-cyber"] {
+            --bg: #05060f;
+            --bg-alt: #0a0d1c;
+            --surface: #0d1226;
+            --surface-2: #131a35;
+            --gold: #29d3ff;
+            --gold-deep: #7c3aed;
+            --gold-pale: #9fe8ff;
+            --ink: #eaf2ff;
+            --ink-dim: #93a7d6;
+            --ink-faint: #5a6796;
+            --live: #ff3b7a;
+            --line: rgba(41, 211, 255, 0.18);
+            --shadow-gold: 0 0 40px rgba(41, 211, 255, 0.25);
+
+            --bg-rgb: 5, 6, 15;
+            --gold-rgb: 41, 211, 255;
+            --live-rgb: 255, 59, 122;
+            --mvp-glow-rgb: 124, 58, 237;
+            --on-accent: #05060f;
+
+            --card-a: #131a35;
+            --card-b: #0a0d1c;
+            --nav-a: #131a35;
+            --nav-b: #05060f;
+            --cta-a: #17204a;
+            --cta-b: #0a0d1c;
+            --splash-a: #131a35;
+            --splash-b: #05060f;
+            --btt-bg: rgba(10, 13, 28, 0.85);
+
+            --amb1: rgba(41, 211, 255, .22);
+            --amb2: rgba(124, 58, 237, .22);
+            --amb3: rgba(0, 255, 220, .1);
+            --body-1: #05060f;
+            --body-2: #0a0d21;
+            --body-3: #0c1230;
+            --body-4: #04050d;
+        }
+
+        [data-theme="royal-purple"] {
+            --bg: #140a24;
+            --bg-alt: #1b0f30;
+            --surface: #1f1236;
+            --surface-2: #2a1948;
+            --gold: #b366ff;
+            --gold-deep: #7c2fd6;
+            --gold-pale: #ffb3ec;
+            --ink: #f3e8ff;
+            --ink-dim: #b79bd9;
+            --ink-faint: #7c5fa3;
+            --live: #ff4d8d;
+            --line: rgba(179, 102, 255, 0.18);
+            --shadow-gold: 0 0 40px rgba(179, 102, 255, 0.25);
+
+            --bg-rgb: 20, 10, 36;
+            --gold-rgb: 179, 102, 255;
+            --live-rgb: 255, 77, 141;
+            --mvp-glow-rgb: 255, 143, 224;
+            --on-accent: #1a0630;
+
+            --card-a: #2a1948;
+            --card-b: #180b2b;
+            --nav-a: #2a1948;
+            --nav-b: #140a24;
+            --cta-a: #33205a;
+            --cta-b: #180b2b;
+            --splash-a: #2a1948;
+            --splash-b: #140a24;
+            --btt-bg: rgba(24, 11, 43, 0.85);
+
+            --amb1: rgba(179, 102, 255, .24);
+            --amb2: rgba(255, 143, 224, .18);
+            --amb3: rgba(120, 80, 255, .14);
+            --body-1: #140a24;
+            --body-2: #1c0f36;
+            --body-3: #200f3f;
+            --body-4: #100819;
+        }
+
+        [data-theme="emerald-forest"] {
+            --bg: #06170f;
+            --bg-alt: #0a2016;
+            --surface: #0d2419;
+            --surface-2: #123222;
+            --gold: #22c58e;
+            --gold-deep: #0e8f63;
+            --gold-pale: #a7f3d0;
+            --ink: #eafff5;
+            --ink-dim: #9fcbb2;
+            --ink-faint: #5f8f77;
+            --live: #ff5a4d;
+            --line: rgba(34, 197, 142, 0.18);
+            --shadow-gold: 0 0 40px rgba(34, 197, 142, 0.22);
+
+            --bg-rgb: 6, 23, 15;
+            --gold-rgb: 34, 197, 142;
+            --live-rgb: 255, 90, 77;
+            --mvp-glow-rgb: 167, 243, 208;
+            --on-accent: #042014;
+
+            --card-a: #123222;
+            --card-b: #08190f;
+            --nav-a: #123222;
+            --nav-b: #06170f;
+            --cta-a: #163b28;
+            --cta-b: #08190f;
+            --splash-a: #123222;
+            --splash-b: #06170f;
+            --btt-bg: rgba(8, 25, 15, 0.85);
+
+            --amb1: rgba(34, 197, 142, .2);
+            --amb2: rgba(167, 243, 208, .14);
+            --amb3: rgba(80, 220, 150, .12);
+            --body-1: #06170f;
+            --body-2: #0a2318;
+            --body-3: #0c2a1c;
+            --body-4: #04120b;
+        }
+
+        [data-theme="sunset-orange"] {
+            --bg: #1f0f08;
+            --bg-alt: #29140a;
+            --surface: #2b160c;
+            --surface-2: #391d0f;
+            --gold: #ff7a45;
+            --gold-deep: #d9481f;
+            --gold-pale: #ffcba4;
+            --ink: #fff1e6;
+            --ink-dim: #d9ab8f;
+            --ink-faint: #9c6f57;
+            --live: #ff3b3b;
+            --line: rgba(255, 122, 69, 0.18);
+            --shadow-gold: 0 0 40px rgba(255, 122, 69, 0.22);
+
+            --bg-rgb: 31, 15, 8;
+            --gold-rgb: 255, 122, 69;
+            --live-rgb: 255, 59, 59;
+            --mvp-glow-rgb: 255, 187, 130;
+            --on-accent: #2a0e04;
+
+            --card-a: #391d0f;
+            --card-b: #200f07;
+            --nav-a: #391d0f;
+            --nav-b: #1f0f08;
+            --cta-a: #45260f;
+            --cta-b: #200f07;
+            --splash-a: #391d0f;
+            --splash-b: #1f0f08;
+            --btt-bg: rgba(32, 15, 7, 0.85);
+
+            --amb1: rgba(255, 122, 69, .22);
+            --amb2: rgba(255, 187, 130, .16);
+            --amb3: rgba(255, 90, 90, .1);
+            --body-1: #1f0f08;
+            --body-2: #2a1509;
+            --body-3: #2f170b;
+            --body-4: #170a05;
+        }
+
+        [data-theme="ocean-blue"] {
+            --bg: #02121f;
+            --bg-alt: #052235;
+            --surface: #06263b;
+            --surface-2: #0a3550;
+            --gold: #00b4d8;
+            --gold-deep: #0077b6;
+            --gold-pale: #90e0ef;
+            --ink: #eafcff;
+            --ink-dim: #9fd0e0;
+            --ink-faint: #5f8fa3;
+            --live: #ff5c5c;
+            --line: rgba(0, 180, 216, 0.18);
+            --shadow-gold: 0 0 40px rgba(0, 180, 216, 0.24);
+
+            --bg-rgb: 2, 18, 31;
+            --gold-rgb: 0, 180, 216;
+            --live-rgb: 255, 92, 92;
+            --mvp-glow-rgb: 144, 224, 239;
+            --on-accent: #011520;
+
+            --card-a: #0a3550;
+            --card-b: #041c2b;
+            --nav-a: #0a3550;
+            --nav-b: #02121f;
+            --cta-a: #0d3f5e;
+            --cta-b: #041c2b;
+            --splash-a: #0a3550;
+            --splash-b: #02121f;
+            --btt-bg: rgba(4, 28, 43, 0.85);
+
+            --amb1: rgba(0, 180, 216, .22);
+            --amb2: rgba(144, 224, 239, .16);
+            --amb3: rgba(0, 119, 182, .16);
+            --body-1: #02121f;
+            --body-2: #062338;
+            --body-3: #082b43;
+            --body-4: #010b13;
+        }
+
+        [data-theme="sakura-pink"] {
+            --bg: #fdf3f7;
+            --bg-alt: #fff8fb;
+            --surface: #ffffff;
+            --surface-2: #ffe9f2;
+            --gold: #ff8fc2;
+            --gold-deep: #e05a95;
+            --gold-pale: #ffd6e8;
+            --ink: #4a2540;
+            --ink-dim: #93677f;
+            --ink-faint: #bb96a9;
+            --live: #ff5577;
+            --line: rgba(224, 90, 149, 0.18);
+            --shadow-gold: 0 8px 30px rgba(255, 143, 194, 0.2);
+
+            --bg-rgb: 253, 243, 247;
+            --gold-rgb: 255, 143, 194;
+            --live-rgb: 255, 85, 119;
+            --mvp-glow-rgb: 220, 180, 255;
+            --on-accent: #ffffff;
+
+            --card-a: #ffffff;
+            --card-b: #ffe4f0;
+            --nav-a: #ffffff;
+            --nav-b: #ffe4f0;
+            --cta-a: #ffffff;
+            --cta-b: #ffdcec;
+            --splash-a: #ffffff;
+            --splash-b: #ffdcec;
+            --btt-bg: rgba(255, 255, 255, 0.85);
+
+            --amb1: rgba(255, 143, 194, .2);
+            --amb2: rgba(220, 180, 255, .16);
+            --amb3: rgba(255, 210, 230, .18);
+            --body-1: #fff5f9;
+            --body-2: #fef0f6;
+            --body-3: #fdeaf3;
+            --body-4: #fdf3f7;
+        }
+
+        [data-theme="midnight-black"] {
+            --bg: #0a0a0a;
+            --bg-alt: #111111;
+            --surface: #141414;
+            --surface-2: #1c1c1c;
+            --gold: #d4d4d4;
+            --gold-deep: #8a8a8a;
+            --gold-pale: #f5f5f5;
+            --ink: #f5f5f5;
+            --ink-dim: #a3a3a3;
+            --ink-faint: #666666;
+            --live: #ff4d4d;
+            --line: rgba(255, 255, 255, 0.12);
+            --shadow-gold: 0 0 40px rgba(255, 255, 255, 0.1);
+
+            --bg-rgb: 10, 10, 10;
+            --gold-rgb: 212, 212, 212;
+            --live-rgb: 255, 77, 77;
+            --mvp-glow-rgb: 180, 180, 180;
+            --on-accent: #0a0a0a;
+
+            --card-a: #1c1c1c;
+            --card-b: #0d0d0d;
+            --nav-a: #1c1c1c;
+            --nav-b: #0a0a0a;
+            --cta-a: #202020;
+            --cta-b: #0d0d0d;
+            --splash-a: #1c1c1c;
+            --splash-b: #0a0a0a;
+            --btt-bg: rgba(13, 13, 13, 0.85);
+
+            --amb1: rgba(255, 255, 255, .08);
+            --amb2: rgba(200, 200, 200, .06);
+            --amb3: rgba(255, 255, 255, .04);
+            --body-1: #0a0a0a;
+            --body-2: #101010;
+            --body-3: #131313;
+            --body-4: #070707;
+        }
+
+
+        [data-theme="crimson-blood"] {
+            --bg: #1a0505;
+            --bg-alt: #240808;
+            --surface: #2b0a0a;
+            --surface-2: #3a0f0f;
+            --gold: #e0304a;
+            --gold-deep: #a3182d;
+            --gold-pale: #ff8fa3;
+            --ink: #ffeef0;
+            --ink-dim: #d99aa3;
+            --ink-faint: #8f5860;
+            --live: #ffcc00;
+            --line: rgba(224, 48, 74, 0.18);
+            --shadow-gold: 0 0 40px rgba(224, 48, 74, 0.22);
+
+            --bg-rgb: 26, 5, 5;
+            --gold-rgb: 224, 48, 74;
+            --live-rgb: 255, 204, 0;
+            --mvp-glow-rgb: 255, 143, 163;
+            --on-accent: #1a0505;
+
+            --card-a: #3a0f0f;
+            --card-b: #200808;
+            --nav-a: #3a0f0f;
+            --nav-b: #1a0505;
+            --cta-a: #451212;
+            --cta-b: #200808;
+            --splash-a: #3a0f0f;
+            --splash-b: #1a0505;
+            --btt-bg: rgba(32, 8, 8, 0.85);
+
+            --amb1: rgba(224, 48, 74, .22);
+            --amb2: rgba(255, 143, 163, .16);
+            --amb3: rgba(163, 24, 45, .12);
+            --body-1: #1a0505;
+            --body-2: #240909;
+            --body-3: #2a0a0a;
+            --body-4: #120404;
+        }
+
+        [data-theme="arena-pro"] {
+            --bg: #FEF5EF;
+            --bg-alt: #F3EAF4;
+
+            --surface: #FFFFFF;
+            --surface-2: #EADDE1;
+
+            --gold: #9D5C63;
+            --gold-deep: #584B53;
+            --gold-pale: #8B4B54;
+
+            --ink: #584B53;
+            --ink-dim: #8F9491;
+            --ink-faint: #BCA3AC;
+
+            --live: #9D5C63;
+
+            --line: rgba(88, 75, 83, .14);
+            --shadow-gold: 0 10px 30px rgba(157, 92, 99, .18);
+
+            --bg-rgb: 254, 245, 239;
+            --gold-rgb: 157, 92, 99;
+            --live-rgb: 157, 92, 99;
+            --mvp-glow-rgb: 157, 92, 99;
+
+            --on-accent: #FEF5EF;
+
+            --card-a: #FFFFFF;
+            --card-b: #EADDE1;
+
+            --nav-a: #FEF5EF;
+            --nav-b: #F3EAF4;
+
+            --cta-a: #FFFFFF;
+            --cta-b: #EADDE1;
+
+            --splash-a: #FEF5EF;
+            --splash-b: #F3EAF4;
+
+            --btt-bg: rgba(254, 245, 239, .90);
+
+            --amb1: rgba(157, 92, 99, .08);
+            --amb2: rgba(243, 234, 244, .45);
+            --amb3: rgba(88, 75, 83, .06);
+
+            --body-1: #FEF5EF;
+            --body-2: #F3EAF4;
+            --body-3: #FFFFFF;
+            --body-4: #EADDE1;
+        }
+
+
+  /* Smooth theme-swap transition, active only briefly on switch */
+  html.theme-transitioning, html.theme-transitioning *{
+    transition:background-color .6s ease, background-image .6s ease, border-color .6s ease, color .6s ease, box-shadow .6s ease, fill .6s ease, stroke .6s ease !important;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html{background:var(--bg);}
   body{
-    background:var(--bg); color:var(--ink); font-family:'Rajdhani',sans-serif;
+    color:var(--ink); font-family:'Rajdhani',sans-serif;
     max-width:480px; margin:0 auto; position:relative; overflow-x:hidden; min-height:100vh;
+    background:
+      linear-gradient(rgba(var(--gold-rgb),.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--gold-rgb),.05) 1px, transparent 1px),
+      radial-gradient(circle at 15% 20%, var(--amb1), transparent 28%),
+      radial-gradient(circle at 85% 15%, var(--amb2), transparent 30%),
+      radial-gradient(circle at 50% 85%, var(--amb3), transparent 35%),
+      linear-gradient(180deg, var(--body-1) 0%, var(--body-2) 30%, var(--body-3) 60%, var(--body-4) 100%);
+    background-size:40px 40px, 40px 40px, auto, auto, auto, auto;
+    background-attachment:fixed;
   }
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
   }
-  ::selection{background:var(--gold); color:#1a1206;}
+  ::selection{background:var(--gold); color:var(--on-accent);}
   .display{font-family:'Anton',sans-serif; letter-spacing:0.02em; text-transform:uppercase;}
   .mono{font-family:'Space Mono',monospace;}
 
   /* ============ SPLASH ============ */
   #splash{
     position:fixed; inset:0; z-index:999;
-    background:radial-gradient(ellipse at 50% 40%, #1c1206 0%, #0a0705 70%);
+    background:radial-gradient(ellipse at 50% 40%, var(--splash-a) 0%, var(--splash-b) 70%);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     max-width:480px; margin:0 auto;
     transition:opacity 0.7s ease, visibility 0.7s ease;
@@ -85,7 +588,7 @@
   /* ============ HEADER ============ */
   header{
     position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
-    padding:14px 18px; background:rgba(10,7,5,0.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+    padding:14px 18px; background:rgba(var(--bg-rgb),0.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
   }
   .brand{display:flex; align-items:center; gap:9px;}
   .back-btn{
@@ -107,13 +610,36 @@
   }
   .menu-btn:active{transform:scale(0.92);}
   .header-flex{display:flex; align-items:center; gap:10px;}
+  .header-actions{display:flex; align-items:center; gap:8px;}
+
+  /* ============ THEME SWITCHER ============ */
+  .theme-overlay{position:fixed; inset:0; z-index:90; max-width:480px; margin:0 auto; background:rgba(var(--bg-rgb),0.5); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity 0.3s ease;}
+  .theme-overlay.show{opacity:1; pointer-events:auto;}
+  .theme-panel{
+    position:fixed; z-index:95; top:62px; right:14px; left:14px; max-width:452px; margin:0 auto;
+    background:linear-gradient(165deg,var(--nav-a),var(--nav-b) 80%); border:1px solid var(--line); border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.45); transform:translateY(-14px) scale(0.97); opacity:0; pointer-events:none;
+    transition:transform 0.28s cubic-bezier(.2,.9,.25,1), opacity 0.24s ease; max-height:78vh;
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  .theme-panel.show{transform:translateY(0) scale(1); opacity:1; pointer-events:auto;}
+  .theme-panel-head{display:flex; align-items:center; justify-content:space-between; padding:14px 14px 12px; font-size:13px; font-weight:600; letter-spacing:0.03em; color:var(--ink); border-bottom:1px solid var(--line); flex-shrink:0;}
+  .theme-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; padding:12px; overflow-y:auto;}
+  .theme-opt{display:flex; align-items:center; gap:8px; padding:10px; border-radius:12px; border:1px solid var(--line); background:rgba(var(--bg-rgb),0.35); cursor:pointer; text-align:left; transition:border-color 0.18s ease, background 0.18s ease, transform 0.15s ease;}
+  .theme-opt:active{transform:scale(0.96);}
+  .theme-opt.active{border-color:var(--gold); background:rgba(var(--gold-rgb),0.1); box-shadow:0 0 0 1px rgba(var(--gold-rgb),0.35);}
+  .theme-swatch{display:flex; flex-shrink:0; width:26px; height:26px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.12);}
+  .theme-swatch i{flex:1; display:block;}
+  .theme-opt-name{font-size:11.5px; letter-spacing:0.02em; color:var(--ink-dim); line-height:1.3;}
+  .theme-opt.active .theme-opt-name{color:var(--gold-pale); font-weight:600;}
+  .theme-opt-name em{font-style:normal;}
 
   /* ============ NAV DRAWER ============ */
   .nav-overlay{position:fixed; inset:0; z-index:90; max-width:480px; margin:0 auto; background:rgba(5,3,2,0.62); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity 0.32s ease;}
   .nav-overlay.show{opacity:1; pointer-events:auto;}
   .nav-drawer{
     position:fixed; top:0; right:0; bottom:0; z-index:95; width:76%; max-width:300px;
-    background:linear-gradient(165deg,#160f08,#0c0805 75%); border-left:1px solid var(--line);
+    background:linear-gradient(165deg,var(--nav-a),var(--nav-b) 75%); border-left:1px solid var(--line);
     display:flex; flex-direction:column; padding:18px 16px 20px;
     transform:translateX(100%); transition:transform 0.38s cubic-bezier(.2,.9,.25,1);
     box-shadow:-24px 0 60px rgba(0,0,0,0.5);
@@ -134,7 +660,7 @@
   /* ============ INTRO ============ */
   .intro{
     position:relative; padding:34px 20px 8px; overflow:hidden;
-    background:radial-gradient(ellipse 120% 60% at 50% 0%, rgba(240,185,61,0.10), transparent 60%), linear-gradient(180deg, transparent, var(--bg) 92%);
+    background:transparent;
   }
   .intro::before{
     content:''; position:absolute; inset:0;
@@ -189,7 +715,7 @@
   .mvp-avatar img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
   .mvp-name{margin-top:12px; font-family:'Anton',sans-serif; font-size:24px; letter-spacing:0.01em; color:var(--ink);}
   .mvp-team{display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:4px 12px; border-radius:100px; background:var(--team-c2); border:1px solid var(--team-c);}
-  .mvp-team-badge{width:16px; height:16px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:7px; font-family:'Anton',sans-serif; background:var(--team-c); color:#1a1206;}
+  .mvp-team-badge{width:16px; height:16px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:7px; font-family:'Anton',sans-serif; background:var(--team-c); color:var(--on-accent);}
   .mvp-team span{font-size:10.5px; color:var(--team-c); letter-spacing:0.03em;}
   .mvp-stats{display:flex; justify-content:center; gap:28px; margin-top:20px;}
   .mvp-stat b{display:block; font-family:'Space Mono',monospace; font-size:28px; color:var(--gold-pale); line-height:1;}
@@ -220,7 +746,7 @@
  /* ============ CTA ============ */
   .cta-band{
     margin:36px 20px 0; padding:26px 20px; border-radius:18px; text-align:center;
-    background:linear-gradient(150deg, #221708, #16100a 60%);
+    background:linear-gradient(150deg, var(--cta-a), var(--cta-b) 60%);
     border:1px solid var(--gold-deep); position:relative; overflow:hidden;
   }
   .cta-band h3{font-family:'Anton',sans-serif; font-size:20px; color:var(--gold-pale); letter-spacing:0.02em;}
@@ -233,7 +759,7 @@
   .btn:active{transform:scale(0.96);}
   .btn-primary{
     background:linear-gradient(135deg,var(--gold-pale),var(--gold) 55%,var(--gold-deep));
-    color:#1a1206; box-shadow:0 8px 24px rgba(240,185,61,0.25);
+    color:var(--on-accent); box-shadow:0 8px 24px rgba(var(--gold-rgb),0.25);
   }
   .btn-ghost{background:var(--surface); color:var(--ink-dim); border:1px solid var(--line);}
   .cta-band .btn{margin-top:16px; width:100%;}
@@ -257,14 +783,14 @@
   }
   .back-to-top.show{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
   .back-to-top svg{position:absolute; inset:0; transform:rotate(-90deg);}
-  .btt-bg{fill:rgba(15,10,5,0.85); stroke:rgba(240,185,61,0.18); stroke-width:2;}
+  .btt-bg{fill:var(--btt-bg); stroke:rgba(var(--gold-rgb),0.18); stroke-width:2;}
   .btt-fill{fill:none; stroke:var(--gold); stroke-width:2; stroke-linecap:round; transition:stroke-dashoffset 0.1s linear;}
   .back-to-top span{position:relative; color:var(--gold); font-size:16px; font-weight:700;}
 
   /* ============ ADMIN ============ */
   .admin-fab{
     position:fixed; left:18px; bottom:20px; z-index:70; width:44px; height:44px; border-radius:12px;
-    border:1px solid var(--line); background:rgba(15,10,5,0.85); backdrop-filter:blur(8px);
+    border:1px solid var(--line); background:var(--btt-bg); backdrop-filter:blur(8px);
     color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer;
   }
   .admin-fab:active{transform:scale(0.92);}
@@ -272,7 +798,7 @@
   .admin-overlay.show{opacity:1; pointer-events:auto;}
   .admin-panel{
     position:fixed; left:0; right:0; bottom:0; z-index:155; max-width:480px; margin:0 auto; max-height:86vh;
-    background:linear-gradient(165deg,#160f08,#0c0805 80%); border-top:1px solid var(--line); border-radius:20px 20px 0 0;
+    background:linear-gradient(165deg,var(--nav-a),var(--nav-b) 80%); border-top:1px solid var(--line); border-radius:20px 20px 0 0;
     transform:translateY(100%); transition:transform 0.36s cubic-bezier(.2,.9,.25,1);
     display:flex; flex-direction:column; box-shadow:0 -20px 60px rgba(0,0,0,0.5);
   }
@@ -290,7 +816,7 @@
 
   .admin-tabs{display:flex; gap:8px; margin-bottom:14px;}
   .admin-tab{flex:1; padding:9px 0; text-align:center; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--ink-dim); font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer;}
-  .admin-tab.active{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep)); color:#1a1206; border-color:transparent;}
+  .admin-tab.active{background:linear-gradient(135deg,var(--gold-pale),var(--gold) 60%,var(--gold-deep)); color:var(--on-accent); border-color:transparent;}
   .admin-pane{display:none;}
   .admin-pane.active{display:block;}
 
@@ -317,7 +843,7 @@
   .admin-field label{font-size:8px; letter-spacing:0.06em; color:var(--ink-faint); text-transform:uppercase;}
   .admin-field input{padding:8px 9px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-family:'Space Mono',monospace; font-size:11px; width:100%;}
   .admin-field input:focus{outline:none; border-color:var(--gold-deep);}
-  .admin-actions{display:flex; gap:10px; margin-top:6px; position:sticky; bottom:0; background:linear-gradient(0deg,#0c0805 55%,transparent); padding:12px 0 2px;}
+  .admin-actions{display:flex; gap:10px; margin-top:6px; position:sticky; bottom:0; background:linear-gradient(0deg,var(--nav-b) 55%,transparent); padding:12px 0 2px;}
   .admin-lock{margin-top:14px; text-align:center;}
   .admin-lock button{background:none; border:none; color:var(--ink-faint); font-size:10.5px; letter-spacing:0.06em; text-decoration:underline; text-underline-offset:3px; cursor:pointer;}
 
@@ -352,8 +878,34 @@
       <a href="./index.html" class="back-btn" aria-label="Back to home">←</a>
       <div class="brand"><div class="crest"></div><div class="brand-text">FREEFIRE<b>XIPL</b></div></div>
     </div>
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="header-actions">
+      <button class="menu-btn theme-btn" id="themeBtn" aria-label="Change theme" aria-haspopup="true" aria-expanded="false">🎨</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    </div>
   </header>
+
+  <!-- THEME SWITCHER -->
+  <div class="theme-overlay" id="themeOverlay"></div>
+  <div class="theme-panel" id="themePanel" role="menu" aria-label="Theme switcher">
+    <div class="theme-panel-head">
+      <span>🎨 Choose a Theme</span>
+      <button class="nav-close" id="themeClose" aria-label="Close theme menu">✕</button>
+    </div>
+    <div class="theme-grid" id="themeGrid">
+      <button class="theme-opt" data-theme="golden-fire" role="menuitemradio"><span class="theme-swatch"><i style="background:#0a0705"></i><i style="background:#f0b93d"></i><i style="background:#b88f20"></i></span><span class="theme-opt-name">Golden Fire <em>🔥</em></span></button>
+      <button class="theme-opt" data-theme="og-bar" role="menuitemradio"><span class="theme-swatch"><i style="background:#22a6df"></i><i style="background:#250505"></i><i style="background:#49310d"></i></span><span class="theme-opt-name">Disco Blue <em>❤️</em></span></button>
+      <button class="theme-opt" data-theme="neon-cyber" role="menuitemradio"><span class="theme-swatch"><i style="background:#05060f"></i><i style="background:#29d3ff"></i><i style="background:#49199b"></i></span><span class="theme-opt-name">Neon Cyber <em>💙</em></span></button>
+      <button class="theme-opt" data-theme="royal-purple" role="menuitemradio"><span class="theme-swatch"><i style="background:#140a24"></i><i style="background:#b366ff"></i><i style="background:#911b73"></i></span><span class="theme-opt-name">Royal Purple <em>💜</em></span></button>
+      <button class="theme-opt" data-theme="emerald-forest" role="menuitemradio"><span class="theme-swatch"><i style="background:#06170f"></i><i style="background:#22c58e"></i><i style="background:#147749"></i></span><span class="theme-opt-name">Emerald Forest <em>💚</em></span></button>
+      <button class="theme-opt" data-theme="sunset-orange" role="menuitemradio"><span class="theme-swatch"><i style="background:#1f0f08"></i><i style="background:#ff7a45"></i><i style="background:#824619"></i></span><span class="theme-opt-name">Sunset Orange <em>🧡</em></span></button>
+      <button class="theme-opt" data-theme="ocean-blue" role="menuitemradio"><span class="theme-swatch"><i style="background:#02121f"></i><i style="background:#00b4d8"></i><i style="background:#147282"></i></span><span class="theme-opt-name">Ocean Blue <em>🌊</em></span></button>
+      <button class="theme-opt" data-theme="sakura-pink" role="menuitemradio"><span class="theme-swatch"><i style="background:#fdf3f7"></i><i style="background:#ff8fc2"></i><i style="background:#97184f"></i></span><span class="theme-opt-name">Sakura Pink <em>🌸</em></span></button>
+      <button class="theme-opt" data-theme="midnight-black" role="menuitemradio"><span class="theme-swatch"><i style="background:#0a0a0a"></i><i style="background:#d4d4d4"></i><i style="background:#a22222"></i></span><span class="theme-opt-name">Midnight Black <em>⚫</em></span></button>
+      <button class="theme-opt" data-theme="crystal-light" role="menuitemradio"><span class="theme-swatch"><i style="background:#eef6fb"></i><i style="background:#2ea8e0"></i><i style="background:#058ede"></i></span><span class="theme-opt-name">Crystal Light <em>☀️</em></span></button>
+      <button class="theme-opt" data-theme="crimson-blood" role="menuitemradio"><span class="theme-swatch"><i style="background:#1a0505"></i><i style="background:#e0304a"></i><i style="background:#ff8fa3"></i></span><span class="theme-opt-name">Crimson Blood <em>🩸</em></span></button>
+      <button class="theme-opt" data-theme="arena-pro" role="menuitemradio"><span class="theme-swatch"><i style="background:#0b0b10"></i><i style="background:#ff8c00"></i><i style="background:#ffd36a"></i></span><span class="theme-opt-name">Arena Pro <em>⚔️</em></span></button>
+    </div>
+  </div>
 
   <!-- NAV DRAWER -->
   <div class="nav-overlay" id="navOverlay"></div>
@@ -363,12 +915,17 @@
       <button class="nav-close" id="navClose" aria-label="Close menu">✕</button>
     </div>
     <div class="nav-links">
-      <a href="./index.html" class="nav-link"><span class="nav-link-icon">🏠</span> Home</a>
-      <a href="./register.html" class="nav-link nav-link-primary"><span class="nav-link-icon">📝</span> Register</a>
+      <a href="./arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
+      <a href="./index.html#teams" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+      <a href="./registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration Center</a>
+      <a href="./auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
       <a href="./schedule.html" class="nav-link"><span class="nav-link-icon">📅</span> Schedule</a>
       <a href="./points.html" class="nav-link"><span class="nav-link-icon">📊</span> Points</a>
       <a href="./leaderboard.html" class="nav-link nav-link-current"><span class="nav-link-icon">🏆</span> Leaderboard</a>
-      <a href="./teams.html" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
+      <a href="./HALLOFFAME.HTML" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
+      <a href="./announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
+      <a href="./rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+      <a href="./about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
     </div>
     <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
   </nav>
@@ -467,11 +1024,41 @@
   const navDrawer = document.getElementById('navDrawer');
   const navOverlay = document.getElementById('navOverlay');
   const navClose = document.getElementById('navClose');
-  function openNav() { navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
+  function openNav() { closeTheme(); navDrawer.classList.add('show'); navOverlay.classList.add('show'); }
   function closeNav() { navDrawer.classList.remove('show'); navOverlay.classList.remove('show'); }
   menuBtn.addEventListener('click', openNav);
   navClose.addEventListener('click', closeNav);
   navOverlay.addEventListener('click', closeNav);
+
+  // ====== THEME SWITCHER ======
+  const THEME_KEY = 'xipl-theme';
+  const DEFAULT_THEME = 'golden-fire';
+  const themeBtn = document.getElementById('themeBtn');
+  const themePanel = document.getElementById('themePanel');
+  const themeOverlay = document.getElementById('themeOverlay');
+  const themeClose = document.getElementById('themeClose');
+  const themeOpts = document.querySelectorAll('.theme-opt');
+
+  function markActiveTheme(theme) {
+    themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
+  }
+  function applyTheme(theme, persist) {
+    document.documentElement.classList.add('theme-transitioning');
+    document.documentElement.setAttribute('data-theme', theme);
+    markActiveTheme(theme);
+    if (persist) {
+      try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable, theme still applies for this session */ }
+    }
+    window.clearTimeout(applyTheme._t);
+    applyTheme._t = window.setTimeout(() => { document.documentElement.classList.remove('theme-transitioning'); }, 650);
+  }
+  function openTheme() { themePanel.classList.add('show'); themeOverlay.classList.add('show'); themeBtn.setAttribute('aria-expanded', 'true'); }
+  function closeTheme() { themePanel.classList.remove('show'); themeOverlay.classList.remove('show'); themeBtn.setAttribute('aria-expanded', 'false'); }
+  themeBtn.addEventListener('click', () => { if (themePanel.classList.contains('show')) closeTheme(); else { closeNav(); openTheme(); } });
+  themeClose.addEventListener('click', closeTheme);
+  themeOverlay.addEventListener('click', closeTheme);
+  themeOpts.forEach(opt => { opt.addEventListener('click', () => { applyTheme(opt.dataset.theme, true); closeTheme(); }); });
+  markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
 
   // Scroll progress + back to top
   const scrollFill = document.getElementById('scrollFill');

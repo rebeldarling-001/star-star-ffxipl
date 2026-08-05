@@ -16,7 +16,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>FREEFIRE XIPL — Season 11</title>
+    <title>Rules — FREEFIRE XIPL Season 11</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
@@ -3163,9 +3163,283 @@
             color: var(--ink-faint);
             letter-spacing: 0.03em;
         }
+
+        /* ============ RULES PAGE ============ */
+        .page-hero {
+            padding-top: 28px;
+        }
+
+        .page-hero .sec-title {
+            font-size: 30px;
+        }
+
+        .page-hero .sec-desc {
+            max-width: 420px;
+        }
+
+        .toc-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-top: 18px;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .toc-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .toc-chip {
+            flex: 0 0 auto;
+            padding: 9px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+            color: var(--ink-dim);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .toc-chip b {
+            color: var(--gold);
+            margin-right: 5px;
+        }
+
+        .callout {
+            margin-top: 22px;
+            border-radius: 18px;
+            padding: 16px 16px 16px 14px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            border: 1px solid rgba(var(--live-rgb), 0.35);
+            background: linear-gradient(165deg, rgba(var(--live-rgb), 0.12), transparent 70%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+        }
+
+        .callout .ic {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .callout .t {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .callout .d {
+            margin-top: 4px;
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.55;
+        }
+
+        .rule-accordion {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .rule-item {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+            scroll-margin-top: 70px;
+        }
+
+        .rule-item-head {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 16px;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .rule-num {
+            flex: 0 0 auto;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            color: var(--on-accent);
+            background: linear-gradient(135deg, var(--gold-pale), var(--gold) 55%, var(--gold-deep));
+        }
+
+        .rule-item-title {
+            flex: 1;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: 0.01em;
+        }
+
+        .rule-item-sub {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--ink-faint);
+            text-transform: none;
+        }
+
+        .rule-chevron {
+            flex: 0 0 auto;
+            color: var(--gold-deep);
+            font-size: 13px;
+            transition: transform 0.25s ease;
+        }
+
+        .rule-item.open .rule-chevron {
+            transform: rotate(180deg);
+        }
+
+        .rule-item-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .rule-item.open .rule-item-body {
+            max-height: 1400px;
+        }
+
+        .rule-item-inner {
+            padding: 0 16px 18px 58px;
+            font-size: 13px;
+            color: var(--ink-dim);
+            line-height: 1.65;
+        }
+
+        .rule-item-inner p {
+            margin: 0 0 10px;
+        }
+
+        .rule-item-inner ul {
+            margin: 0 0 10px;
+            padding-left: 18px;
+        }
+
+        .rule-item-inner li {
+            margin-bottom: 6px;
+        }
+
+        .rule-item-inner li::marker {
+            color: var(--gold-deep);
+        }
+
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 4px 0 10px;
+            font-size: 12.5px;
+        }
+
+        .rule-table th {
+            text-align: left;
+            color: var(--gold-pale);
+            font-size: 10.5px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 7px 8px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .rule-table td {
+            padding: 8px 8px;
+            border-bottom: 1px solid var(--line);
+            color: var(--ink-dim);
+        }
+
+        .rule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .strike-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .strike-row:last-child {
+            border-bottom: none;
+        }
+
+        .strike-badge {
+            flex: 0 0 auto;
+            font-family: 'Anton', sans-serif;
+            font-size: 11px;
+            padding: 5px 9px;
+            border-radius: 7px;
+            color: var(--on-accent);
+        }
+
+        .strike-badge.s1 {
+            background: linear-gradient(135deg, #ffd873, #f0b93d);
+        }
+
+        .strike-badge.s2 {
+            background: linear-gradient(135deg, #ff9a5a, #e0632a);
+        }
+
+        .strike-badge.s3 {
+            background: linear-gradient(135deg, #ff6b6b, var(--live));
+        }
+
+        .strike-text {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.4;
+        }
+
+        .rule-contact {
+            margin-top: 26px;
+            border-radius: 20px;
+            text-align: center;
+            padding: 24px 20px;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+        }
+
+        .rule-contact h3 {
+            font-size: 18px;
+            color: var(--ink);
+            margin: 0 0 8px;
+        }
+
+        .rule-contact p {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.55;
+            margin: 0 0 16px;
+        }
+
+        .updated-note {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--ink-faint);
+            letter-spacing: 0.03em;
+        }
     </style>
 </head>
-
 <body>
 
     <div class="scroll-progress">
@@ -3293,7 +3567,7 @@
         <div class="nav-links">
             <a href="arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
 
-            <a href="#teams" class="nav-link" data-scroll="true"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="index.html#teams" class="nav-link"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
@@ -3302,473 +3576,306 @@
             <a href="leaderboard.html" class="nav-link"><span class="nav-link-icon">🏆</span> Leaderboard</a>
             <a href="HALLOFFAME.HTML" class="nav-link"><span class="nav-link-icon">👑</span> Hall of Fame</a>
             <a href="announcements.html" class="nav-link"><span class="nav-link-icon">📣</span> Announcements</a>
-            <a href="rules.html" class="nav-link"><span class="nav-link-icon">📖</span> Rules</a>
+            <a href="rules.html" class="nav-link" style="color:var(--gold);" aria-current="page"><span class="nav-link-icon">📖</span> Rules</a>
             <a href="about.html" class="nav-link"><span class="nav-link-icon">ℹ️</span> About</a>
         </div>
         <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
     </nav>
     <!-- HERO -->
-    <section class="hero" style="padding-top:34px;">
-        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · LIVE ARENA</div>
-        <h1 class="hero-title display fade-up d2"><span class="hero-pre">FREEFIRE</span>XIPL<span>ALL SQUADS. ONE
-                CROWN.</span></h1>
-        <p class="hero-desc fade-up d3">Twelve franchises. One battleground. Follow every drop, every clutch and every
-            crown
-            chase of the season — built for fans who never miss a rotation.</p>
-        <img src="trophy.png" class="hero-trophy" alt="Championship Trophy">
-        <div class="ticker-wrap fade-up d4">
-            <div class="ticker-head"><span class="dot"></span> LIVE UPDATE</div>
-            <div class="ticker-track">
-                <span>
-                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
-                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
-                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
-                    Next drop begins in the arena shortly &nbsp;•&nbsp;
-                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
-                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
-                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
-                    Next drop begins in the arena shortly &nbsp;•&nbsp;
-                </span>
-            </div>
+    <section class="page-hero" style="padding-top:34px;">
+        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · RULEBOOK</div>
+        <h1 class="hero-title display fade-up d2" style="font-size:34px;">TOURNAMENT<span> RULES</span></h1>
+        <p class="sec-desc fade-up d3" style="max-width:420px;">Everything every squad must know before dropping in —
+            eligibility, match format, conduct, scoring and penalties. Read it once, keep it close all season.</p>
+
+        <div class="toc-scroll fade-up d4">
+            <a class="toc-chip" href="#r-eligibility"><b>01</b>Eligibility</a>
+            <a class="toc-chip" href="#r-roster"><b>02</b>Roster</a>
+            <a class="toc-chip" href="#r-format"><b>03</b>Format</a>
+            <a class="toc-chip" href="#r-lobby"><b>04</b>Lobby</a>
+            <a class="toc-chip" href="#r-conduct"><b>05</b>Conduct</a>
+            <a class="toc-chip" href="#r-scoring"><b>06</b>Scoring</a>
+            <a class="toc-chip" href="#r-penalties"><b>07</b>Penalties</a>
+            <a class="toc-chip" href="#r-disputes"><b>08</b>Disputes</a>
+            <a class="toc-chip" href="#r-prizes"><b>09</b>Prizes</a>
         </div>
 
-        <div class="hero-cta fade-up d4">
-            <button class="btn btn-primary" id="ctaEnterArena">Enter Arena</button>
-            <button class="btn btn-ghost" id="ctaMeetSquads">Meet the Squads</button>
-        </div>
-    </section>
-
-    <!-- COUNTDOWN -->
-    <section id="countdown" style="padding-top:8px;">
-        <div class="eyebrow">NEXT UP</div>
-        <h2 class="sec-title">Season 12 <b>countdown</b></h2>
-        <div class="foil-frame cd-foil fade-up">
-            <div class="countdown-card">
-                <div class="cd-glow"></div>
-                <div class="cd-embers">
-                    <span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-                <span class="season-tag cd-badge"><span class="dot"></span> COUNTDOWN LIVE</span>
-
-                <div class="cd-ring-wrap">
-                    <svg width="140" height="140" viewBox="0 0 132 132">
-                        <defs>
-                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:var(--gold-pale)" />
-                                <stop offset="55%" style="stop-color:var(--gold)" />
-                                <stop offset="100%" style="stop-color:var(--gold-deep)" />
-                            </linearGradient>
-                        </defs>
-                        <circle class="cd-ring-bg" cx="66" cy="66" r="59" />
-                        <circle class="cd-ring-fill" id="cdRingFill" cx="66" cy="66" r="59" stroke-dasharray="371"
-                            stroke-dashoffset="371" />
-                    </svg>
-                    <div class="cd-ring-center">
-                        <div class="cd-ring-crest"></div>
-                        <div class="cd-ring-tag">SEASON</div>
-                    </div>
-                </div>
-
-                <h2 class="cd-season display">SEASON 12</h2>
-                <div class="cd-title">ARRIVING SOON</div>
-
-                <div class="cd-divider"></div>
-
-                <div class="cd-digits">
-                    <div class="cd-chip"><span class="cd-num" id="cd-d">00</span><span class="cd-chip-label">Days</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-h">00</span><span class="cd-chip-label">Hrs</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-m">00</span><span class="cd-chip-label">Min</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-s">00</span><span class="cd-chip-label">Sec</span>
-                    </div>
-                </div>
-
-                <div class="cd-caption">Squad registrations open before <b>Season 12</b> kicks off</div>
+        <div class="callout fade-up">
+            <div class="ic">🚫</div>
+            <div>
+                <div class="t">Zero tolerance on cheating</div>
+                <div class="d">Hacking, teaming with rivals, emulator abuse on mobile-only slots, and account
+                    sharing result in an immediate season ban for the whole squad — no warning, no appeal.</div>
             </div>
         </div>
     </section>
 
-    <!-- REGISTRATION -->
-    <section id="register" style="padding-top:8px;">
-        <div class="foil-frame reg-foil fade-up" style="--foil:var(--gold);">
-            <div class="reg-card" id="regCard">
-                <div class="reg-embers">
-                    <span></span><span></span><span></span><span></span>
-                </div>
-                <span class="season-tag reg-badge" id="regBadge"><span class="dot"></span> REGISTRATIONS OPEN</span>
-                <h2 class="reg-title display">SQUAD UP FOR<br>SEASON 12</h2>
-                <p class="reg-desc" id="regDesc">Slots are filling fast — lock in your squad before the roster closes.
-                </p>
+    <section id="rulebook" style="padding-top:8px;">
+        <div class="rule-accordion">
 
-                <div class="reg-slots" id="regSlots">
-                    <div class="reg-slots-track">
-                        <div class="reg-slots-fill" id="regSlotsFill" data-w="62"></div>
+            <div class="rule-item open" id="r-eligibility">
+                <button class="rule-item-head" aria-expanded="true">
+                    <span class="rule-num">01</span>
+                    <span class="rule-item-title">Eligibility & Registration
+                        <span class="rule-item-sub">Who can play, and how squads sign up</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <p>Open to all Free Fire players who can field a full squad and meet the requirements below.
+                            Registration is squad-based, not individual.</p>
+                        <ul>
+                            <li>Every player must be <b style="color:var(--ink);">16 years or older</b> on the
+                                registration date, with a valid, non-banned Free Fire UID.</li>
+                            <li>Squads register as a full roster of <b style="color:var(--ink);">4 starters + up to 2
+                                    substitutes</b> — partial rosters are not accepted.</li>
+                            <li>One player can represent <b style="color:var(--ink);">only one squad</b> per season.
+                                Duplicate UIDs across rosters get both squads disqualified.</li>
+                            <li>Registration is confirmed only after the squad's slot payment/verification (if
+                                applicable) and roster form are both received before slots close.</li>
+                            <li>This is a <b style="color:var(--ink);">mobile-only</b> tournament — registrations
+                                from emulator or PC-bridged accounts will be rejected at verification.</li>
+                        </ul>
                     </div>
-                    <div class="reg-slots-label"><span id="regSlotsText">5 of 8 slots filled</span></div>
                 </div>
-
-                <a href="./register.html" class="btn btn-primary reg-btn" id="regBtn">Register Your Squad →</a>
-                <div class="reg-note" id="regNote">Registrations close once all slots are filled</div>
             </div>
+
+            <div class="rule-item" id="r-roster">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">02</span>
+                    <span class="rule-item-title">Squad & Roster Rules
+                        <span class="rule-item-sub">Lineups, subs and changes mid-season</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <ul>
+                            <li>Each match must be played with at least <b style="color:var(--ink);">3 of the
+                                    registered starters</b> present; the 4th slot may be filled by a listed
+                                substitute.</li>
+                            <li>Roster changes (swapping a substitute in/out) must be submitted through the
+                                Registration Center at least 24 hours before the match — no day-of changes.</li>
+                            <li>Squad captains are responsible for their team's conduct, lobby entry, and
+                                communicating with organizers.</li>
+                            <li>In-game names (IGN) must match the names submitted at registration. Unregistered
+                                players joining a match lobby voids that match for the squad.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-format">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">03</span>
+                    <span class="rule-item-title">Match Format & Scheduling
+                        <span class="rule-item-sub">Stages, maps and match timing</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <p>The season runs in three stages: <b style="color:var(--ink);">League Play</b> (round
+                            robin points), <b style="color:var(--ink);">Playoffs</b> (top squads, bracket knockout)
+                            and the <b style="color:var(--ink);">Grand Finale</b>.</p>
+                        <ul>
+                            <li>Each league round consists of 6 matches rotated across Bermuda, Purgatory and
+                                Kalahari.</li>
+                            <li>Match lobbies open 15 minutes before start time. Squads have a
+                                <b style="color:var(--ink);">10-minute grace window</b> to join after room ID/password
+                                is shared — after that the match starts without late squads.</li>
+                            <li>Full fixtures and exact kick-off times are posted on the Schedule page and may shift
+                                by up to 30 minutes for technical reasons; check announcements before each match
+                                day.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-lobby">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">04</span>
+                    <span class="rule-item-title">Room & Lobby Rules
+                        <span class="rule-item-sub">Joining, custom room settings</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <ul>
+                            <li>Room ID and password are shared only in the official squad group/announcement
+                                channel — never post them publicly.</li>
+                            <li>Custom room settings (health, loot, safe zone timing) are locked by the organizers
+                                and are the same for every squad, every match.</li>
+                            <li>Only registered starters/subs for that match may enter the custom room. Spectator or
+                                extra accounts joining the lobby is a violation.</li>
+                            <li>Screen recording of your own gameplay from lobby to match end is strongly
+                                recommended — it's often required as evidence for disputes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-conduct">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">05</span>
+                    <span class="rule-item-title">Fair Play & In-Match Conduct
+                        <span class="rule-item-sub">What's banned, no exceptions</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <p>The following result in disqualification and are reviewed for every flagged match:</p>
+                        <ul>
+                            <li>Hacks, aimbots, wallhacks, macros, or any third-party software that alters gameplay.
+                            </li>
+                            <li>Teaming with a rival squad, intentionally feeding kills, or match-fixing of any
+                                kind.</li>
+                            <li>Using an emulator, controller-to-mobile bridge, or any device outside the mobile-only
+                                ruleset for this tournament.</li>
+                            <li>Toxic behavior, hate speech, or harassment in voice/text chat toward other players,
+                                casters, or organizers.</li>
+                            <li>Stream-sniping another squad's live broadcast to gain positional information.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-scoring">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">06</span>
+                    <span class="rule-item-title">Scoring System
+                        <span class="rule-item-sub">How placement and kill points work</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <p>Every kill is worth <b style="color:var(--ink);">1 point</b>, added to placement points
+                            below. Standings are ranked by total points across all league matches.</p>
+                        <table class="rule-table">
+                            <tr>
+                                <th>Placement</th>
+                                <th>Points</th>
+                            </tr>
+                            <tr>
+                                <td>#1 Booyah</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>#2</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>#3</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>#4 – #5</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>#6 – #8</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>#9 – #12</td>
+                                <td>2</td>
+                            </tr>
+                        </table>
+                        <p>Ties in total points are broken by total kills, then head-to-head placement in the most
+                            recent shared match.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-penalties">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">07</span>
+                    <span class="rule-item-title">Penalties & Strike System
+                        <span class="rule-item-sub">Consequences for violations</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <div class="strike-row">
+                            <span class="strike-badge s1">STRIKE 1</span>
+                            <span class="strike-text">Warning + points deduction for the affected match (e.g. late
+                                entry, minor lobby violation).</span>
+                        </div>
+                        <div class="strike-row">
+                            <span class="strike-badge s2">STRIKE 2</span>
+                            <span class="strike-text">Match forfeit — squad receives zero points for that match,
+                                captain is notified in writing.</span>
+                        </div>
+                        <div class="strike-row">
+                            <span class="strike-badge s3">STRIKE 3</span>
+                            <span class="strike-text">Season disqualification for the full squad. Confirmed cheating,
+                                teaming, or harassment skips straight to this tier.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-disputes">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">08</span>
+                    <span class="rule-item-title">Disputes & Proof Submission
+                        <span class="rule-item-sub">How to file a complaint</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <ul>
+                            <li>Disputes must be submitted within <b style="color:var(--ink);">30 minutes</b> of the
+                                match ending, with full match screen recording as proof.</li>
+                            <li>Claims without video evidence are not reviewed — screenshots alone are not
+                                sufficient.</li>
+                            <li>Organizer rulings are announced within 24 hours on the Announcements page. Rulings
+                                are final for that match.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rule-item" id="r-prizes">
+                <button class="rule-item-head" aria-expanded="false">
+                    <span class="rule-num">09</span>
+                    <span class="rule-item-title">Prize & Payout Rules
+                        <span class="rule-item-sub">Payouts and eligibility for winnings</span>
+                    </span>
+                    <span class="rule-chevron">▾</span>
+                </button>
+                <div class="rule-item-body">
+                    <div class="rule-item-inner">
+                        <ul>
+                            <li>Prize pool is split across the top placements per the breakdown on the Prize Pool
+                                section of the home page.</li>
+                            <li>Winning squads must complete ID verification for all starters before payout is
+                                released.</li>
+                            <li>Any squad disqualified after the Grand Finale for a rules violation forfeits its
+                                prize share, which is redistributed per organizer discretion.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+        <div class="rule-contact fade-up">
+            <h3>Still have a question?</h3>
+            <p>Reach out to the organizers before match day — once the room opens, rulings follow what's written
+                above.</p>
+            <a class="btn btn-primary" href="./announcements.html" style="display:block; text-decoration:none;">Check
+                Announcements</a>
+        </div>
+
+        <div class="updated-note">Rules last updated for Season 11 · Subject to change with prior notice</div>
     </section>
-
-    <!-- STATS -->
-    <section id="stats">
-        <div class="eyebrow">THE NUMBERS</div>
-        <h2 class="sec-title">Season <b>at a glance</b></h2>
-        <div class="stats-row">
-            <div class="stat-card fade-up">
-                <div class="stat-num" data-count="8">0</div>
-                <div class="stat-label">Squads</div>
-            </div>
-            <div class="stat-card fade-up d1">
-                <div class="stat-num" data-count="48">0</div>
-                <div class="stat-label">Matches</div>
-            </div>
-            <div class="stat-card fade-up d2">
-                <div class="stat-num" data-count="400" data-suffix="K">0</div>
-                <div class="stat-label">Prize Pool</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TEAMS -->
-    <section id="teams">
-        <div class="eyebrow">SEASON 11 ROSTER</div>
-        <h2 class="sec-title">Meet the <b>contenders</b></h2>
-        <p class="sec-desc">Eight franchises, one battleground — swipe to meet every squad chasing the Season 11 crown.
-        </p>
-        <div class="teams-scroll" id="teamsScroll">
-            <div class="foil-frame team-foil fade-up" style="--foil:#e03db2;">
-                <div class="team-card">
-                    <img src="rr.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#e03daf"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #7a026433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #c4098c66;">
-                        <div class="team-abbr display" style="color:#84077e">RR</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#8d316826; color:#e130a3;">R</div>
-                        <div class="cap-info">Captain<b>Raizen</b></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="foil-frame team-foil fade-up d1" style="--foil:#f5c518;">
-                <div class="team-card">
-                    <img src="csk.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#f5c518"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #f5c51833, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f5c51866;">
-                        <div class="team-abbr display" style="color:var(--gold)">CSK</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#f5c51826; color:var(--gold);">T</div>
-                        <div class="cap-info">Captain<b>Thala_X</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d2" style="--foil:#e2394a;">
-                <div class="team-card">
-                    <img src="pbks.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#e2394a"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #e2394a33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #e2394a66;">
-                        <div class="team-abbr display" style="color:#f07a86">PBKS</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#e2394a26; color:#f07a86;">S</div>
-                        <div class="cap-info">Captain<b>Sherdil</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d3" style="--foil:#7d4bb0;">
-                <div class="team-card">
-                    <img src="kkr.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#7d4bb0"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #7d4bb033, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #7d4bb066;">
-                        <div class="team-abbr display" style="color:#b98fe8">KKR</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#7d4bb026; color:#b98fe8;">V</div>
-                        <div class="cap-info">Captain<b>Vortex</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d4" style="--foil:#1f5fc4;">
-                <div class="team-card">
-                    <img src="dc.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#1f5fc4"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #1f5fc433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #1f5fc466;">
-                        <div class="team-abbr display" style="color:#6fa0ea">DC</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#1f5fc426; color:#6fa0ea;">R</div>
-                        <div class="cap-info">Captain<b>Rushil</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up" style="--foil:#045d9e;">
-                <div class="team-card">
-                    <img src="mi.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#045d9e"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #045d9e33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #045d9e66;">
-                        <div class="team-abbr display" style="color:#6fc6ea">MI</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#045d9e26; color:#6fc6ea;">K</div>
-                        <div class="cap-info">Captain<b>Kaizer</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up" style="--foil:#c31d1d;">
-                <div class="team-card">
-                    <img src="rcb.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#9e0404"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #9e040433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #9e040466;">
-                        <div class="team-abbr display" style="color:#ea6f6f">RCB</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#9e040426; color:#ea6f6f;">K</div>
-                        <div class="cap-info">Captain<b>Kaizer</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d2" style="--foil:#f26522;">
-                <div class="team-card">
-                    <img src="srh.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#f26522"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #f2652233, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f2652266;">
-                        <div class="team-abbr display" style="color:#ffab7a">SRH</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#f2652226; color:#ffab7a;">B</div>
-                        <div class="cap-info">Captain<b>Blaze</b></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-indicator-fill" id="teamsScrollFill"></div>
-        </div>
-    </section>
-
-    <!-- PLAYER SPOTLIGHT --><!--
-  <section id="mvp">
-    <div class="eyebrow">ONE TO WATCH</div>
-    <h2 class="sec-title">Season 11 <b>breakout pick</b></h2>
-    <div class="foil-frame mvp-foil fade-up" style="--foil:#7d4bb0;">
-      <div class="mvp-card">
-        <span class="season-tag mvp-badge"><span class="dot"></span> PLAYER SPOTLIGHT</span>
-        <div class="mvp-rating"><b>94</b><span>RATING</span></div>
-        <div class="mvp-avatar-ring">
-          <div class="mvp-avatar">VX</div>
-        </div>
-        <div class="mvp-name">"Vortex" <span class="mvp-verified">✓</span></div>
-        <div class="mvp-team">Kolkata Knight Riders · Fragger</div>
-        <div class="mvp-quote">"I don't wait for the zone to close in — I make sure I'm already there."</div>
-        <div class="mvp-divider"></div>
-        <div class="mvp-bars">
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Fragging</span><b>96</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="96"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Zone IQ</span><b>91</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="91"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Clutch Factor</span><b>89</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="89"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>-->
-
-    <!-- ROADMAP -->
-    <section id="roadmap">
-        <div class="eyebrow">SEASON PATH</div>
-        <h2 class="sec-title">Road to the <b>trophy</b></h2>
-        <div class="roadmap">
-            <div class="stage active fade-up">
-                <div class="stage-name">Group Stage</div>
-                <span class="stage-tag soon">Starts Soon</span>
-                <div class="stage-desc">Round-robin drops across all eight squads to set the table.</div>
-            </div>
-            <div class="stage fade-up d1">
-                <div class="stage-name">Super 6</div>
-                <span class="stage-tag upcoming">Upcoming</span>
-                <div class="stage-desc">Top six franchises battle for seeding into the knockouts.</div>
-            </div>
-            <div class="stage fade-up d2">
-                <div class="stage-name">Playoffs</div>
-                <span class="stage-tag upcoming">Upcoming</span>
-                <div class="stage-desc">Elimination bracket — one bad drop and the run ends.</div>
-            </div>
-            <div class="stage fade-up d3">
-                <div class="stage-name">Grand Finals</div>
-                <span class="stage-tag upcoming">Season Finale</span>
-                <div class="stage-desc">The last squad standing lifts the Season 11 crown.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRIZE POOL -->
-    <section id="prizepool">
-        <div class="eyebrow">REWARDS</div>
-        <h2 class="sec-title">Prize pool <b>breakdown</b></h2>
-
-        <div class="prize-total fade-up">
-            <span class="prize-total-label">TOTAL PRIZE POOL</span>
-            <span class="prize-total-amt display" id="prizeTotalAmt" data-target="1000.000">₹0</span>
-            <span class="prize-total-sub">Across all eight squads · Season 11</span>
-        </div>
-
-        <div class="podium fade-up">
-            <div class="podium-col p2">
-                <div class="medal">🥈</div>
-                <div class="podium-amt">₹200</div>
-                <div class="podium-bar" data-h="72"></div>
-                <div class="podium-tag">Runner-up</div>
-            </div>
-            <div class="podium-col p1">
-                <div class="medal">🥇</div>
-                <div class="podium-amt">₹600</div>
-                <div class="podium-bar" data-h="104"></div>
-                <div class="podium-tag">Champion</div>
-            </div>
-            <div class="podium-col p3">
-                <div class="medal">🥉</div>
-                <div class="podium-amt">₹100</div>
-                <div class="podium-bar" data-h="48"></div>
-                <div class="podium-tag">MVP</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- HIGHLIGHTS -->
-    <section id="highlights">
-        <div class="eyebrow">MOMENTS</div>
-        <h2 class="sec-title">Season <b>highlights</b></h2>
-        <div class="clip-scroll">
-            <div class="clip-card fade-up">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#3d6fe0,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">Clutch 1v3 in the final zone</div>
-                    <div class="s">KKR · Match 09</div>
-                </div>
-            </div>
-            <div class="clip-card fade-up d1">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#f5c518,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">CSK's flawless zone read</div>
-                    <div class="s">CSK · Match 11</div>
-                </div>
-            </div>
-            <div class="clip-card fade-up d2">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#e2394a,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">PBKS opening drop mayhem</div>
-                    <div class="s">PBKS · Match 03</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CHAMPIONS LEGACY -->
-    <section id="legacy">
-        <div class="eyebrow">HALL OF FAME</div>
-        <h2 class="sec-title">Champions <b>through the years</b></h2>
-        <div class="legacy-scroll">
-            <div class="legacy-card fade-up">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 10</div>
-                <div class="legacy-team">CSK</div>
-                <div class="legacy-full">Chennai Super Kings</div>
-            </div>
-            <div class="legacy-card fade-up d1">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 9</div>
-                <div class="legacy-team">MI</div>
-                <div class="legacy-full">Mumbai Indians</div>
-            </div>
-            <div class="legacy-card fade-up d2">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 8</div>
-                <div class="legacy-team">RR</div>
-                <div class="legacy-full">Rajasthan Royals</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SPONSORS -->
-    <section id="sponsors" style="padding-top:36px;">
-        <div class="eyebrow" style="justify-content:center;">POWERED BY</div>
-        <div class="sponsor-track-wrap">
-            <div class="sponsor-track">
-                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
-                    PERIPHERALS</span>
-                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
-                    PERIPHERALS</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <div class="cta-band fade-up">
-        <h3>Don't miss the next drop</h3>
-        <p>Full fixtures, live standings and results — all in one place.</p>
-        <a class="btn btn-primary" href="./schedule.html" style="display:block; text-decoration:none;">View Full
-            Schedule</a>
-    </div>
 
     <!-- FOOTER -->
     <footer>
@@ -3806,17 +3913,8 @@
             if (event.persisted) { window.location.reload(); }
         });
 
-        // Splash removal
-        // Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
-        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
-        window.scrollTo(0, 0);
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) { window.location.reload(); }
-        });
-
         setTimeout(() => {
             const splash = document.getElementById('splash');
-
             splash.animate([
                 { transform: "scale(1)", opacity: 1 },
                 { transform: "scale(2.5)", opacity: 0 }
@@ -3824,48 +3922,8 @@
                 duration: 1600,
                 easing: "cubic-bezier(.2,.8,.2,1)"
             });
-
             setTimeout(() => splash.style.display = "none", 600);
         }, 2100);
-
-        // ====== REGISTRATION STATUS ======
-        // Flip this one flag when you open or close registrations for the season.
-        const REGISTRATIONS_OPEN = false;
-        const SLOTS_FILLED = 5;
-        const SLOTS_TOTAL = 8;
-
-        const regBadge = document.getElementById('regBadge');
-        const regDesc = document.getElementById('regDesc');
-        const regBtn = document.getElementById('regBtn');
-        const regSlots = document.getElementById('regSlots');
-        const regSlotsText = document.getElementById('regSlotsText');
-        const regSlotsFill = document.getElementById('regSlotsFill');
-        const regNote = document.getElementById('regNote');
-
-        if (REGISTRATIONS_OPEN) {
-            regSlotsText.textContent = `${SLOTS_FILLED} of ${SLOTS_TOTAL} slots filled`;
-            regSlotsFill.dataset.w = Math.round((SLOTS_FILLED / SLOTS_TOTAL) * 100);
-        } else {
-            regBadge.classList.add('closed');
-            regBadge.innerHTML = '<span class="dot"></span> REGISTRATIONS CLOSED';
-            regDesc.textContent = "Season 12 registrations haven't opened yet — check back soon or follow our socials for the announcement.";
-            regSlots.style.display = 'none';
-            regBtn.textContent = 'Registrations Closed';
-            regBtn.removeAttribute('href');
-            regBtn.classList.add('disabled');
-            regNote.textContent = "We'll open the roster as soon as Season 12 dates are locked in.";
-        }
-
-        // Registration slots bar grow in on scroll
-        const regFillIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    regFillIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        if (REGISTRATIONS_OPEN) regFillIO.observe(regSlotsFill);
 
         // Nav drawer
         const menuBtn = document.getElementById('menuBtn');
@@ -3877,14 +3935,6 @@
         menuBtn.addEventListener('click', openNav);
         navClose.addEventListener('click', closeNav);
         navOverlay.addEventListener('click', closeNav);
-        document.querySelectorAll('.nav-link[data-scroll]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                closeNav();
-                const targetEl = document.querySelector(link.getAttribute('href'));
-                if (targetEl) setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 200);
-            });
-        });
 
         // ====== THEME SWITCHER ======
         const THEME_KEY = 'xipl-theme';
@@ -3894,11 +3944,6 @@
         const themeOverlay = document.getElementById('themeOverlay');
         const themeClose = document.getElementById('themeClose');
         const themeOpts = document.querySelectorAll('.theme-opt');
-
-        function getSavedTheme() {
-            try { return localStorage.getItem(THEME_KEY) || DEFAULT_THEME; }
-            catch (e) { return DEFAULT_THEME; }
-        }
 
         function markActiveTheme(theme) {
             themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
@@ -3939,17 +3984,7 @@
                 closeTheme();
             });
         });
-
-        // Initialize active swatch to whatever theme is currently applied (set pre-paint above, or default)
         markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
-
-        // Hero CTA buttons
-        document.getElementById('ctaEnterArena').addEventListener('click', () => {
-            document.getElementById('countdown').scrollIntoView({ behavior: 'smooth' });
-        });
-        document.getElementById('ctaMeetSquads').addEventListener('click', () => {
-            document.getElementById('teams').scrollIntoView({ behavior: 'smooth' });
-        });
 
         // Embers
         const emberField = document.getElementById('embers');
@@ -3970,130 +4005,32 @@
         }, { threshold: 0.15 });
         revealEls.forEach(el => io.observe(el));
 
-        // Shuffle stats — random digits rattle before settling, replays every time it scrolls into view
-        const counters = document.querySelectorAll('.stat-num');
-        function runShuffle(el) {
-            if (el.dataset.animating === '1') return;
-            el.dataset.animating = '1';
-            const target = parseInt(el.dataset.count, 10);
-            const suffix = el.dataset.suffix || '';
-            const digits = String(target).length;
-            const shuffleMs = 650;
-            const start = performance.now();
-
-            function shuffleFrame(now) {
-                const elapsed = now - start;
-                if (elapsed < shuffleMs) {
-                    const rand = Math.floor(Math.random() * Math.pow(10, digits));
-                    el.textContent = rand + suffix;
-                    requestAnimationFrame(shuffleFrame);
-                } else {
-                    settleCount();
-                }
-            }
-            function settleCount() {
-                let cur = 0;
-                const step = Math.max(1, Math.ceil(target / 22));
-                const t = setInterval(() => {
-                    cur += step;
-                    if (cur >= target) { cur = target; clearInterval(t); el.dataset.animating = '0'; }
-                    el.textContent = cur + suffix;
-                }, 28);
-            }
-            requestAnimationFrame(shuffleFrame);
-        }
-        const countIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => { if (en.isIntersecting) runShuffle(en.target); });
-        }, { threshold: 0.5 });
-        counters.forEach(c => countIO.observe(c));
-
-        // Countdown timer — next season launch target, with a live progress ring
-        const cdTarget = new Date();
-        cdTarget.setMonth(cdTarget.getMonth() + 3);
-        cdTarget.setDate(15);
-        cdTarget.setHours(19, 30, 0, 0);
-        const cdStart = new Date();
-        const cdTotalMs = Math.max(1, cdTarget - cdStart);
-        const cdRingFill = document.getElementById('cdRingFill');
-        const RING_C = 371; // 2 * PI * 59, matches the SVG circle radius
-
-        function updateCountdown() {
-            const now = new Date();
-            let diff = Math.max(0, cdTarget - now);
-            const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-            const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-            const m = Math.floor(diff / 60000); diff -= m * 60000;
-            const s = Math.floor(diff / 1000);
-            document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
-            document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
-            document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
-            const secEl = document.getElementById('cd-s');
-            secEl.textContent = String(s).padStart(2, '0');
-            secEl.classList.remove('tick');
-            void secEl.offsetWidth;
-            secEl.classList.add('tick');
-
-            const progress = 1 - (Math.max(0, cdTarget - now) / cdTotalMs);
-            cdRingFill.style.strokeDashoffset = RING_C * (1 - Math.min(1, Math.max(0, progress)));
-        }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        // Prize podium bars grow in on scroll
-        const podiumBars = document.querySelectorAll('.podium-bar');
-        const podiumIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.height = en.target.dataset.h + 'px';
-                    podiumIO.unobserve(en.target);
-                }
+        // Rules accordion
+        document.querySelectorAll('.rule-item-head').forEach(head => {
+            head.addEventListener('click', () => {
+                const item = head.closest('.rule-item');
+                const isOpen = item.classList.contains('open');
+                item.classList.toggle('open', !isOpen);
+                head.setAttribute('aria-expanded', String(!isOpen));
             });
-        }, { threshold: 0.4 });
-        podiumBars.forEach(b => podiumIO.observe(b));
+        });
 
-        // MVP stat bars grow in on scroll
-        const mvpBars = document.querySelectorAll('.mvp-bar-fill');
-        const mvpBarIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    mvpBarIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        mvpBars.forEach(b => mvpBarIO.observe(b));
-
-        // Total prize pool count-up
-        const prizeEl = document.getElementById('prizeTotalAmt');
-        const prizeIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    const target = parseInt(prizeEl.dataset.target, 10);
-                    let cur = 0;
-                    const step = Math.ceil(target / 40);
-                    const t = setInterval(() => {
-                        cur += step;
-                        if (cur >= target) { cur = target; clearInterval(t); }
-                        prizeEl.textContent = '₹' + cur.toLocaleString('en-IN');
-                    }, 25);
-                    prizeIO.unobserve(prizeEl);
-                }
-            });
-        }, { threshold: 0.5 });
-        prizeIO.observe(prizeEl);
-        // Teams carousel mini scroll indicator
-        const teamsScroll = document.getElementById('teamsScroll');
-        const teamsFill = document.getElementById('teamsScrollFill');
-        function updateTeamsScrollbar() {
-            const max = teamsScroll.scrollWidth - teamsScroll.clientWidth;
-            const pct = max > 0 ? teamsScroll.scrollLeft / max : 0;
-            const trackW = 60;
-            const thumbW = Math.max(16, trackW * (teamsScroll.clientWidth / teamsScroll.scrollWidth));
-            teamsFill.style.width = thumbW + 'px';
-            teamsFill.style.transform = `translateX(${pct * (trackW - thumbW)}px)`;
+        // Back to top: show after scrolling, fill ring with scroll progress, click to jump up
+        const backToTop = document.getElementById('backToTop');
+        const bttFill = document.getElementById('bttFill');
+        const scrollFill = document.getElementById('scrollFill');
+        const BTT_C = 131.9;
+        function updateScrollUI() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = max > 0 ? Math.min(1, scrollTop / max) : 0;
+            scrollFill.style.width = (pct * 100) + '%';
+            bttFill.style.strokeDashoffset = BTT_C * (1 - pct);
+            backToTop.classList.toggle('show', scrollTop > 500);
         }
-        teamsScroll.addEventListener('scroll', updateTeamsScrollbar, { passive: true });
-        window.addEventListener('load', updateTeamsScrollbar);
-        updateTeamsScrollbar();
+        window.addEventListener('scroll', updateScrollUI, { passive: true });
+        updateScrollUI();
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
 </body>
 

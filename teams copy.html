@@ -16,7 +16,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>FREEFIRE XIPL — Season 11</title>
+    <title>Teams — FREEFIRE XIPL Season 11</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
@@ -3163,9 +3163,235 @@
             color: var(--ink-faint);
             letter-spacing: 0.03em;
         }
+
+        /* ============ TEAMS PAGE ============ */
+        .page-hero .sec-desc {
+            max-width: 420px;
+        }
+
+        .team-grid {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .team-tile {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 20px 14px 16px;
+            text-align: center;
+            border: 1px solid var(--line);
+            border-top: 3px solid var(--team-c, var(--gold));
+            background: radial-gradient(ellipse 140% 90% at 50% -10%, var(--team-glow, rgba(var(--gold-rgb), 0.14)), transparent 65%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.15s ease;
+        }
+
+        .team-tile:active {
+            transform: scale(0.96);
+        }
+
+        .team-tile-badge {
+            width: 62px;
+            height: 62px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 17px;
+            letter-spacing: 0.01em;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+            background: var(--team-glow2, rgba(var(--gold-rgb), 0.18));
+            color: var(--team-c, var(--gold));
+            border: 1px solid var(--team-c, var(--line));
+            box-shadow: 0 0 24px var(--team-glow, rgba(var(--gold-rgb), 0.14));
+        }
+
+        .team-tile-name {
+            margin-top: 12px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.3;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-tile-tap {
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8.5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+        }
+
+        /* ============ ROSTER SHEET ============ */
+        .roster-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(var(--bg-rgb), 0.7);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .roster-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .roster-sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 155;
+            max-width: 480px;
+            margin: 0 auto;
+            max-height: 78vh;
+            background: linear-gradient(165deg, var(--nav-a), var(--nav-b) 80%);
+            border-top: 1px solid var(--line);
+            border-radius: 22px 22px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.36s cubic-bezier(.2, .9, .25, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .roster-sheet.show {
+            transform: translateY(0);
+        }
+
+        .roster-sheet-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 18px 16px;
+            border-bottom: 1px solid var(--line);
+            flex-shrink: 0;
+        }
+
+        .roster-sheet-badge {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+            background: var(--rs-glow2, rgba(var(--gold-rgb), 0.18));
+            color: var(--rs-c, var(--gold));
+            border: 1px solid var(--rs-c, var(--line));
+        }
+
+        .roster-sheet-code {
+            font-family: 'Anton', sans-serif;
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            color: var(--rs-c, var(--gold));
+        }
+
+        .roster-sheet-name {
+            margin-top: 2px;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+        }
+
+        .roster-sheet-close {
+            margin-left: auto;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--gold);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .roster-sheet-body {
+            padding: 16px 18px 24px;
+            overflow-y: auto;
+        }
+
+        .roster-player-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 4px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .roster-player-row:last-child {
+            border-bottom: none;
+        }
+
+        .roster-player-num {
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Anton', sans-serif;
+            font-size: 10px;
+            color: var(--on-accent);
+            background: linear-gradient(135deg, var(--rs-c, var(--gold-pale)), var(--rs-c-deep, var(--gold-deep)));
+        }
+
+        .roster-player-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .team-summary {
+            margin-top: 26px;
+            border-radius: 20px;
+            text-align: center;
+            padding: 24px 20px;
+            background: radial-gradient(ellipse 130% 90% at 50% -10%, rgba(var(--gold-rgb), 0.16), transparent 62%), linear-gradient(165deg, var(--card-a), var(--card-b) 78%);
+        }
+
+        .team-summary h3 {
+            font-size: 18px;
+            color: var(--ink);
+            margin: 0 0 8px;
+        }
+
+        .team-summary p {
+            font-size: 12.5px;
+            color: var(--ink-dim);
+            line-height: 1.55;
+            margin: 0 0 16px;
+        }
+
     </style>
 </head>
-
 <body>
 
     <div class="scroll-progress">
@@ -3293,7 +3519,7 @@
         <div class="nav-links">
             <a href="arena.html" class="nav-link nav-link-primary"><span class="nav-link-icon">🔥</span> Enter Arena</a>
 
-            <a href="#teams" class="nav-link" data-scroll="true"><span class="nav-link-icon">🛡️</span> Teams</a>
+            <a href="teams.html" class="nav-link" style="color:var(--gold);" aria-current="page"><span class="nav-link-icon">🛡️</span> Teams</a>
             <a href="registration-center.html" class="nav-link"><span class="nav-link-icon">👤</span> Registration
                 Center</a>
             <a href="auction-center.html" class="nav-link"><span class="nav-link-icon">🔨</span> Auction</a>
@@ -3308,466 +3534,41 @@
         <div class="nav-drawer-foot">FREEFIREXIPL · Season 11</div>
     </nav>
     <!-- HERO -->
-    <section class="hero" style="padding-top:34px;">
-        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · LIVE ARENA</div>
-        <h1 class="hero-title display fade-up d2"><span class="hero-pre">FREEFIRE</span>XIPL<span>ALL SQUADS. ONE
-                CROWN.</span></h1>
-        <p class="hero-desc fade-up d3">Twelve franchises. One battleground. Follow every drop, every clutch and every
-            crown
-            chase of the season — built for fans who never miss a rotation.</p>
-        <img src="trophy.png" class="hero-trophy" alt="Championship Trophy">
-        <div class="ticker-wrap fade-up d4">
-            <div class="ticker-head"><span class="dot"></span> LIVE UPDATE</div>
-            <div class="ticker-track">
-                <span>
-                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
-                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
-                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
-                    Next drop begins in the arena shortly &nbsp;•&nbsp;
-                    <b>RR</b> take the Bermuda opener with a 3rd zone rotation win &nbsp;•&nbsp;
-                    <b>CSK</b> book playoff spot after clean sweep &nbsp;•&nbsp;
-                    <b>KKR</b> clutch a 1v3 to seal the round &nbsp;•&nbsp;
-                    Next drop begins in the arena shortly &nbsp;•&nbsp;
-                </span>
-            </div>
+    <section class="page-hero" style="padding-top:34px;">
+        <div class="season-tag fade-up d1"><span class="dot"></span> SEASON 11 · FRANCHISES</div>
+        <h1 class="hero-title display fade-up d2" style="font-size:34px;">MEET THE<span> TEAMS</span></h1>
+        <p class="sec-desc fade-up d3" style="max-width:420px;">8 franchises, 40 players, one trophy. Tap any crest
+            to see who's dropping in this season.</p>
+    </section>
+
+    <section style="padding-top:8px;">
+        <div class="team-grid fade-up d4" id="teamGrid"><!-- rendered by JS --></div>
+
+        <div class="team-summary fade-up">
+            <h3>Chase the top frag</h3>
+            <p>See who's leading kills and MVP votes across all 8 rosters on the leaderboard.</p>
+            <a class="btn btn-primary" href="./leaderboard.html" style="display:block; text-decoration:none;">View
+                Leaderboard</a>
         </div>
 
-        <div class="hero-cta fade-up d4">
-            <button class="btn btn-primary" id="ctaEnterArena">Enter Arena</button>
-            <button class="btn btn-ghost" id="ctaMeetSquads">Meet the Squads</button>
+        <div class="updated-note"
+            style="margin-top:28px; text-align:center; font-size:11px; color:var(--ink-faint); letter-spacing:0.03em;">
+            Rosters locked for Season 11 · Contact organizers for roster-change requests
         </div>
     </section>
 
-    <!-- COUNTDOWN -->
-    <section id="countdown" style="padding-top:8px;">
-        <div class="eyebrow">NEXT UP</div>
-        <h2 class="sec-title">Season 12 <b>countdown</b></h2>
-        <div class="foil-frame cd-foil fade-up">
-            <div class="countdown-card">
-                <div class="cd-glow"></div>
-                <div class="cd-embers">
-                    <span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-                <span class="season-tag cd-badge"><span class="dot"></span> COUNTDOWN LIVE</span>
-
-                <div class="cd-ring-wrap">
-                    <svg width="140" height="140" viewBox="0 0 132 132">
-                        <defs>
-                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:var(--gold-pale)" />
-                                <stop offset="55%" style="stop-color:var(--gold)" />
-                                <stop offset="100%" style="stop-color:var(--gold-deep)" />
-                            </linearGradient>
-                        </defs>
-                        <circle class="cd-ring-bg" cx="66" cy="66" r="59" />
-                        <circle class="cd-ring-fill" id="cdRingFill" cx="66" cy="66" r="59" stroke-dasharray="371"
-                            stroke-dashoffset="371" />
-                    </svg>
-                    <div class="cd-ring-center">
-                        <div class="cd-ring-crest"></div>
-                        <div class="cd-ring-tag">SEASON</div>
-                    </div>
-                </div>
-
-                <h2 class="cd-season display">SEASON 12</h2>
-                <div class="cd-title">ARRIVING SOON</div>
-
-                <div class="cd-divider"></div>
-
-                <div class="cd-digits">
-                    <div class="cd-chip"><span class="cd-num" id="cd-d">00</span><span class="cd-chip-label">Days</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-h">00</span><span class="cd-chip-label">Hrs</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-m">00</span><span class="cd-chip-label">Min</span>
-                    </div>
-                    <span class="cd-colon">:</span>
-                    <div class="cd-chip"><span class="cd-num" id="cd-s">00</span><span class="cd-chip-label">Sec</span>
-                    </div>
-                </div>
-
-                <div class="cd-caption">Squad registrations open before <b>Season 12</b> kicks off</div>
+    <!-- ROSTER SHEET -->
+    <div class="roster-overlay" id="rosterOverlay"></div>
+    <div class="roster-sheet" id="rosterSheet">
+        <div class="roster-sheet-head">
+            <div class="roster-sheet-badge" id="rsBadge">--</div>
+            <div>
+                <div class="roster-sheet-code" id="rsCode">FRANCHISE</div>
+                <div class="roster-sheet-name" id="rsName">Team Name</div>
             </div>
+            <button class="roster-sheet-close" id="rosterClose" aria-label="Close roster">✕</button>
         </div>
-    </section>
-
-    <!-- REGISTRATION -->
-    <section id="register" style="padding-top:8px;">
-        <div class="foil-frame reg-foil fade-up" style="--foil:var(--gold);">
-            <div class="reg-card" id="regCard">
-                <div class="reg-embers">
-                    <span></span><span></span><span></span><span></span>
-                </div>
-                <span class="season-tag reg-badge" id="regBadge"><span class="dot"></span> REGISTRATIONS OPEN</span>
-                <h2 class="reg-title display">SQUAD UP FOR<br>SEASON 12</h2>
-                <p class="reg-desc" id="regDesc">Slots are filling fast — lock in your squad before the roster closes.
-                </p>
-
-                <div class="reg-slots" id="regSlots">
-                    <div class="reg-slots-track">
-                        <div class="reg-slots-fill" id="regSlotsFill" data-w="62"></div>
-                    </div>
-                    <div class="reg-slots-label"><span id="regSlotsText">5 of 8 slots filled</span></div>
-                </div>
-
-                <a href="./register.html" class="btn btn-primary reg-btn" id="regBtn">Register Your Squad →</a>
-                <div class="reg-note" id="regNote">Registrations close once all slots are filled</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- STATS -->
-    <section id="stats">
-        <div class="eyebrow">THE NUMBERS</div>
-        <h2 class="sec-title">Season <b>at a glance</b></h2>
-        <div class="stats-row">
-            <div class="stat-card fade-up">
-                <div class="stat-num" data-count="8">0</div>
-                <div class="stat-label">Squads</div>
-            </div>
-            <div class="stat-card fade-up d1">
-                <div class="stat-num" data-count="48">0</div>
-                <div class="stat-label">Matches</div>
-            </div>
-            <div class="stat-card fade-up d2">
-                <div class="stat-num" data-count="400" data-suffix="K">0</div>
-                <div class="stat-label">Prize Pool</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TEAMS -->
-    <section id="teams">
-        <div class="eyebrow">SEASON 11 ROSTER</div>
-        <h2 class="sec-title">Meet the <b>contenders</b></h2>
-        <p class="sec-desc">Eight franchises, one battleground — swipe to meet every squad chasing the Season 11 crown.
-        </p>
-        <div class="teams-scroll" id="teamsScroll">
-            <div class="foil-frame team-foil fade-up" style="--foil:#e03db2;">
-                <div class="team-card">
-                    <img src="rr.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#e03daf"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #7a026433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #c4098c66;">
-                        <div class="team-abbr display" style="color:#84077e">RR</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#8d316826; color:#e130a3;">R</div>
-                        <div class="cap-info">Captain<b>Raizen</b></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="foil-frame team-foil fade-up d1" style="--foil:#f5c518;">
-                <div class="team-card">
-                    <img src="csk.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#f5c518"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #f5c51833, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f5c51866;">
-                        <div class="team-abbr display" style="color:var(--gold)">CSK</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#f5c51826; color:var(--gold);">T</div>
-                        <div class="cap-info">Captain<b>Thala_X</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d2" style="--foil:#e2394a;">
-                <div class="team-card">
-                    <img src="pbks.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#e2394a"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #e2394a33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #e2394a66;">
-                        <div class="team-abbr display" style="color:#f07a86">PBKS</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#e2394a26; color:#f07a86;">S</div>
-                        <div class="cap-info">Captain<b>Sherdil</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d3" style="--foil:#7d4bb0;">
-                <div class="team-card">
-                    <img src="kkr.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#7d4bb0"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #7d4bb033, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #7d4bb066;">
-                        <div class="team-abbr display" style="color:#b98fe8">KKR</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#7d4bb026; color:#b98fe8;">V</div>
-                        <div class="cap-info">Captain<b>Vortex</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d4" style="--foil:#1f5fc4;">
-                <div class="team-card">
-                    <img src="dc.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#1f5fc4"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #1f5fc433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #1f5fc466;">
-                        <div class="team-abbr display" style="color:#6fa0ea">DC</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#1f5fc426; color:#6fa0ea;">R</div>
-                        <div class="cap-info">Captain<b>Rushil</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up" style="--foil:#045d9e;">
-                <div class="team-card">
-                    <img src="mi.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#045d9e"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #045d9e33, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #045d9e66;">
-                        <div class="team-abbr display" style="color:#6fc6ea">MI</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#045d9e26; color:#6fc6ea;">K</div>
-                        <div class="cap-info">Captain<b>Kaizer</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up" style="--foil:#c31d1d;">
-                <div class="team-card">
-                    <img src="rcb.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#9e0404"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #9e040433, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #9e040466;">
-                        <div class="team-abbr display" style="color:#ea6f6f">RCB</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#9e040426; color:#ea6f6f;">K</div>
-                        <div class="cap-info">Captain<b>Kaizer</b></div>
-                    </div>
-                </div>
-            </div>
-            <div class="foil-frame team-foil fade-up d2" style="--foil:#f26522;">
-                <div class="team-card">
-                    <img src="srh.png" class="team-logo">
-                    <span class="team-index"></span>
-                    <div class="accent" style="background:#f26522"></div>
-                    <div class="team-crest"
-                        style="background:linear-gradient(160deg, #f2652233, transparent), var(--surface-2); box-shadow:inset 0 0 0 1px #f2652266;">
-                        <div class="team-abbr display" style="color:#ffab7a">SRH</div>
-                    </div>
-                    <div class="team-full"></div>
-                    <div class="team-motto"></div>
-                    <div class="team-captain">
-                        <div class="cap-avatar" style="background:#f2652226; color:#ffab7a;">B</div>
-                        <div class="cap-info">Captain<b>Blaze</b></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-indicator-fill" id="teamsScrollFill"></div>
-        </div>
-    </section>
-
-    <!-- PLAYER SPOTLIGHT --><!--
-  <section id="mvp">
-    <div class="eyebrow">ONE TO WATCH</div>
-    <h2 class="sec-title">Season 11 <b>breakout pick</b></h2>
-    <div class="foil-frame mvp-foil fade-up" style="--foil:#7d4bb0;">
-      <div class="mvp-card">
-        <span class="season-tag mvp-badge"><span class="dot"></span> PLAYER SPOTLIGHT</span>
-        <div class="mvp-rating"><b>94</b><span>RATING</span></div>
-        <div class="mvp-avatar-ring">
-          <div class="mvp-avatar">VX</div>
-        </div>
-        <div class="mvp-name">"Vortex" <span class="mvp-verified">✓</span></div>
-        <div class="mvp-team">Kolkata Knight Riders · Fragger</div>
-        <div class="mvp-quote">"I don't wait for the zone to close in — I make sure I'm already there."</div>
-        <div class="mvp-divider"></div>
-        <div class="mvp-bars">
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Fragging</span><b>96</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="96"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Zone IQ</span><b>91</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="91"></div>
-            </div>
-          </div>
-          <div class="mvp-bar-row">
-            <div class="mvp-bar-head"><span>Clutch Factor</span><b>89</b></div>
-            <div class="mvp-bar-track">
-              <div class="mvp-bar-fill" data-w="89"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>-->
-
-    <!-- ROADMAP -->
-    <section id="roadmap">
-        <div class="eyebrow">SEASON PATH</div>
-        <h2 class="sec-title">Road to the <b>trophy</b></h2>
-        <div class="roadmap">
-            <div class="stage active fade-up">
-                <div class="stage-name">Group Stage</div>
-                <span class="stage-tag soon">Starts Soon</span>
-                <div class="stage-desc">Round-robin drops across all eight squads to set the table.</div>
-            </div>
-            <div class="stage fade-up d1">
-                <div class="stage-name">Super 6</div>
-                <span class="stage-tag upcoming">Upcoming</span>
-                <div class="stage-desc">Top six franchises battle for seeding into the knockouts.</div>
-            </div>
-            <div class="stage fade-up d2">
-                <div class="stage-name">Playoffs</div>
-                <span class="stage-tag upcoming">Upcoming</span>
-                <div class="stage-desc">Elimination bracket — one bad drop and the run ends.</div>
-            </div>
-            <div class="stage fade-up d3">
-                <div class="stage-name">Grand Finals</div>
-                <span class="stage-tag upcoming">Season Finale</span>
-                <div class="stage-desc">The last squad standing lifts the Season 11 crown.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRIZE POOL -->
-    <section id="prizepool">
-        <div class="eyebrow">REWARDS</div>
-        <h2 class="sec-title">Prize pool <b>breakdown</b></h2>
-
-        <div class="prize-total fade-up">
-            <span class="prize-total-label">TOTAL PRIZE POOL</span>
-            <span class="prize-total-amt display" id="prizeTotalAmt" data-target="1000.000">₹0</span>
-            <span class="prize-total-sub">Across all eight squads · Season 11</span>
-        </div>
-
-        <div class="podium fade-up">
-            <div class="podium-col p2">
-                <div class="medal">🥈</div>
-                <div class="podium-amt">₹200</div>
-                <div class="podium-bar" data-h="72"></div>
-                <div class="podium-tag">Runner-up</div>
-            </div>
-            <div class="podium-col p1">
-                <div class="medal">🥇</div>
-                <div class="podium-amt">₹600</div>
-                <div class="podium-bar" data-h="104"></div>
-                <div class="podium-tag">Champion</div>
-            </div>
-            <div class="podium-col p3">
-                <div class="medal">🥉</div>
-                <div class="podium-amt">₹100</div>
-                <div class="podium-bar" data-h="48"></div>
-                <div class="podium-tag">MVP</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- HIGHLIGHTS -->
-    <section id="highlights">
-        <div class="eyebrow">MOMENTS</div>
-        <h2 class="sec-title">Season <b>highlights</b></h2>
-        <div class="clip-scroll">
-            <div class="clip-card fade-up">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#3d6fe0,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">Clutch 1v3 in the final zone</div>
-                    <div class="s">KKR · Match 09</div>
-                </div>
-            </div>
-            <div class="clip-card fade-up d1">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#f5c518,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">CSK's flawless zone read</div>
-                    <div class="s">CSK · Match 11</div>
-                </div>
-            </div>
-            <div class="clip-card fade-up d2">
-                <div class="clip-thumb" style="background:linear-gradient(150deg,#e2394a,var(--bg));">
-                    <div class="play">▶</div>
-                </div>
-                <div class="clip-info">
-                    <div class="t">PBKS opening drop mayhem</div>
-                    <div class="s">PBKS · Match 03</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CHAMPIONS LEGACY -->
-    <section id="legacy">
-        <div class="eyebrow">HALL OF FAME</div>
-        <h2 class="sec-title">Champions <b>through the years</b></h2>
-        <div class="legacy-scroll">
-            <div class="legacy-card fade-up">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 10</div>
-                <div class="legacy-team">CSK</div>
-                <div class="legacy-full">Chennai Super Kings</div>
-            </div>
-            <div class="legacy-card fade-up d1">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 9</div>
-                <div class="legacy-team">MI</div>
-                <div class="legacy-full">Mumbai Indians</div>
-            </div>
-            <div class="legacy-card fade-up d2">
-                <div class="legacy-trophy">🏆</div>
-                <div class="legacy-season">SEASON 8</div>
-                <div class="legacy-team">RR</div>
-                <div class="legacy-full">Rajasthan Royals</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SPONSORS -->
-    <section id="sponsors" style="padding-top:36px;">
-        <div class="eyebrow" style="justify-content:center;">POWERED BY</div>
-        <div class="sponsor-track-wrap">
-            <div class="sponsor-track">
-                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
-                    PERIPHERALS</span>
-                <span>NITRO GG</span><span>BOOYAH ENERGY</span><span>PIXEL GEAR</span><span>ARENA NET</span><span>VOLT
-                    PERIPHERALS</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <div class="cta-band fade-up">
-        <h3>Don't miss the next drop</h3>
-        <p>Full fixtures, live standings and results — all in one place.</p>
-        <a class="btn btn-primary" href="./schedule.html" style="display:block; text-decoration:none;">View Full
-            Schedule</a>
+        <div class="roster-sheet-body" id="rsBody"><!-- rendered by JS --></div>
     </div>
 
     <!-- FOOTER -->
@@ -3806,17 +3607,8 @@
             if (event.persisted) { window.location.reload(); }
         });
 
-        // Splash removal
-        // Always feel like a fresh visit: reset scroll and defeat back/forward cache restores
-        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
-        window.scrollTo(0, 0);
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) { window.location.reload(); }
-        });
-
         setTimeout(() => {
             const splash = document.getElementById('splash');
-
             splash.animate([
                 { transform: "scale(1)", opacity: 1 },
                 { transform: "scale(2.5)", opacity: 0 }
@@ -3824,48 +3616,8 @@
                 duration: 1600,
                 easing: "cubic-bezier(.2,.8,.2,1)"
             });
-
             setTimeout(() => splash.style.display = "none", 600);
         }, 2100);
-
-        // ====== REGISTRATION STATUS ======
-        // Flip this one flag when you open or close registrations for the season.
-        const REGISTRATIONS_OPEN = false;
-        const SLOTS_FILLED = 5;
-        const SLOTS_TOTAL = 8;
-
-        const regBadge = document.getElementById('regBadge');
-        const regDesc = document.getElementById('regDesc');
-        const regBtn = document.getElementById('regBtn');
-        const regSlots = document.getElementById('regSlots');
-        const regSlotsText = document.getElementById('regSlotsText');
-        const regSlotsFill = document.getElementById('regSlotsFill');
-        const regNote = document.getElementById('regNote');
-
-        if (REGISTRATIONS_OPEN) {
-            regSlotsText.textContent = `${SLOTS_FILLED} of ${SLOTS_TOTAL} slots filled`;
-            regSlotsFill.dataset.w = Math.round((SLOTS_FILLED / SLOTS_TOTAL) * 100);
-        } else {
-            regBadge.classList.add('closed');
-            regBadge.innerHTML = '<span class="dot"></span> REGISTRATIONS CLOSED';
-            regDesc.textContent = "Season 12 registrations haven't opened yet — check back soon or follow our socials for the announcement.";
-            regSlots.style.display = 'none';
-            regBtn.textContent = 'Registrations Closed';
-            regBtn.removeAttribute('href');
-            regBtn.classList.add('disabled');
-            regNote.textContent = "We'll open the roster as soon as Season 12 dates are locked in.";
-        }
-
-        // Registration slots bar grow in on scroll
-        const regFillIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    regFillIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        if (REGISTRATIONS_OPEN) regFillIO.observe(regSlotsFill);
 
         // Nav drawer
         const menuBtn = document.getElementById('menuBtn');
@@ -3877,14 +3629,6 @@
         menuBtn.addEventListener('click', openNav);
         navClose.addEventListener('click', closeNav);
         navOverlay.addEventListener('click', closeNav);
-        document.querySelectorAll('.nav-link[data-scroll]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                closeNav();
-                const targetEl = document.querySelector(link.getAttribute('href'));
-                if (targetEl) setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 200);
-            });
-        });
 
         // ====== THEME SWITCHER ======
         const THEME_KEY = 'xipl-theme';
@@ -3894,11 +3638,6 @@
         const themeOverlay = document.getElementById('themeOverlay');
         const themeClose = document.getElementById('themeClose');
         const themeOpts = document.querySelectorAll('.theme-opt');
-
-        function getSavedTheme() {
-            try { return localStorage.getItem(THEME_KEY) || DEFAULT_THEME; }
-            catch (e) { return DEFAULT_THEME; }
-        }
 
         function markActiveTheme(theme) {
             themeOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.theme === theme));
@@ -3939,17 +3678,74 @@
                 closeTheme();
             });
         });
-
-        // Initialize active swatch to whatever theme is currently applied (set pre-paint above, or default)
         markActiveTheme(document.documentElement.getAttribute('data-theme') || DEFAULT_THEME);
 
-        // Hero CTA buttons
-        document.getElementById('ctaEnterArena').addEventListener('click', () => {
-            document.getElementById('countdown').scrollIntoView({ behavior: 'smooth' });
+        // ====== TEAMS DATA + ROSTER SHEET ======
+        const TEAMS = {
+            RR: { name: 'Rajasthan Royals', color: '#3d6fe0', light: '#7fa2f0', players: ['Nyx', 'Falconn', 'Drexo', 'Sablewind', 'Emberlyn'] },
+            CSK: { name: 'Chennai Super Kings', color: '#b3811f', light: '#f5c518', players: ['Whistler', 'IceVeil', 'Marnus', 'Solvane', 'Duskrider'] },
+            PBKS: { name: 'Punjab Kings', color: '#e2394a', light: '#ff8298', players: ['Rampage', 'ObiTwo', 'Kestrel', 'Warthorn', 'Nightjar'] },
+            KKR: { name: 'Kolkata Knight Riders', color: '#7d4bb0', light: '#b98fe6', players: ['Phantm', 'Zeal', 'Riven', 'Wraith', 'Solace'] },
+            DC: { name: 'Delhi Capitals', color: '#1f5fc4', light: '#6fa0e8', players: ['Kryo', 'Nocturn', 'Ashlar', 'Wintermere', 'Fenrix'] },
+            MI: { name: 'Mumbai Indians', color: '#045d9e', light: '#4db6e8', players: ['Tidal', 'Marrow', 'Hexen', 'Undertow', 'Squall'] },
+            RCB: { name: 'Royal Challengers Bengaluru', color: '#d2122e', light: '#ff6b7a', players: ['Solstice', 'Grimm', 'Vantage', 'Ironclad', 'Duskveil'] },
+            SRH: { name: 'Sunrisers Hyderabad', color: '#f26522', light: '#ffab7a', players: ['Cinder', 'Duskfall', 'Ryder', 'Emberfall', 'Solarian'] }
+        };
+
+        function hexToRgb(hex) {
+            const n = parseInt(hex.replace('#', ''), 16);
+            return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+        }
+
+        const teamGrid = document.getElementById('teamGrid');
+        let tileHtml = '';
+        Object.keys(TEAMS).forEach((code, i) => {
+            const t = TEAMS[code];
+            const rgb = hexToRgb(t.color);
+            tileHtml += `
+        <div class="team-tile" data-code="${code}" style="--team-c:${t.light}; --team-c-deep:${t.color}; --team-glow:rgba(${rgb},0.16); --team-glow2:rgba(${rgb},0.2);">
+          <div class="team-tile-badge">${code}</div>
+          <div class="team-tile-name">${t.name}</div>
+          <div class="team-tile-tap">👆 Tap for roster</div>
+        </div>`;
         });
-        document.getElementById('ctaMeetSquads').addEventListener('click', () => {
-            document.getElementById('teams').scrollIntoView({ behavior: 'smooth' });
+        teamGrid.innerHTML = tileHtml;
+
+        const rosterOverlay = document.getElementById('rosterOverlay');
+        const rosterSheet = document.getElementById('rosterSheet');
+        const rosterClose = document.getElementById('rosterClose');
+        const rsBadge = document.getElementById('rsBadge');
+        const rsCode = document.getElementById('rsCode');
+        const rsName = document.getElementById('rsName');
+        const rsBody = document.getElementById('rsBody');
+
+        function openRoster(code) {
+            const t = TEAMS[code];
+            const rgb = hexToRgb(t.color);
+            rosterSheet.style.setProperty('--rs-c', t.light);
+            rosterSheet.style.setProperty('--rs-c-deep', t.color);
+            rosterSheet.style.setProperty('--rs-glow2', `rgba(${rgb},0.2)`);
+            rsBadge.textContent = code;
+            rsCode.textContent = 'FRANCHISE · ' + code;
+            rsName.textContent = t.name;
+            rsBody.innerHTML = t.players.map((p, i) => `
+        <div class="roster-player-row">
+          <div class="roster-player-num">${String(i + 1).padStart(2, '0')}</div>
+          <div class="roster-player-name">${p}</div>
+        </div>`).join('');
+            rosterOverlay.classList.add('show');
+            rosterSheet.classList.add('show');
+        }
+        function closeRoster() {
+            rosterOverlay.classList.remove('show');
+            rosterSheet.classList.remove('show');
+        }
+        teamGrid.addEventListener('click', (e) => {
+            const tile = e.target.closest('.team-tile');
+            if (tile) openRoster(tile.dataset.code);
         });
+        rosterClose.addEventListener('click', closeRoster);
+        rosterOverlay.addEventListener('click', closeRoster);
 
         // Embers
         const emberField = document.getElementById('embers');
@@ -3970,130 +3766,22 @@
         }, { threshold: 0.15 });
         revealEls.forEach(el => io.observe(el));
 
-        // Shuffle stats — random digits rattle before settling, replays every time it scrolls into view
-        const counters = document.querySelectorAll('.stat-num');
-        function runShuffle(el) {
-            if (el.dataset.animating === '1') return;
-            el.dataset.animating = '1';
-            const target = parseInt(el.dataset.count, 10);
-            const suffix = el.dataset.suffix || '';
-            const digits = String(target).length;
-            const shuffleMs = 650;
-            const start = performance.now();
-
-            function shuffleFrame(now) {
-                const elapsed = now - start;
-                if (elapsed < shuffleMs) {
-                    const rand = Math.floor(Math.random() * Math.pow(10, digits));
-                    el.textContent = rand + suffix;
-                    requestAnimationFrame(shuffleFrame);
-                } else {
-                    settleCount();
-                }
-            }
-            function settleCount() {
-                let cur = 0;
-                const step = Math.max(1, Math.ceil(target / 22));
-                const t = setInterval(() => {
-                    cur += step;
-                    if (cur >= target) { cur = target; clearInterval(t); el.dataset.animating = '0'; }
-                    el.textContent = cur + suffix;
-                }, 28);
-            }
-            requestAnimationFrame(shuffleFrame);
+        // Back to top: show after scrolling, fill ring with scroll progress, click to jump up
+        const backToTop = document.getElementById('backToTop');
+        const bttFill = document.getElementById('bttFill');
+        const scrollFill = document.getElementById('scrollFill');
+        const BTT_C = 131.9;
+        function updateScrollUI() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = max > 0 ? Math.min(1, scrollTop / max) : 0;
+            scrollFill.style.width = (pct * 100) + '%';
+            bttFill.style.strokeDashoffset = BTT_C * (1 - pct);
+            backToTop.classList.toggle('show', scrollTop > 500);
         }
-        const countIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => { if (en.isIntersecting) runShuffle(en.target); });
-        }, { threshold: 0.5 });
-        counters.forEach(c => countIO.observe(c));
-
-        // Countdown timer — next season launch target, with a live progress ring
-        const cdTarget = new Date();
-        cdTarget.setMonth(cdTarget.getMonth() + 3);
-        cdTarget.setDate(15);
-        cdTarget.setHours(19, 30, 0, 0);
-        const cdStart = new Date();
-        const cdTotalMs = Math.max(1, cdTarget - cdStart);
-        const cdRingFill = document.getElementById('cdRingFill');
-        const RING_C = 371; // 2 * PI * 59, matches the SVG circle radius
-
-        function updateCountdown() {
-            const now = new Date();
-            let diff = Math.max(0, cdTarget - now);
-            const d = Math.floor(diff / 86400000); diff -= d * 86400000;
-            const h = Math.floor(diff / 3600000); diff -= h * 3600000;
-            const m = Math.floor(diff / 60000); diff -= m * 60000;
-            const s = Math.floor(diff / 1000);
-            document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
-            document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
-            document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
-            const secEl = document.getElementById('cd-s');
-            secEl.textContent = String(s).padStart(2, '0');
-            secEl.classList.remove('tick');
-            void secEl.offsetWidth;
-            secEl.classList.add('tick');
-
-            const progress = 1 - (Math.max(0, cdTarget - now) / cdTotalMs);
-            cdRingFill.style.strokeDashoffset = RING_C * (1 - Math.min(1, Math.max(0, progress)));
-        }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        // Prize podium bars grow in on scroll
-        const podiumBars = document.querySelectorAll('.podium-bar');
-        const podiumIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.height = en.target.dataset.h + 'px';
-                    podiumIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        podiumBars.forEach(b => podiumIO.observe(b));
-
-        // MVP stat bars grow in on scroll
-        const mvpBars = document.querySelectorAll('.mvp-bar-fill');
-        const mvpBarIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.style.width = en.target.dataset.w + '%';
-                    mvpBarIO.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.4 });
-        mvpBars.forEach(b => mvpBarIO.observe(b));
-
-        // Total prize pool count-up
-        const prizeEl = document.getElementById('prizeTotalAmt');
-        const prizeIO = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    const target = parseInt(prizeEl.dataset.target, 10);
-                    let cur = 0;
-                    const step = Math.ceil(target / 40);
-                    const t = setInterval(() => {
-                        cur += step;
-                        if (cur >= target) { cur = target; clearInterval(t); }
-                        prizeEl.textContent = '₹' + cur.toLocaleString('en-IN');
-                    }, 25);
-                    prizeIO.unobserve(prizeEl);
-                }
-            });
-        }, { threshold: 0.5 });
-        prizeIO.observe(prizeEl);
-        // Teams carousel mini scroll indicator
-        const teamsScroll = document.getElementById('teamsScroll');
-        const teamsFill = document.getElementById('teamsScrollFill');
-        function updateTeamsScrollbar() {
-            const max = teamsScroll.scrollWidth - teamsScroll.clientWidth;
-            const pct = max > 0 ? teamsScroll.scrollLeft / max : 0;
-            const trackW = 60;
-            const thumbW = Math.max(16, trackW * (teamsScroll.clientWidth / teamsScroll.scrollWidth));
-            teamsFill.style.width = thumbW + 'px';
-            teamsFill.style.transform = `translateX(${pct * (trackW - thumbW)}px)`;
-        }
-        teamsScroll.addEventListener('scroll', updateTeamsScrollbar, { passive: true });
-        window.addEventListener('load', updateTeamsScrollbar);
-        updateTeamsScrollbar();
+        window.addEventListener('scroll', updateScrollUI, { passive: true });
+        updateScrollUI();
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
 </body>
 
